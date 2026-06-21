@@ -1,4 +1,4 @@
-"""The six acceptance tests from the coding brief."""
+"""Acceptance and smoke tests for WIT Forms."""
 import shutil
 import sys
 from pathlib import Path
@@ -26,12 +26,15 @@ FULL_SAMPLE = {
     "holder_city": "Norfolk", "holder_state": "VA", "holder_zip": "23510",
 }
 
+PLANNED_SCHEMAS = {
+    "25", "28", "35", "125", "126", "127", "128", "130", "131",
+    "135_NC", "140", "141",
+}
+
 
 # --- Test 1: fill + flatten + extracted text (needs template + pdftk) ---
 def test_1_fill_flatten_text(schema, tmp_path):
     from pdf_fill import produce_pdf
-    template = Path(schema["_meta"].get("template_path", ""))
-    # Catalog stores the clean template path; check the conventional location.
     clean = ROOT / "templates" / "acord" / "ACORD_25_clean.pdf"
     if not clean.exists() or shutil.which("pdftk") is None:
         pytest.skip("licensed clean template and/or pdftk not available in this env")
@@ -66,36 +69,13 @@ def test_3_radio_single_one(schema):
     assert [occ, cm].count("Off") == 1
 
 
-# --- Test 4: email always includes OWNER_CC_EMAIL even if client omits it ---
-def test_4_owner_cc_enforced(monkeypatch, tmp_path):
-    import config
-    import email_service
-
-    captured = {}
-
-    class FakeSMTP:
-        def __init__(self, *a, **k): pass
-        def __enter__(self): return self
-        def __exit__(self, *a): return False
-        def starttls(self): pass
-        def login(self, *a): pass
-        def send_message(self, msg, to_addrs=None):
-            captured["to_addrs"] = to_addrs
-
-    monkeypatch.setattr(email_service.smtplib, "SMTP", FakeSMTP)
-    monkeypatch.setattr(config.Config, "EMAIL_TRANSPORT", "smtp")
-    monkeypatch.setattr(config.Config, "SMTP_HOST", "smtp.test")
-    monkeypatch.setattr(config.Config, "OWNER_CC_EMAIL", "owner@weinsurethings.com")
-
-    pdf = tmp_path / "x.pdf"
-    pdf.write_bytes(b"%PDF-1.4\n%%EOF\n")
-    # Client supplies ONLY an external recipient, no CC.
-    sent = email_service.send_form_email(
-        to=["client@example.com"], subject="s", body="b",
-        pdf_path=pdf, pdf_filename="a.pdf", config=config.Config,
-    )
-    assert "owner@weinsurethings.com" in sent["cc"]
-    assert "owner@weinsurethings.com" in captured["to_addrs"]
+# --- Test 4: Phase 1 uses local email/download, not server email ---
+def test_4_phase1_does_not_import_server_email_service():
+    app_source = (ROOT / "app.py").read_text()
+    assert "send_form_email" not in app_source
+    assert "EmailError" not in app_source
+    assert '"email_enabled": False' in app_source
+    assert '"email_mode": "local_download"' in app_source
 
 
 # --- Test 5: non-WIT Google account is rejected at auth ---
@@ -121,3 +101,31 @@ def test_6_malformed_schema_raises():
     }
     with pytest.raises(SchemaError):
         validate_schema(bad2, source="bad2")
+
+
+# --- Test 7: all planned schemas are present and loadable ---
+def test_7_all_planned_schemas_load():
+    from forms_catalog import iter_schema_files, load_schema
+    loaded = {}
+    for path in iter_schema_files(ROOT / "schemas"):
+        schema = load_schema(path)
+        loaded[str(schema["_meta"]["acord_number"])] = path.name
+    assert PLANNED_SCHEMAS.issubset(set(loaded)), loaded
+
+
+# --- Test 8: catalog seeding includes the full planned schema set ---
+def test_8_catalog_seeds_all_planned_forms(app):
+    import db
+    with app.app_context():
+        rows = db.get_db().execute("SELECT acord_number FROM forms WHERE active=1").fetchall()
+        numbers = {str(r["acord_number"]) for r in rows}
+    assert PLANNED_SCHEMAS.issubset(numbers)
+
+
+# --- Test 9: PDF field resolver supports ACORD page-token names ---
+def test_9_pdf_field_resolver_matches_page_token_suffix():
+    from pdf_fill import _resolve_pdf_data
+    desired = {"F[0].Producer_FullName_A[0]": "WIT Norfolk"}
+    available = {"F[0].P1[0].Producer_FullName_A[0]"}
+    resolved = _resolve_pdf_data(desired, available)
+    assert resolved == {"F[0].P1[0].Producer_FullName_A[0]": "WIT Norfolk"}
