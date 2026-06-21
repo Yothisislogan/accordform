@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WIT Forms — We Insure Things</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="icon" href="/static/assets/favicon.svg" />
+</head>
+<body>
+  <!-- Login gate -->
+  <section id="login-view" class="login-view hidden">
+    <div class="login-card">
+      <div class="brand-mark" aria-hidden="true"></div>
+      <h1>WIT Forms</h1>
+      <p class="muted">Internal ACORD form filler for We Insure Things.</p>
+      <a id="login-btn" class="btn btn-primary btn-lg" href="/auth/login">
+        Sign in with Google
+      </a>
+      <p class="muted small">Restricted to @weinsurethings.com accounts.</p>
+      <p id="login-error" class="error hidden"></p>
+    </div>
+  </section>
+
+  <!-- App -->
+  <div id="app-view" class="hidden">
+    <header class="topbar">
+      <div class="topbar-left">
+        <span class="brand-mark sm" aria-hidden="true"></span>
+        <span class="brand-name">WIT Forms</span>
+      </div>
+      <div class="topbar-right">
+        <span id="user-email" class="muted small"></span>
+        <button id="logout-btn" class="btn btn-ghost btn-sm">Sign out</button>
+      </div>
+    </header>
+
+    <!-- Search / catalog -->
+    <main id="search-view" class="container">
+      <div class="hero">
+        <div class="brand-mark lg" aria-hidden="true"></div>
+        <h2>Find a form</h2>
+        <input id="search-box" class="search-box" type="search" autocomplete="off"
+               placeholder="Search by number, title, or keyword (e.g. 25, certificate, COI)" />
+      </div>
+      <ul id="results" class="results"></ul>
+      <p id="results-empty" class="muted center hidden">No forms match your search.</p>
+    </main>
+
+    <!-- Form fill -->
+    <main id="form-view" class="container hidden">
+      <button id="back-btn" class="btn btn-ghost btn-sm">&larr; Back to search</button>
+      <div class="form-head">
+        <h2 id="form-title"></h2>
+        <p id="form-sub" class="muted"></p>
+      </div>
+
+      <div class="profile-bar" id="profile-bar">
+        <label>Agency profile
+          <select id="agency-select"><option value="">— none —</option></select>
+        </label>
+        <label>Client profile
+          <select id="client-select"><option value="">— none —</option></select>
+        </label>
+        <button id="save-profile-btn" class="btn btn-ghost btn-sm" type="button">Save as profile…</button>
+      </div>
+
+      <form id="dynamic-form" autocomplete="off"></form>
+
+      <div id="validation-summary" class="validation-summary hidden"></div>
+
+      <div class="action-bar">
+        <button id="preview-btn" class="btn btn-primary" type="button">Preview</button>
+        <button id="download-btn" class="btn btn-secondary" type="button">Download</button>
+        <button id="print-btn" class="btn btn-secondary" type="button">Print</button>
+        <button id="email-btn" class="btn btn-secondary" type="button">Email…</button>
+      </div>
+
+      <!-- Preview pane -->
+      <div id="preview-pane" class="preview-pane hidden">
+        <h3>Preview</h3>
+        <iframe id="preview-frame" title="PDF preview"></iframe>
+      </div>
+    </main>
+  </div>
+
+  <!-- Email dialog -->
+  <dialog id="email-dialog" class="dialog">
+    <form method="dialog" id="email-form">
+      <h3>Email this form</h3>
+      <label>Recipient(s) <span class="muted small">comma-separated</span>
+        <input id="email-to" type="text" placeholder="client@example.com" required />
+      </label>
+      <label>CC (always copied)
+        <input id="email-cc" type="text" readonly class="locked" />
+      </label>
+      <label>Message <span class="muted small">optional</span>
+        <textarea id="email-message" rows="3"></textarea>
+      </label>
+      <p id="email-error" class="error hidden"></p>
+      <div class="dialog-actions">
+        <button value="cancel" class="btn btn-ghost" type="submit">Cancel</button>
+        <button id="email-send" value="send" class="btn btn-primary" type="submit">Send</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Save-profile dialog -->
+  <dialog id="profile-dialog" class="dialog">
+    <form method="dialog" id="profile-form">
+      <h3>Save profile</h3>
+      <label>Type
+        <select id="profile-type">
+          <option value="agency">Agency</option>
+          <option value="client">Client</option>
+        </select>
+      </label>
+      <label>Name
+        <input id="profile-name" type="text" placeholder="WIT Norfolk" required />
+      </label>
+      <p class="muted small">Saves the fields from the matching sections so you can reuse them.</p>
+      <div class="dialog-actions">
+        <button value="cancel" class="btn btn-ghost" type="submit">Cancel</button>
+        <button value="save" class="btn btn-primary" type="submit">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

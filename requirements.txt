@@ -1,0 +1,24 @@
+# WIT Forms — Python dependencies
+# Target: Oracle Cloud Ubuntu, Python 3.11+
+#
+# SYSTEM DEPENDENCY (NOT pip-installable): pdftk
+#   sudo apt-get install pdftk        # used for drop_xfa (template prep) + flatten
+#   pypdf handles the AcroForm fill; pdftk handles XFA-strip and flatten.
+
+Flask==3.1.3                # web framework / app factory
+pypdf==6.13.3              # AcroForm fill (update_page_form_field_values)
+cryptography==49.0.0       # required by pypdf for encrypted-PDF handling
+
+# --- Auth (Google OAuth 2.0, domain-restricted) ---
+Authlib==1.7.2            # OAuth 2.0 client for Google SSO
+requests==2.34.2          # token/userinfo HTTP calls
+
+# --- Email (choose transport via config) ---
+# SMTP uses the stdlib (smtplib); SendGrid is optional.
+sendgrid==6.12.6          # only used when EMAIL_TRANSPORT=sendgrid
+
+# --- Production WSGI server (behind nginx) ---
+gunicorn==23.0.0
+
+# --- Tests ---
+pytest==9.1.1

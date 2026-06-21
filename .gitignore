@@ -1,0 +1,33 @@
+# --- Licensed ACORD templates & prepped copies (licensed IP, never commit) ---
+templates/
+!templates/.gitkeep
+
+# --- Runtime data: SQLite DB, generated/flattened PDFs (contain PII) ---
+data/
+!data/.gitkeep
+
+# --- Secrets / local env ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*-client-secret*.json
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# --- OS / editor noise ---
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

@@ -1,0 +1,3769 @@
+{
+  "_meta": {
+    "acord_number": "131",
+    "edition": "2013/12",
+    "template_source": "Acord_131_-_Umbrella___Excess_Section.pdf",
+    "field_name_prefix": "F[0].",
+    "total_pdf_fields": 396,
+    "checkbox_off_value": "Off",
+    "_DRAFT": "Auto-generated. Labels/types/sections inferred; REVIEW priorities, required flags, and cross-field logic (insurer letter refs, optional blocks, radio groups) by hand."
+  },
+  "sections": [
+    {
+      "id": "producer",
+      "label": "Producer / Agency",
+      "fields": [
+        {
+          "key": "p1_0_producer_customeridentifier_a_0",
+          "label": "Producer customer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Producer_CustomerIdentifier_A[0]",
+          "help": "The customer's identification number assigned by the producer (e.g., agency or brokerage)"
+        },
+        {
+          "key": "p1_0_producer_fullname_a_0",
+          "label": "Producer full name",
+          "type": "text",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].Producer_FullName_A[0]",
+          "help": "The full name of the producer / agency"
+        },
+        {
+          "key": "p2_0_producer_customeridentifier_a_0",
+          "label": "Producer customer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Producer_CustomerIdentifier_A[0]",
+          "help": "The customer's identification number assigned by the producer (e.g., agency or brokerage)"
+        },
+        {
+          "key": "p3_0_producer_customeridentifier_a_0",
+          "label": "Producer customer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].Producer_CustomerIdentifier_A[0]",
+          "help": "The customer's identification number assigned by the producer (e.g., agency or brokerage)"
+        },
+        {
+          "key": "p4_0_producer_customeridentifier_a_0",
+          "label": "Producer customer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].Producer_CustomerIdentifier_A[0]",
+          "help": "The customer's identification number assigned by the producer (e.g., agency or brokerage)"
+        },
+        {
+          "key": "p5_0_producer_customeridentifier_a_0",
+          "label": "Producer customer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P5[0].Producer_CustomerIdentifier_A[0]",
+          "help": "The customer's identification number assigned by the producer (e.g., agency or brokerage)"
+        },
+        {
+          "key": "p5_0_producer_authorizedrepresentative_signature_a_0",
+          "label": "Producer authorized representative signature",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P5[0].Producer_AuthorizedRepresentative_Signature_A[0]",
+          "help": "Sign here: Accommodates the signature of the authorized representative (e.g., producer, agent, broker, etc.) of the company(ies) listed on the document.  This is required in most states"
+        },
+        {
+          "key": "p5_0_producer_authorizedrepresentative_fullname_a_0",
+          "label": "Producer authorized representative full name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P5[0].Producer_AuthorizedRepresentative_FullName_A[0]",
+          "help": "The name of the authorized representative of the producer, agency and/or broker that signed the form"
+        },
+        {
+          "key": "p5_0_producer_statelicenseidentifier_a_0",
+          "label": "Producer state license identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P5[0].Producer_StateLicenseIdentifier_A[0]",
+          "help": "The State License Number of the producer. As used here,  this is required in Florida"
+        },
+        {
+          "key": "p5_0_producer_nationalidentifier_a_0",
+          "label": "Producer national identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P5[0].Producer_NationalIdentifier_A[0]",
+          "help": "The National Producer Number (NPN) as defined in the National Insurance Producer Registry (NIPR).  Note: The NPN is not the same as the producer state license number"
+        }
+      ],
+      "prefill_from": "agency"
+    },
+    {
+      "id": "form",
+      "label": "Certificate Info",
+      "fields": [
+        {
+          "key": "p1_0_form_completiondate_a_0",
+          "label": "Form completion date",
+          "type": "date",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].Form_CompletionDate_A[0]",
+          "help": "The date on which the form is completed"
+        }
+      ]
+    },
+    {
+      "id": "policy",
+      "label": "Policy",
+      "fields": [
+        {
+          "key": "p1_0_policy_policynumberidentifier_a_0",
+          "label": "Policy policy number identifier",
+          "type": "text",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].Policy_PolicyNumberIdentifier_A[0]",
+          "help": "The identifier assigned by the insurer to the policy, or submission, being referenced exactly as it appears on the policy, including prefix and suffix symbols. If required for self-insurance, the self-insured license or contract number"
+        },
+        {
+          "key": "p1_0_policy_effectivedate_a_0",
+          "label": "Policy effective date",
+          "type": "date",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].Policy_EffectiveDate_A[0]",
+          "help": "The effective date of the policy.  The date that the terms and conditions of the policy commence"
+        },
+        {
+          "key": "p1_0_policy_status_newindicator_a_0",
+          "label": "Policy status new indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Policy_Status_NewIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the response expected from the company is a new issued policy",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_policy_status_renewindicator_a_0",
+          "label": "Policy status renew indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Policy_Status_RenewIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the response expected from the company is a renewed policy",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_policy_policytype_umbrellaindicator_a_0",
+          "label": "Policy policy type umbrella indicator",
+          "type": "checkbox",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Policy_PolicyType_UmbrellaIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the type of policy is umbrella",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_policy_policytype_excessindicator_a_0",
+          "label": "Policy policy type excess indicator",
+          "type": "checkbox",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Policy_PolicyType_ExcessIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the type of policy is excess",
+          "on_value": "1"
+        }
+      ]
+    },
+    {
+      "id": "insurer",
+      "label": "Insurer / Carrier",
+      "fields": [
+        {
+          "key": "p1_0_insurer_fullname_a_0",
+          "label": "Insurer full name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Insurer_FullName_A[0]",
+          "help": "The insurer's full legal company name(s) as found in the file copy of the policy.  Use the actual name of the company within the group to which the policy has been issued.  This is not the insurer's group name or trade name"
+        },
+        {
+          "key": "p1_0_insurer_naiccode_a_0",
+          "label": "Insurer naiccode",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Insurer_NAICCode_A[0]",
+          "help": "The identification code assigned to the insurer by the NAIC"
+        }
+      ]
+    },
+    {
+      "id": "namedinsured",
+      "label": "Named Insured",
+      "fields": [
+        {
+          "key": "p1_0_namedinsured_fullname_a_0",
+          "label": "Named insured full name",
+          "type": "text",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].NamedInsured_FullName_A[0]",
+          "help": "The named insured(s) as it / they will appear on the policy declarations page"
+        },
+        {
+          "key": "p5_0_namedinsured_initials_a_0",
+          "label": "Named insured initials",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P5[0].NamedInsured_Initials_A[0]",
+          "help": "Initial here: The named insured's initials. As used here, applicable in Louisiana"
+        },
+        {
+          "key": "p5_0_namedinsured_initials_b_0",
+          "label": "Named insured initials",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P5[0].NamedInsured_Initials_B[0]",
+          "help": "Initial here: The named insured's initials. As used here, applicable in Louisiana"
+        },
+        {
+          "key": "p5_0_namedinsured_initials_c_0",
+          "label": "Named insured initials",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P5[0].NamedInsured_Initials_C[0]",
+          "help": "Initial here: The named insured's initials. As used here, applicable in New Hampshire"
+        },
+        {
+          "key": "p5_0_namedinsured_initials_d_0",
+          "label": "Named insured initials",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P5[0].NamedInsured_Initials_D[0]",
+          "help": "Initial here: The named insured's initials. As used here, applicable in New Hampshire"
+        },
+        {
+          "key": "p5_0_namedinsured_signature_a_0",
+          "label": "Named insured signature",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P5[0].NamedInsured_Signature_A[0]",
+          "help": "Sign here: Accommodates the signature of the applicant or named insured"
+        },
+        {
+          "key": "p5_0_namedinsured_signaturedate_a_0",
+          "label": "Named insured signature date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P5[0].NamedInsured_SignatureDate_A[0]",
+          "help": "The date the form was signed by the named insured"
+        }
+      ],
+      "prefill_from": "client"
+    },
+    {
+      "id": "excessumbrella",
+      "label": "Umbrella / Excess",
+      "fields": [
+        {
+          "key": "p1_0_excessumbrella_occurrenceindicator_a_0",
+          "label": "Excess umbrella occurrence indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_OccurrenceIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates &quot;coverage trigger&quot; is on an occurrence basis on an excess or umbrella liability policy",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_excessumbrella_claimsmadeindicator_a_0",
+          "label": "Excess umbrella claims made indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_ClaimsMadeIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the &quot;coverage trigger&quot; is on a claims-made basis on an excess or umbrella liability policy",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_excessumbrella_voluntaryindicator_a_0",
+          "label": "Excess umbrella voluntary indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_VoluntaryIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates if the excess is voluntary",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_excessumbrella_transactiontype_otherindicator_a_0",
+          "label": "Excess umbrella transactiontype other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_Transactiontype_OtherIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the transaction type is other than those listed",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_excessumbrella_transactiontype_otherdescription_a_0",
+          "label": "Excess umbrella transactiontype other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_Transactiontype_OtherDescription_A[0]",
+          "help": "The description of the other transaction type"
+        },
+        {
+          "key": "p1_0_excessumbrella_proposedretroactivedate_a_0",
+          "label": "Excess umbrella proposed retroactive date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_ProposedRetroactiveDate_A[0]",
+          "help": "The retroactive date you are requesting for the policy being applied for. This is the proposed earliest date for which an occurrence could &quot;trigger&quot; coverage under a Claims Made policy"
+        },
+        {
+          "key": "p1_0_excessumbrella_currentretroactivedate_a_0",
+          "label": "Excess umbrella current retroactive date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_CurrentRetroactiveDate_A[0]",
+          "help": "The current retroactive date should be shown if the Umbrella is over a Claims Made primary policy. If the current retroactive date is different from the proposed retroactive date, an explanation must be provided"
+        },
+        {
+          "key": "p1_0_excessumbrella_umbrella_eachoccurrenceamount_a_0",
+          "label": "Excess umbrella umbrella each occurrence amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_Umbrella_EachOccurrenceAmount_A[0]",
+          "help": "The excess umbrella liability each occurrence limit"
+        },
+        {
+          "key": "p1_0_excessumbrella_othercoveragelimitamount_a_0",
+          "label": "Excess umbrella other coverage limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_OtherCoverageLimitAmount_A[0]",
+          "help": "The excess umbrella liability limit other coverage limit should be listed as a whole dollar amount, as found on the policy declarations page. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s)"
+        },
+        {
+          "key": "p1_0_excessumbrella_othercoveragedescription_a_0",
+          "label": "Excess umbrella other coverage description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_OtherCoverageDescription_A[0]",
+          "help": "The description of other coverage (not the limit) on the excess umbrella liability policy. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s)"
+        },
+        {
+          "key": "p1_0_excessumbrella_othercoveragelimitamount_b_0",
+          "label": "Excess umbrella other coverage limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_OtherCoverageLimitAmount_B[0]",
+          "help": "The excess umbrella liability limit other coverage limit should be listed as a whole dollar amount, as found on the policy declarations page. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s)"
+        },
+        {
+          "key": "p1_0_excessumbrella_othercoveragedescription_b_0",
+          "label": "Excess umbrella other coverage description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_OtherCoverageDescription_B[0]",
+          "help": "The description of other coverage (not the limit) on the excess umbrella liability policy. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s)"
+        },
+        {
+          "key": "p1_0_excessumbrella_umbrella_deductibleorretentionamount_a_0",
+          "label": "Excess umbrella umbrella deductible or retention amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_Umbrella_DeductibleOrRetentionAmount_A[0]",
+          "help": "The excess or umbrella liability deductible or retention amount"
+        },
+        {
+          "key": "p1_0_excessumbrella_firstdollardefencecode_a_0",
+          "label": "Excess umbrella first dollar defence code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_FirstDollarDefenceCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. Indicates that first dollar defense coverage is requested"
+        },
+        {
+          "key": "p1_0_excessumbrella_employeebenefits_eachemployeelimitamount_a_0",
+          "label": "Excess umbrella employee benefits each employee limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_EmployeeBenefits_EachEmployeeLimitAmount_A[0]",
+          "help": "The each employee limit for employee benefits coverage"
+        },
+        {
+          "key": "p1_0_excessumbrella_employeebenefits_aggregatelimitamount_a_0",
+          "label": "Excess umbrella employee benefits aggregate limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_EmployeeBenefits_AggregateLimitAmount_A[0]",
+          "help": "The aggregate limit for employee benefits coverage"
+        },
+        {
+          "key": "p1_0_excessumbrella_employeebenefits_deductibleorretentionamount_a_0",
+          "label": "Excess umbrella employee benefits deductible or retention amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_EmployeeBenefits_DeductibleOrRetentionAmount_A[0]",
+          "help": "The retention amount for employee benefits coverage"
+        },
+        {
+          "key": "p1_0_excessumbrella_employeebenefits_retroactivedate_a_0",
+          "label": "Excess umbrella employee benefits retroactive date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_EmployeeBenefits_RetroactiveDate_A[0]",
+          "help": "The retroactive date for employee benefits coverage"
+        },
+        {
+          "key": "p1_0_excessumbrella_employeebenefits_programname_a_0",
+          "label": "Excess umbrella employee benefits program name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].ExcessUmbrella_EmployeeBenefits_ProgramName_A[0]",
+          "help": "The full name of the benefit program"
+        },
+        {
+          "key": "p3_0_excessumbrella_employersliability_jonesactindicator_a_0",
+          "label": "Excess umbrella employers liability jones act indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].ExcessUmbrella_EmployersLiability_JonesActIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the employee/self-insured is subject to the Jones Act",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_excessumbrella_employersliability_felaindicator_a_0",
+          "label": "Excess umbrella employers liability felaindicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].ExcessUmbrella_EmployersLiability_FELAIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the employee/self-insured is subject to the Federal Employers Liability Act",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_excessumbrella_employersliability_stopgapindicator_a_0",
+          "label": "Excess umbrella employers liability stop gap indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].ExcessUmbrella_EmployersLiability_StopGapIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the employee/self-insured is subject to Stop Gap",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_excessumbrella_employersliability_otherindicator_a_0",
+          "label": "Excess umbrella employers liability other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].ExcessUmbrella_EmployersLiability_OtherIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the employee/self-insured is subject to regulations not listed",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_excessumbrella_employersliability_otherdescription_a_0",
+          "label": "Excess umbrella employers liability other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].ExcessUmbrella_EmployersLiability_OtherDescription_A[0]",
+          "help": "The description of the regulations the employee/self-insured is subject to"
+        },
+        {
+          "key": "p3_0_excessumbrella_malpracticeliability_doctorcount_a_0",
+          "label": "Excess umbrella malpractice liability doctor count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].ExcessUmbrella_MalpracticeLiability_DoctorCount_A[0]",
+          "help": "The number of doctors"
+        },
+        {
+          "key": "p3_0_excessumbrella_malpracticeliability_nursecount_a_0",
+          "label": "Excess umbrella malpractice liability nurse count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].ExcessUmbrella_MalpracticeLiability_NurseCount_A[0]",
+          "help": "The number of nurses"
+        },
+        {
+          "key": "p3_0_excessumbrella_malpracticeliability_bedcount_a_0",
+          "label": "Excess umbrella malpractice liability bed count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].ExcessUmbrella_MalpracticeLiability_BedCount_A[0]",
+          "help": "The number of beds/bunks"
+        },
+        {
+          "key": "p4_0_excessumbrella_pollutionliability_insuredenvironmentalprotectionagencyidentifier_a_0",
+          "label": "Excess umbrella pollution liability insured environmental protection agency identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_PollutionLiability_InsuredEnvironmentalProtectionAgencyIdentifier_A[0]",
+          "help": "The number assigned to the insured by the Environmental Protection Agency"
+        },
+        {
+          "key": "p4_0_excessumbrella_pollutionliability_generalliabilitywithpollutionexclusionindicator_a_0",
+          "label": "Excess umbrella pollution liability general liability with pollution exclusion indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_PollutionLiability_GeneralLiabilityWithPollutionExclusionIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the insured carries a general liability policy with standard Insurance Services Office pollution exclusion coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p4_0_excessumbrella_pollutionliability_generalliabilitysuddenandaccidentalonlyindicator_a_0",
+          "label": "Excess umbrella pollution liability general liability sudden and accidental only indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_PollutionLiability_GeneralLiabilitySuddenAndAccidentalOnlyIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the insured carries a general liability policy with standard sudden and accidental only coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p4_0_excessumbrella_pollutionliability_generalliabilitywithpollutioncoverageindicator_a_0",
+          "label": "Excess umbrella pollution liability general liability with pollution coverage indicator",
+          "type": "checkbox",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_PollutionLiability_GeneralLiabilityWithPollutionCoverageIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the insured carries a general liability policy with a pollution coverage endorsement",
+          "on_value": "1"
+        },
+        {
+          "key": "p4_0_excessumbrella_pollutionliability_separatepollutioncoverageindicator_a_0",
+          "label": "Excess umbrella pollution liability separate pollution coverage indicator",
+          "type": "checkbox",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_PollutionLiability_SeparatePollutionCoverageIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the insured carries separate pollution coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p4_0_excessumbrella_productliability_grosssalesamount_a_0",
+          "label": "Excess umbrella product liability gross sales amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_ProductLiability_GrossSalesAmount_A[0]",
+          "help": "The gross sales or receipts amount"
+        },
+        {
+          "key": "p4_0_excessumbrella_productliability_grosssalesamount_b_0",
+          "label": "Excess umbrella product liability gross sales amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_ProductLiability_GrossSalesAmount_B[0]",
+          "help": "The gross sales or receipts amount"
+        },
+        {
+          "key": "p4_0_excessumbrella_productliability_grosssalesamount_c_0",
+          "label": "Excess umbrella product liability gross sales amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_ProductLiability_GrossSalesAmount_C[0]",
+          "help": "The gross sales or receipts amount"
+        },
+        {
+          "key": "p4_0_excessumbrella_protectiveliability_independentcontractordescription_a_0",
+          "label": "Excess umbrella protective liability independent contractor description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_ProtectiveLiability_IndependentContractorDescription_A[0]",
+          "help": "The description of independent contractors.   ACORD 101, Additional Remarks Schedule, may be attached if more space is required"
+        },
+        {
+          "key": "p4_0_excessumbrella_propertyrating_structurestoreycount_a_0",
+          "label": "Excess umbrella property rating structure storey count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_PropertyRating_StructureStoreyCount_A[0]",
+          "help": "The number of stories, counting the ground floor as one, which this building has"
+        },
+        {
+          "key": "p4_0_excessumbrella_propertyrating_apartmentcount_a_0",
+          "label": "Excess umbrella property rating apartment count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_PropertyRating_ApartmentCount_A[0]",
+          "help": "The number of separate living units in the structure"
+        },
+        {
+          "key": "p4_0_excessumbrella_propertyrating_swimmingpoolcount_a_0",
+          "label": "Excess umbrella property rating swimming pool count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_PropertyRating_SwimmingPoolCount_A[0]",
+          "help": "The number of swimming pools on the premises"
+        },
+        {
+          "key": "p4_0_excessumbrella_propertyrating_divingboardcount_a_0",
+          "label": "Excess umbrella property rating diving board count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_PropertyRating_DivingBoardCount_A[0]",
+          "help": "The number of diving boards on the premises"
+        },
+        {
+          "key": "p4_0_excessumbrella_propertyrating_structurestoreycount_b_0",
+          "label": "Excess umbrella property rating structure storey count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_PropertyRating_StructureStoreyCount_B[0]",
+          "help": "The number of stories, counting the ground floor as one, which this building has"
+        },
+        {
+          "key": "p4_0_excessumbrella_propertyrating_apartmentcount_b_0",
+          "label": "Excess umbrella property rating apartment count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_PropertyRating_ApartmentCount_B[0]",
+          "help": "The number of separate living units in the structure"
+        },
+        {
+          "key": "p4_0_excessumbrella_propertyrating_swimmingpoolcount_b_0",
+          "label": "Excess umbrella property rating swimming pool count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_PropertyRating_SwimmingPoolCount_B[0]",
+          "help": "The number of swimming pools on the premises"
+        },
+        {
+          "key": "p4_0_excessumbrella_propertyrating_divingboardcount_b_0",
+          "label": "Excess umbrella property rating diving board count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].ExcessUmbrella_PropertyRating_DivingBoardCount_B[0]",
+          "help": "The number of diving boards on the premises"
+        },
+        {
+          "key": "p5_0_excessumbrella_uninsuredmotorists_limitamount_a_0",
+          "label": "Excess umbrella uninsured motorists limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P5[0].ExcessUmbrella_UninsuredMotorists_LimitAmount_A[0]",
+          "help": "The limit for commercial umbrella / excess uninsured motorists coverage (if applicable in your states)"
+        },
+        {
+          "key": "p5_0_excessumbrella_underinsuredmotorists_limitamount_a_0",
+          "label": "Excess umbrella underinsured motorists limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P5[0].ExcessUmbrella_UnderinsuredMotorists_LimitAmount_A[0]",
+          "help": "The limit for commercial umbrella / excess underinsured motorists coverage (if applicable in your state)"
+        },
+        {
+          "key": "p5_0_excessumbrella_medicalpayments_limitamount_a_0",
+          "label": "Excess umbrella medical payments limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P5[0].ExcessUmbrella_MedicalPayments_LimitAmount_A[0]",
+          "help": "The limit for commercial umbrella / excess medical payments coverage (if applicable in your states)"
+        }
+      ]
+    },
+    {
+      "id": "priorcoverage",
+      "label": "Prior coverage",
+      "fields": [
+        {
+          "key": "p1_0_priorcoverage_policynumberidentifier_a_0",
+          "label": "Prior coverage policy number identifier",
+          "type": "text",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].PriorCoverage_PolicyNumberIdentifier_A[0]",
+          "help": "The policy number of the previous coverage"
+        }
+      ]
+    },
+    {
+      "id": "commercialstructure",
+      "label": "Commercial structure",
+      "fields": [
+        {
+          "key": "p1_0_commercialstructure_location_produceridentifier_a_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_ProducerIdentifier_A[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_fullname_a_0",
+          "label": "Commercial structure location full name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_FullName_A[0]",
+          "help": "The name of the location.  For commercial policies, this may be a company name"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_lineone_a_0",
+          "label": "Commercial structure physical address line one",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_LineOne_A[0]",
+          "help": "The first address line of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_cityname_a_0",
+          "label": "Commercial structure physical address city name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_CityName_A[0]",
+          "help": "The city of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_stateorprovincecode_a_0",
+          "label": "Commercial structure physical address state or province code",
+          "type": "state",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_StateOrProvinceCode_A[0]",
+          "help": "The state of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_postalcode_a_0",
+          "label": "Commercial structure physical address postal code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_PostalCode_A[0]",
+          "help": "The postal code of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_produceridentifier_b_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_ProducerIdentifier_B[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_fullname_b_0",
+          "label": "Commercial structure location full name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_FullName_B[0]",
+          "help": "The name of the location.  For commercial policies, this may be a company name"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_lineone_b_0",
+          "label": "Commercial structure physical address line one",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_LineOne_B[0]",
+          "help": "The first address line of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_cityname_b_0",
+          "label": "Commercial structure physical address city name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_CityName_B[0]",
+          "help": "The city of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_stateorprovincecode_b_0",
+          "label": "Commercial structure physical address state or province code",
+          "type": "state",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_StateOrProvinceCode_B[0]",
+          "help": "The state of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_postalcode_b_0",
+          "label": "Commercial structure physical address postal code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_PostalCode_B[0]",
+          "help": "The postal code of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_produceridentifier_c_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_ProducerIdentifier_C[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_fullname_c_0",
+          "label": "Commercial structure location full name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_FullName_C[0]",
+          "help": "The name of the location.  For commercial policies, this may be a company name"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_lineone_c_0",
+          "label": "Commercial structure physical address line one",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_LineOne_C[0]",
+          "help": "The first address line of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_cityname_c_0",
+          "label": "Commercial structure physical address city name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_CityName_C[0]",
+          "help": "The city of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_stateorprovincecode_c_0",
+          "label": "Commercial structure physical address state or province code",
+          "type": "state",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_StateOrProvinceCode_C[0]",
+          "help": "The state of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_postalcode_c_0",
+          "label": "Commercial structure physical address postal code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_PostalCode_C[0]",
+          "help": "The postal code of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_produceridentifier_d_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_ProducerIdentifier_D[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_fullname_d_0",
+          "label": "Commercial structure location full name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_FullName_D[0]",
+          "help": "The name of the location.  For commercial policies, this may be a company name"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_lineone_d_0",
+          "label": "Commercial structure physical address line one",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_LineOne_D[0]",
+          "help": "The first address line of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_cityname_d_0",
+          "label": "Commercial structure physical address city name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_CityName_D[0]",
+          "help": "The city of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_stateorprovincecode_d_0",
+          "label": "Commercial structure physical address state or province code",
+          "type": "state",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_StateOrProvinceCode_D[0]",
+          "help": "The state of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_postalcode_d_0",
+          "label": "Commercial structure physical address postal code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_PostalCode_D[0]",
+          "help": "The postal code of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_produceridentifier_e_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_ProducerIdentifier_E[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_fullname_e_0",
+          "label": "Commercial structure location full name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_FullName_E[0]",
+          "help": "The name of the location.  For commercial policies, this may be a company name"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_lineone_e_0",
+          "label": "Commercial structure physical address line one",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_LineOne_E[0]",
+          "help": "The first address line of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_cityname_e_0",
+          "label": "Commercial structure physical address city name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_CityName_E[0]",
+          "help": "The city of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_stateorprovincecode_e_0",
+          "label": "Commercial structure physical address state or province code",
+          "type": "state",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_StateOrProvinceCode_E[0]",
+          "help": "The state of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_postalcode_e_0",
+          "label": "Commercial structure physical address postal code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_PostalCode_E[0]",
+          "help": "The postal code of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_produceridentifier_f_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_ProducerIdentifier_F[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_fullname_f_0",
+          "label": "Commercial structure location full name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_FullName_F[0]",
+          "help": "The name of the location.  For commercial policies, this may be a company name"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_lineone_f_0",
+          "label": "Commercial structure physical address line one",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_LineOne_F[0]",
+          "help": "The first address line of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_cityname_f_0",
+          "label": "Commercial structure physical address city name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_CityName_F[0]",
+          "help": "The city of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_stateorprovincecode_f_0",
+          "label": "Commercial structure physical address state or province code",
+          "type": "state",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_StateOrProvinceCode_F[0]",
+          "help": "The state of the commercial structure"
+        },
+        {
+          "key": "p1_0_commercialstructure_physicaladdress_postalcode_f_0",
+          "label": "Commercial structure physical address postal code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_PhysicalAddress_PostalCode_F[0]",
+          "help": "The postal code of the commercial structure"
+        },
+        {
+          "key": "p4_0_commercialstructure_location_produceridentifier_g_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].CommercialStructure_Location_ProducerIdentifier_G[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p4_0_commercialstructure_location_produceridentifier_h_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].CommercialStructure_Location_ProducerIdentifier_H[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p4_0_commercialstructure_location_produceridentifier_i_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].CommercialStructure_Location_ProducerIdentifier_I[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p4_0_commercialstructure_location_produceridentifier_j_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].CommercialStructure_Location_ProducerIdentifier_J[0]",
+          "help": "The location number for the premises"
+        }
+      ]
+    },
+    {
+      "id": "businessinformation",
+      "label": "Business information",
+      "fields": [
+        {
+          "key": "p1_0_businessinformation_operationsdescription_a_0",
+          "label": "Business information operations description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_OperationsDescription_A[0]",
+          "help": "The description of the operations of this risk.  A restatement of the products classification wording is often not sufficient (e.g., &quot;Metal Goods Manufacturing NOC&quot; could include anything from paper clips to bridge girders)"
+        },
+        {
+          "key": "p1_0_businessinformation_totalpayrollamount_a_0",
+          "label": "Business information total payroll amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_TotalPayrollAmount_A[0]",
+          "help": "The total annual payroll of the business in whole dollars"
+        },
+        {
+          "key": "p1_0_businessinformation_annualgrossreceiptsamount_a_0",
+          "label": "Business information annual gross receipts amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_AnnualGrossReceiptsAmount_A[0]",
+          "help": "The total annual gross sales or receipts"
+        },
+        {
+          "key": "p1_0_businessinformation_foreigngrosssalesamount_a_0",
+          "label": "Business information foreign gross sales amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_ForeignGrossSalesAmount_A[0]",
+          "help": "The estimated annual foreign gross sales"
+        },
+        {
+          "key": "p1_0_businessinformation_employeecount_a_0",
+          "label": "Business information employee count",
+          "type": "number",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_EmployeeCount_A[0]",
+          "help": "The number of employees"
+        },
+        {
+          "key": "p1_0_businessinformation_operationsdescription_b_0",
+          "label": "Business information operations description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_OperationsDescription_B[0]",
+          "help": "The description of the operations of this risk.  A restatement of the products classification wording is often not sufficient (e.g., &quot;Metal Goods Manufacturing NOC&quot; could include anything from paper clips to bridge girders)"
+        },
+        {
+          "key": "p1_0_businessinformation_totalpayrollamount_b_0",
+          "label": "Business information total payroll amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_TotalPayrollAmount_B[0]",
+          "help": "The total annual payroll of the business in whole dollars"
+        },
+        {
+          "key": "p1_0_businessinformation_annualgrossreceiptsamount_b_0",
+          "label": "Business information annual gross receipts amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_AnnualGrossReceiptsAmount_B[0]",
+          "help": "The total annual gross sales or receipts"
+        },
+        {
+          "key": "p1_0_businessinformation_foreigngrosssalesamount_b_0",
+          "label": "Business information foreign gross sales amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_ForeignGrossSalesAmount_B[0]",
+          "help": "The estimated annual foreign gross sales"
+        },
+        {
+          "key": "p1_0_businessinformation_employeecount_b_0",
+          "label": "Business information employee count",
+          "type": "number",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_EmployeeCount_B[0]",
+          "help": "The number of employees"
+        },
+        {
+          "key": "p1_0_businessinformation_operationsdescription_c_0",
+          "label": "Business information operations description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_OperationsDescription_C[0]",
+          "help": "The description of the operations of this risk.  A restatement of the products classification wording is often not sufficient (e.g., &quot;Metal Goods Manufacturing NOC&quot; could include anything from paper clips to bridge girders)"
+        },
+        {
+          "key": "p1_0_businessinformation_totalpayrollamount_c_0",
+          "label": "Business information total payroll amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_TotalPayrollAmount_C[0]",
+          "help": "The total annual payroll of the business in whole dollars"
+        },
+        {
+          "key": "p1_0_businessinformation_annualgrossreceiptsamount_c_0",
+          "label": "Business information annual gross receipts amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_AnnualGrossReceiptsAmount_C[0]",
+          "help": "The total annual gross sales or receipts"
+        },
+        {
+          "key": "p1_0_businessinformation_foreigngrosssalesamount_c_0",
+          "label": "Business information foreign gross sales amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_ForeignGrossSalesAmount_C[0]",
+          "help": "The estimated annual foreign gross sales"
+        },
+        {
+          "key": "p1_0_businessinformation_employeecount_c_0",
+          "label": "Business information employee count",
+          "type": "number",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_EmployeeCount_C[0]",
+          "help": "The number of employees"
+        },
+        {
+          "key": "p1_0_businessinformation_operationsdescription_d_0",
+          "label": "Business information operations description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_OperationsDescription_D[0]",
+          "help": "The description of the operations of this risk.  A restatement of the products classification wording is often not sufficient (e.g., &quot;Metal Goods Manufacturing NOC&quot; could include anything from paper clips to bridge girders)"
+        },
+        {
+          "key": "p1_0_businessinformation_totalpayrollamount_d_0",
+          "label": "Business information total payroll amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_TotalPayrollAmount_D[0]",
+          "help": "The total annual payroll of the business in whole dollars"
+        },
+        {
+          "key": "p1_0_businessinformation_annualgrossreceiptsamount_d_0",
+          "label": "Business information annual gross receipts amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_AnnualGrossReceiptsAmount_D[0]",
+          "help": "The total annual gross sales or receipts"
+        },
+        {
+          "key": "p1_0_businessinformation_foreigngrosssalesamount_d_0",
+          "label": "Business information foreign gross sales amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_ForeignGrossSalesAmount_D[0]",
+          "help": "The estimated annual foreign gross sales"
+        },
+        {
+          "key": "p1_0_businessinformation_employeecount_d_0",
+          "label": "Business information employee count",
+          "type": "number",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_EmployeeCount_D[0]",
+          "help": "The number of employees"
+        },
+        {
+          "key": "p1_0_businessinformation_operationsdescription_e_0",
+          "label": "Business information operations description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_OperationsDescription_E[0]",
+          "help": "The description of the operations of this risk.  A restatement of the products classification wording is often not sufficient (e.g., &quot;Metal Goods Manufacturing NOC&quot; could include anything from paper clips to bridge girders)"
+        },
+        {
+          "key": "p1_0_businessinformation_totalpayrollamount_e_0",
+          "label": "Business information total payroll amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_TotalPayrollAmount_E[0]",
+          "help": "The total annual payroll of the business in whole dollars"
+        },
+        {
+          "key": "p1_0_businessinformation_annualgrossreceiptsamount_e_0",
+          "label": "Business information annual gross receipts amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_AnnualGrossReceiptsAmount_E[0]",
+          "help": "The total annual gross sales or receipts"
+        },
+        {
+          "key": "p1_0_businessinformation_foreigngrosssalesamount_e_0",
+          "label": "Business information foreign gross sales amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_ForeignGrossSalesAmount_E[0]",
+          "help": "The estimated annual foreign gross sales"
+        },
+        {
+          "key": "p1_0_businessinformation_employeecount_e_0",
+          "label": "Business information employee count",
+          "type": "number",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_EmployeeCount_E[0]",
+          "help": "The number of employees"
+        },
+        {
+          "key": "p1_0_businessinformation_operationsdescription_f_0",
+          "label": "Business information operations description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_OperationsDescription_F[0]",
+          "help": "The description of the operations of this risk.  A restatement of the products classification wording is often not sufficient (e.g., &quot;Metal Goods Manufacturing NOC&quot; could include anything from paper clips to bridge girders)"
+        },
+        {
+          "key": "p1_0_businessinformation_totalpayrollamount_f_0",
+          "label": "Business information total payroll amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_TotalPayrollAmount_F[0]",
+          "help": "The total annual payroll of the business in whole dollars"
+        },
+        {
+          "key": "p1_0_businessinformation_annualgrossreceiptsamount_f_0",
+          "label": "Business information annual gross receipts amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_AnnualGrossReceiptsAmount_F[0]",
+          "help": "The total annual gross sales or receipts"
+        },
+        {
+          "key": "p1_0_businessinformation_foreigngrosssalesamount_f_0",
+          "label": "Business information foreign gross sales amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_ForeignGrossSalesAmount_F[0]",
+          "help": "The estimated annual foreign gross sales"
+        },
+        {
+          "key": "p1_0_businessinformation_employeecount_f_0",
+          "label": "Business information employee count",
+          "type": "number",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_EmployeeCount_F[0]",
+          "help": "The number of employees"
+        }
+      ]
+    },
+    {
+      "id": "underlyingpolicy",
+      "label": "Underlying policy",
+      "fields": [
+        {
+          "key": "p1_0_underlyingpolicy_automobile_insurerfullname_a_0",
+          "label": "Underlying policy automobile insurer full name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_Automobile_InsurerFullName_A[0]",
+          "help": "The full name of the insurer of the underlying automobile policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_automobile_policynumberidentifier_a_0",
+          "label": "Underlying policy automobile policy number identifier",
+          "type": "text",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_Automobile_PolicyNumberIdentifier_A[0]",
+          "help": "The policy number of the underlying automobile policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_automobile_policyeffectivedate_a_0",
+          "label": "Underlying policy automobile policy effective date",
+          "type": "date",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_Automobile_PolicyEffectiveDate_A[0]",
+          "help": "The effective date of the underlying automobile policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_automobile_policyexpirationdate_a_0",
+          "label": "Underlying policy automobile policy expiration date",
+          "type": "date",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_Automobile_PolicyExpirationDate_A[0]",
+          "help": "The expiration date of the underlying automobile policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_automobile_combinedsinglelimitpremiumamount_a_0",
+          "label": "Underlying policy automobile combined single limit premium amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_Automobile_CombinedSingleLimitPremiumAmount_A[0]",
+          "help": "The combined single limit premium on the underlying automobile policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_automobile_bodilyinjurypremiumamount_a_0",
+          "label": "Underlying policy automobile bodily injury premium amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_Automobile_BodilyInjuryPremiumAmount_A[0]",
+          "help": "The bodily injury premium amount on the underlying automobile policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_automobile_propertydamageeachaccidentpremiumamount_a_0",
+          "label": "Underlying policy automobile property damage each accident premium amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_Automobile_PropertyDamageEachAccidentPremiumAmount_A[0]",
+          "help": "The property damage premium amount on the underlying automobile policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_automobile_modificationfactor_a_0",
+          "label": "Underlying policy automobile modification factor",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_Automobile_ModificationFactor_A[0]",
+          "help": "The combined rating modification and experience modification debit or credit as they apply"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_generalliability_insurerfullname_a_0",
+          "label": "Underlying policy general liability insurer full name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_GeneralLiability_InsurerFullName_A[0]",
+          "help": "The full name of the insurer of the underlying general liability policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_generalliability_policynumberidentifier_a_0",
+          "label": "Underlying policy general liability policy number identifier",
+          "type": "text",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_GeneralLiability_PolicyNumberIdentifier_A[0]",
+          "help": "The policy number of the underlying general liability policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_generalliability_policyeffectivedate_a_0",
+          "label": "Underlying policy general liability policy effective date",
+          "type": "date",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_GeneralLiability_PolicyEffectiveDate_A[0]",
+          "help": "The effective date of the underlying general liability policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_generalliability_policyexpirationdate_a_0",
+          "label": "Underlying policy general liability policy expiration date",
+          "type": "date",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_GeneralLiability_PolicyExpirationDate_A[0]",
+          "help": "The expiration date of the underlying general liability policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_generalliability_premisesoperationspremiumamount_a_0",
+          "label": "Underlying policy general liability premises operations premium amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_GeneralLiability_PremisesOperationsPremiumAmount_A[0]",
+          "help": "The premises operations premium amount on the underlying general liability policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_generalliability_productspremiumamount_a_0",
+          "label": "Underlying policy general liability products premium amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_GeneralLiability_ProductsPremiumAmount_A[0]",
+          "help": "The products premium on the underlying general liability policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_generalliability_otherpremiumamount_a_0",
+          "label": "Underlying policy general liability other premium amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_GeneralLiability_OtherPremiumAmount_A[0]",
+          "help": "The premium associated with other coverages on the underlying general liability policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_generalliability_modificationfactor_a_0",
+          "label": "Underlying policy general liability modification factor",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_GeneralLiability_ModificationFactor_A[0]",
+          "help": "The combined rating modification and experience modification debit or credit as they apply"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_employersliability_insurerfullname_a_0",
+          "label": "Underlying policy employers liability insurer full name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_EmployersLiability_InsurerFullName_A[0]",
+          "help": "The full name of the insurer of the underlying employers liability policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_employersliability_policynumberidentifier_a_0",
+          "label": "Underlying policy employers liability policy number identifier",
+          "type": "text",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_EmployersLiability_PolicyNumberIdentifier_A[0]",
+          "help": "The policy number of the underlying employers liability policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_employersliability_policyeffectivedate_a_0",
+          "label": "Underlying policy employers liability policy effective date",
+          "type": "date",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_EmployersLiability_PolicyEffectiveDate_A[0]",
+          "help": "The effective date of the underlying employers liability policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_employersliability_policyexpirationdate_a_0",
+          "label": "Underlying policy employers liability policy expiration date",
+          "type": "date",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_EmployersLiability_PolicyExpirationDate_A[0]",
+          "help": "The expiration date of the underlying employers liability policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_employersliability_premiumamount_a_0",
+          "label": "Underlying policy employers liability premium amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_EmployersLiability_PremiumAmount_A[0]",
+          "help": "The premium amount on the underlying employers liability policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_employersliability_modificationfactor_a_0",
+          "label": "Underlying policy employers liability modification factor",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_EmployersLiability_ModificationFactor_A[0]",
+          "help": "The combined rating modification and experience modification debit or credit as they apply"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_policytypedescription_a_0",
+          "label": "Underlying policy other policy policy type description",
+          "type": "textarea",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_PolicyTypeDescription_A[0]",
+          "help": "The description of the underlying policy type"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_insurerfullname_a_0",
+          "label": "Underlying policy other policy insurer full name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_InsurerFullName_A[0]",
+          "help": "The full name of the insurer of the underlying policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_policynumberidentifier_a_0",
+          "label": "Underlying policy other policy policy number identifier",
+          "type": "text",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_PolicyNumberIdentifier_A[0]",
+          "help": "The policy number of the underlying policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_policyeffectivedate_a_0",
+          "label": "Underlying policy other policy policy effective date",
+          "type": "date",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_PolicyEffectiveDate_A[0]",
+          "help": "The effective date of the underlying policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_policyexpirationdate_a_0",
+          "label": "Underlying policy other policy policy expiration date",
+          "type": "date",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_PolicyExpirationDate_A[0]",
+          "help": "The expiration date of the underlying policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_coveragedescription_a_0",
+          "label": "Underlying policy other policy coverage description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_CoverageDescription_A[0]",
+          "help": "The description of the coverage"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_combinedsinglelimitamount_a_0",
+          "label": "Underlying policy other policy combined single limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_CombinedSingleLimitAmount_A[0]",
+          "help": "The combined single or total limit on the underlying policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_premiumamount_a_0",
+          "label": "Underlying policy other policy premium amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_PremiumAmount_A[0]",
+          "help": "The premium amount on the underlying policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_modificationfactor_a_0",
+          "label": "Underlying policy other policy modification factor",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_ModificationFactor_A[0]",
+          "help": "The combined rating modification and experience modification debit or credit as they apply"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_policytypedescription_b_0",
+          "label": "Underlying policy other policy policy type description",
+          "type": "textarea",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_PolicyTypeDescription_B[0]",
+          "help": "The description of the underlying policy type"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_insurerfullname_b_0",
+          "label": "Underlying policy other policy insurer full name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_InsurerFullName_B[0]",
+          "help": "The full name of the insurer of the underlying policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_policynumberidentifier_b_0",
+          "label": "Underlying policy other policy policy number identifier",
+          "type": "text",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_PolicyNumberIdentifier_B[0]",
+          "help": "The policy number of the underlying policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_policyeffectivedate_b_0",
+          "label": "Underlying policy other policy policy effective date",
+          "type": "date",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_PolicyEffectiveDate_B[0]",
+          "help": "The effective date of the underlying policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_policyexpirationdate_b_0",
+          "label": "Underlying policy other policy policy expiration date",
+          "type": "date",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_PolicyExpirationDate_B[0]",
+          "help": "The expiration date of the underlying policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_coveragedescription_b_0",
+          "label": "Underlying policy other policy coverage description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_CoverageDescription_B[0]",
+          "help": "The description of the coverage"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_combinedsinglelimitamount_b_0",
+          "label": "Underlying policy other policy combined single limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_CombinedSingleLimitAmount_B[0]",
+          "help": "The combined single or total limit on the underlying policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_premiumamount_b_0",
+          "label": "Underlying policy other policy premium amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_PremiumAmount_B[0]",
+          "help": "The premium amount on the underlying policy"
+        },
+        {
+          "key": "p1_0_underlyingpolicy_otherpolicy_modificationfactor_b_0",
+          "label": "Underlying policy other policy modification factor",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].UnderlyingPolicy_OtherPolicy_ModificationFactor_B[0]",
+          "help": "The combined rating modification and experience modification debit or credit as they apply"
+        },
+        {
+          "key": "p2_0_underlyingpolicy_generalliability_formeditiondate_a_0",
+          "label": "Underlying policy general liability form edition date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingPolicy_GeneralLiability_FormEditionDate_A[0]",
+          "help": "The edition date of the underlying general liability coverage form.  Policy coverage may vary depending on the edition date of the policy paper. The underlying general liability coverage forms issued by Insurances Services Office (ISO) vary if they are based on the rules of &quot;86&quot; or the rules of &quot;88&quot;"
+        },
+        {
+          "key": "p2_0_underlyingpolicy_generalliability_tailcoverageeffectivedate_a_0",
+          "label": "Underlying policy general liability tail coverage effective date",
+          "type": "date",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingPolicy_GeneralLiability_TailCoverageEffectiveDate_A[0]",
+          "help": "The effective date of the tail coverage.  The proposed retroactive date for the policy being applied for should not be earlier than the effective date of the tail coverage"
+        }
+      ]
+    },
+    {
+      "id": "vehicle",
+      "label": "Automobile",
+      "fields": [
+        {
+          "key": "p1_0_vehicle_combinedsinglelimit_eachaccidentamount_a_0",
+          "label": "Vehicle combined single limit each accident amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Vehicle_CombinedSingleLimit_EachAccidentAmount_A[0]",
+          "help": "The vehicle combined single limit liability each accident amount. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s). As used here, this is on the underlying automobile policy"
+        },
+        {
+          "key": "p1_0_vehicle_bodilyinjury_peraccidentlimitamount_a_0",
+          "label": "Vehicle bodily injury per accident limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Vehicle_BodilyInjury_PerAccidentLimitAmount_A[0]",
+          "help": "The vehicle policy, bodily injury per accident limit amount. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s). As used here, this is on the underlying automobile policy"
+        },
+        {
+          "key": "p1_0_vehicle_bodilyinjury_perpersonlimitamount_a_0",
+          "label": "Vehicle bodily injury per person limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Vehicle_BodilyInjury_PerPersonLimitAmount_A[0]",
+          "help": "The vehicle policy, bodily injury per person limit amount. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s). As used here, this is on the underlying automobile policy"
+        },
+        {
+          "key": "p1_0_vehicle_propertydamage_peraccidentlimitamount_a_0",
+          "label": "Vehicle property damage per accident limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Vehicle_PropertyDamage_PerAccidentLimitAmount_A[0]",
+          "help": "The vehicle policy, property damage per accident limit amount. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s). As used here, this is on the underlying automobile policy"
+        }
+      ]
+    },
+    {
+      "id": "generalliability",
+      "label": "General Liability",
+      "fields": [
+        {
+          "key": "p1_0_generalliability_occurrenceindicator_a_0",
+          "label": "General liability occurrence indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GeneralLiability_OccurrenceIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the general liability policy, occurrence basis applies. As used here, this is on the underlying general liability policy",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_generalliability_claimsmadeindicator_a_0",
+          "label": "General liability claims made indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GeneralLiability_ClaimsMadeIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the &quot;claims made&quot; option applies on the general liability policy. As used here, this is on the underlying general liability policy",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_generalliability_eachoccurrence_limitamount_a_0",
+          "label": "General liability each occurrence limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].GeneralLiability_EachOccurrence_LimitAmount_A[0]",
+          "help": "The general liability, each occurrence limit amount. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s). As used here, this is on the underlying general liability policy"
+        },
+        {
+          "key": "p1_0_generalliability_generalaggregate_limitamount_a_0",
+          "label": "General liability general aggregate limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].GeneralLiability_GeneralAggregate_LimitAmount_A[0]",
+          "help": "The general liability, general aggregate limit amount. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s). As used here, this is on the underlying general liability policy"
+        },
+        {
+          "key": "p1_0_generalliability_productsandcompletedoperations_aggregatelimitamount_a_0",
+          "label": "General liability products and completed operations aggregate limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].GeneralLiability_ProductsAndCompletedOperations_AggregateLimitAmount_A[0]",
+          "help": "The general liability, products and completed operations aggregate limit amount. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s). As used here, this is on the underlying general liability policy"
+        },
+        {
+          "key": "p1_0_generalliability_personalandadvertisinginjury_limitamount_a_0",
+          "label": "General liability personal and advertising injury limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].GeneralLiability_PersonalAndAdvertisingInjury_LimitAmount_A[0]",
+          "help": "The general liability, personal and advertising injury limit amount. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s). As used here, this is on the underlying general liability policy"
+        },
+        {
+          "key": "p1_0_generalliability_firedamagerentedpremises_eachoccurrencelimitamount_a_0",
+          "label": "General liability fire damage rented premises each occurrence limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].GeneralLiability_FireDamageRentedPremises_EachOccurrenceLimitAmount_A[0]",
+          "help": "The general liability, damage to rented premises each occurrence limit amount. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s). As used here, this is on the underlying general liability policy"
+        },
+        {
+          "key": "p1_0_generalliability_medicalexpense_eachpersonlimitamount_a_0",
+          "label": "General liability medical expense each person limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].GeneralLiability_MedicalExpense_EachPersonLimitAmount_A[0]",
+          "help": "The general liability, medical expense each person limit amount. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s). As used here, this is on the underlying general liability policy"
+        },
+        {
+          "key": "p2_0_generalliability_claimsmade_retroactivedate_a_0",
+          "label": "General liability claims made retroactive date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GeneralLiability_ClaimsMade_RetroactiveDate_A[0]",
+          "help": "The retroactive date if the policy was issued on a Claims Made basis and there was a retroactive date"
+        },
+        {
+          "key": "p2_0_generalliability_claimsmade_uninterruptedcoverageentrydate_a_0",
+          "label": "General liability claims made uninterrupted coverage entry date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GeneralLiability_ClaimsMade_UninterruptedCoverageEntryDate_A[0]",
+          "help": "The retroactive date shown on the applicant's first Claims Made policy.  If this is the first such policy, the date will be the same as the proposed retroactive date shown on the preceding field. If this is a renewal, it is the effective date of the first policy issued in the sequence of uninterrupted Claims Made policies"
+        }
+      ]
+    },
+    {
+      "id": "workerscompensationemployersliability",
+      "label": "Workers Comp",
+      "fields": [
+        {
+          "key": "p1_0_workerscompensationemployersliability_employersliability_eachaccidentlimitamount_a_0",
+          "label": "Workers compensation employers liability employers liability each accident limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].WorkersCompensationEmployersLiability_EmployersLiability_EachAccidentLimitAmount_A[0]",
+          "help": "The workers compensation and employers liability policy, employers liability each accident limit amount. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s). As used here, this is on the underlying employers liability policy"
+        },
+        {
+          "key": "p1_0_workerscompensationemployersliability_employersliability_diseaseeachemployeelimitamount_a_0",
+          "label": "Workers compensation employers liability employers liability disease each employee limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].WorkersCompensationEmployersLiability_EmployersLiability_DiseaseEachEmployeeLimitAmount_A[0]",
+          "help": "The workers compensation and employers liability policy, employers liability disease each employee limit amount. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s). As used here, this is on the underlying employers liability policy"
+        },
+        {
+          "key": "p1_0_workerscompensationemployersliability_employersliability_diseasepolicylimitamount_a_0",
+          "label": "Workers compensation employers liability employers liability disease policy limit amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].WorkersCompensationEmployersLiability_EmployersLiability_DiseasePolicyLimitAmount_A[0]",
+          "help": "The workers compensation and employers liability policy, employers liability disease policy limit amount. Any questions about appropriate limits or applicable policy coverage(s) should be answered by the issuing insurer(s). As used here, this is on the underlying employers liability policy"
+        }
+      ]
+    },
+    {
+      "id": "commercialumbrellalineofbusiness",
+      "label": "Commercial umbrella line of business",
+      "fields": [
+        {
+          "key": "p2_0_commercialumbrellalineofbusiness_question_acbyesindicator_a_0",
+          "label": "Commercial umbrella line of business question acbyes indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CommercialUmbrellaLineOfBusiness_Question_ACBYesIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates defense costs are within aggregate limits",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_commercialumbrellalineofbusiness_question_accyesindicator_a_0",
+          "label": "Commercial umbrella line of business question accyes indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CommercialUmbrellaLineOfBusiness_Question_ACCYesIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates defense costs a separate limit?",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_commercialumbrellalineofbusiness_question_acdyesindicator_a_0",
+          "label": "Commercial umbrella line of business question acdyes indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CommercialUmbrellaLineOfBusiness_Question_ACDYesIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates defense costs are unlimited",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_commercialumbrellalineofbusiness_question_acecode_a_0",
+          "label": "Commercial umbrella line of business question acecode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CommercialUmbrellaLineOfBusiness_Question_ACECode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Has any product, work, accident, or location been excluded, uninsured or self insured from any previous coverage?&quot;"
+        },
+        {
+          "key": "p2_0_commercialumbrellalineofbusiness_anyproductworkaccidentlocationbeenexcludeduninsuredexplanation_a_0",
+          "label": "Commercial umbrella line of business any product work accidentlocation been excluded uninsured explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CommercialUmbrellaLineOfBusiness_AnyProductWorkAccidentlocationBeenExcludedUninsuredExplanation_A[0]",
+          "help": "An explanation as to whether any product, work, accident or location has been excluded, uninsured or self-insured from any previous coverage"
+        },
+        {
+          "key": "p2_0_commercialumbrellalineofbusiness_question_acfcode_a_0",
+          "label": "Commercial umbrella line of business question acfcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CommercialUmbrellaLineOfBusiness_Question_ACFCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;For Claims made, was &quot;tail&quot; coverage purchased for any previous primary or excess policy?&quot;"
+        },
+        {
+          "key": "p2_0_commercialumbrellalineofbusiness_tailcoveragepurchasedanypreviousprimaryorexcesspolicyexplanation_a_0",
+          "label": "Commercial umbrella line of business tail coverage purchased any previous primary or excess policy explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CommercialUmbrellaLineOfBusiness_TailCoveragePurchasedAnyPreviousPrimaryOrExcessPolicyExplanation_A[0]",
+          "help": "An explanation as to whether tail coverage was purchased for any previous primary or excess policy"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_question_aabcode_a_0",
+          "label": "Commercial umbrella line of business question aabcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_Question_AABCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Are services of an Advertising Agency used?&quot;"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_servicesofadvertisingagencyusedexplanation_a_0",
+          "label": "Commercial umbrella line of business services of advertising agency used explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_ServicesOfAdvertisingAgencyUsedExplanation_A[0]",
+          "help": "An explanation as to whether any services from an advertising agency have been used"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_question_aaccode_a_0",
+          "label": "Commercial umbrella line of business question aaccode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_Question_AACCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Any coverage provided under agency's policy?&quot;"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_anycoverageprovidedunderagencypolicyexplanation_a_0",
+          "label": "Commercial umbrella line of business any coverage provided under agency policy explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_AnyCoverageProvidedUnderAgencyPolicyExplanation_A[0]",
+          "help": "An explanation as to whether any coverage has been provided under the agency's policy"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_question_aadcode_a_0",
+          "label": "Commercial umbrella line of business question aadcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_Question_AADCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Does applicant own/lease/operate aircraft?&quot;"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_applicantownleaseoperateaircraftexplanation_a_0",
+          "label": "Commercial umbrella line of business applicant own lease operate aircraft explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_ApplicantOwnLeaseOperateAircraftExplanation_A[0]",
+          "help": "An explanation as to whether the applicant owns/leases or operates aircraft"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_question_aaecode_a_0",
+          "label": "Commercial umbrella line of business question aaecode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_Question_AAECode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Are explosives, caustics, flammables or other dangerous cargo hauled?&quot;"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_explosivescausticsflammablesotherdangerouscargohauledexplanation_a_0",
+          "label": "Commercial umbrella line of business explosives caustics flammables other dangerous cargo hauled explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_ExplosivesCausticsFlammablesOtherDangerousCargoHauledExplanation_A[0]",
+          "help": "An explanation as to whether any explosives, caustics, flammable or other dangerous cargo is hauled"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_question_aafcode_a_0",
+          "label": "Commercial umbrella line of business question aafcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_Question_AAFCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Are passengers carried for a fee?&quot;"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_passengerscarriedforfeeexplanation_a_0",
+          "label": "Commercial umbrella line of business passengers carried for fee explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_PassengersCarriedForFeeExplanation_A[0]",
+          "help": "An explanation as to whether any passengers are carried for a fee"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_question_aagcode_a_0",
+          "label": "Commercial umbrella line of business question aagcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_Question_AAGCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Any units not insured by underlying policies?&quot;"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_anyunitsnotinsuredunderlyingpoliciesexplanation_a_0",
+          "label": "Commercial umbrella line of business any units not insured underlying policies explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_AnyUnitsNotInsuredUnderlyingPoliciesExplanation_A[0]",
+          "help": "An explanation as to whether any units are not insured by underlying policies"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_question_aahcode_a_0",
+          "label": "Commercial umbrella line of business question aahcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_Question_AAHCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Are any vehicles leased or rented to others?&quot;"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_anyvehiclesleasedrentedothersexplanation_a_0",
+          "label": "Commercial umbrella line of business any vehicles leased rented others explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_AnyVehiclesLeasedRentedOthersExplanation_A[0]",
+          "help": "An explanation as to whether any vehicles are leased or rented to others"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_question_aaicode_a_0",
+          "label": "Commercial umbrella line of business question aaicode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_Question_AAICode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Is hired and non-owned coverage provided?&quot;"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_hiredandnonownedcoverageprovidedexplanation_j_0",
+          "label": "Commercial umbrella line of business hired and non owned coverage provided explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_HiredAndNonOwnedCoverageProvidedExplanation_J[0]",
+          "help": "An explanation as to whether any hired and non-owned coverages are provided"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_question_aajcode_a_0",
+          "label": "Commercial umbrella line of business question aajcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_Question_AAJCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Is bridge, dam or marine work performed?&quot;"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_bridgedammarineworkperformedexplanation_a_0",
+          "label": "Commercial umbrella line of business bridge dam marine work performed explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_BridgeDamMarineWorkPerformedExplanation_A[0]",
+          "help": "An explanation as to whether any bridge, dam, or marine work is performed"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_question_abacode_a_0",
+          "label": "Commercial umbrella line of business question abacode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_Question_ABACode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Does applicant own, rent or otherwise use cranes?&quot;"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_applicantownrentusecranesexplanation_a_0",
+          "label": "Commercial umbrella line of business applicant own rent use cranes explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_ApplicantOwnRentUseCranesExplanation_A[0]",
+          "help": "An explanation as to whether the applicant owns, rents or uses cranes"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_question_abbcode_a_0",
+          "label": "Commercial umbrella line of business question abbcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_Question_ABBCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Do subcontractors carry coverages or limits less than applicant?&quot;"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_subcontractorscarrycoverageslessthanapplicantexplanation_a_0",
+          "label": "Commercial umbrella line of business subcontractors carry coverages less than applicant explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_SubcontractorsCarryCoveragesLessThanApplicantExplanation_A[0]",
+          "help": "An explanation as to whether subcontractors carry coverages or limits less than applicant"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_question_abccode_a_0",
+          "label": "Commercial umbrella line of business question abccode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_Question_ABCCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Is applicant self-insured in any state?&quot;"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_applicantselfinsuredanystateexplanation_a_0",
+          "label": "Commercial umbrella line of business applicant self insured any state explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_ApplicantSelfInsuredAnyStateExplanation_A[0]",
+          "help": "An explanation as to whether the applicant is self-insured in any state"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_question_abdcode_a_0",
+          "label": "Commercial umbrella line of business question abdcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_Question_ABDCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Hospital or first aid facility maintained?&quot;"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_hospitalorfirstaidfacilitymaintainedexplanation_a_0",
+          "label": "Commercial umbrella line of business hospital or first aid facility maintained explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_HospitalOrFirstAidFacilityMaintainedExplanation_A[0]",
+          "help": "An explanation as to whether a hospital or first aid facility is maintained"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_question_abecode_a_0",
+          "label": "Commercial umbrella line of business question abecode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_Question_ABECode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Coverage provided for doctors/nurses?&quot;"
+        },
+        {
+          "key": "p3_0_commercialumbrellalineofbusiness_coverageprovidedfordoctorsnursesexplanation_a_0",
+          "label": "Commercial umbrella line of business coverage provided for doctors nurses explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].CommercialUmbrellaLineOfBusiness_CoverageProvidedForDoctorsNursesExplanation_A[0]",
+          "help": "An explanation as to whether coverages are provided for doctors/nurses"
+        },
+        {
+          "key": "p4_0_commercialumbrellalineofbusiness_question_abfcode_a_0",
+          "label": "Commercial umbrella line of business question abfcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].CommercialUmbrellaLineOfBusiness_Question_ABFCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Do current or past products, or their components, contain hazardous materials that may require special disposal methods?&quot;"
+        },
+        {
+          "key": "p4_0_commercialumbrellalineofbusiness_currentorpastproductscontainhazardousmaterialsexplanation_a_0",
+          "label": "Commercial umbrella line of business current or past products contain hazardous materials explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].CommercialUmbrellaLineOfBusiness_CurrentOrPastProductsContainHazardousMaterialsExplanation_A[0]",
+          "help": "An explanation as to whether current or past products, or their components, contain hazardous materials that may require special disposal methods"
+        },
+        {
+          "key": "p4_0_commercialumbrellalineofbusiness_question_abgcode_a_0",
+          "label": "Commercial umbrella line of business question abgcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].CommercialUmbrellaLineOfBusiness_Question_ABGCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Are missiles, engines, guidance systems, frames or any other product used/installed in aircraft?&quot;"
+        },
+        {
+          "key": "p4_0_commercialumbrellalineofbusiness_missilesenginesguidancesystemsusedinaircraftexplanation_a_0",
+          "label": "Commercial umbrella line of business missiles engines guidance systems used in aircraft explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].CommercialUmbrellaLineOfBusiness_MissilesEnginesGuidanceSystemsUsedInAircraftExplanation_A[0]",
+          "help": "An explanation as to whether missiles, engines, guidance systems, frames or any other product is used/installed in an aircraft"
+        },
+        {
+          "key": "p4_0_commercialumbrellalineofbusiness_question_kaqcode_a_0",
+          "label": "Commercial umbrella line of business question kaqcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].CommercialUmbrellaLineOfBusiness_Question_KAQCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Any foreign operations, foreign products distributed in USA, or US products sold / distributed in foreign countries?&quot;"
+        },
+        {
+          "key": "p4_0_commercialumbrellalineofbusiness_question_abjcode_a_0",
+          "label": "Commercial umbrella line of business question abjcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].CommercialUmbrellaLineOfBusiness_Question_ABJCode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Any product liability loss in past specified number of years?&quot;"
+        },
+        {
+          "key": "p4_0_commercialumbrellalineofbusiness_productliabilitylosspastthreeyearsexplanation_a_0",
+          "label": "Commercial umbrella line of business productliability loss past three years explanation",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].CommercialUmbrellaLineOfBusiness_ProductliabilityLossPastThreeYearsExplanation_A[0]",
+          "help": "An explanation of any product liability loss in the past three (3) years"
+        },
+        {
+          "key": "p4_0_commercialumbrellalineofbusiness_question_acacode_a_0",
+          "label": "Commercial umbrella line of business question acacode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].CommercialUmbrellaLineOfBusiness_Question_ACACode_A[0]",
+          "help": "Enter Y for a &#8220;Yes&#8221; response. Input N for &#8220;No&#8221; response. The response to the question, &quot;Does applicant own or lease watercraft?&quot;"
+        },
+        {
+          "key": "p4_0_commercialumbrellalineofbusiness_remarktext_a_0",
+          "label": "Commercial umbrella line of business remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].CommercialUmbrellaLineOfBusiness_RemarkText_A[0]",
+          "help": "The remarks associated with the commercial umbrella line of business.  ACORD 101, Additional Remarks Schedule, may be attached if more space is required"
+        }
+      ]
+    },
+    {
+      "id": "underlyingcoverage",
+      "label": "Underlying coverage",
+      "fields": [
+        {
+          "key": "p2_0_underlyingcoverage_coverage_anyautoindicator_a_0",
+          "label": "Underlying coverage coverage any auto indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_AnyAutoIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy coverage any automobile (symbol 1)",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_generalliabilityclaimsmadeindicator_a_0",
+          "label": "Underlying coverage coverage general liability claims made indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_GeneralLiabilityClaimsMadeIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying general liability policy is a claims made policy",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_generalliabilityoccurrenceindicator_a_0",
+          "label": "Underlying coverage coverage general liability occurrence indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_GeneralLiabilityOccurrenceIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying general liability policy is an occurrence policy",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_aircraftliabilityindicator_a_0",
+          "label": "Underlying coverage coverage aircraft liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_AircraftLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes aircraft liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_aircraftliabilityindicator_a_0",
+          "label": "Underlying coverage exposure aircraft liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_AircraftLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for aircraft liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_aircraftpassengerliabilityindicator_a_0",
+          "label": "Underlying coverage coverage aircraft passenger liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_AircraftPassengerLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes aircraft passenger liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_aircraftpassengerliabilityindicator_a_0",
+          "label": "Underlying coverage exposure aircraft passenger liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_AircraftPassengerLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for aircraft passenger liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_additionalinterestsindicator_a_0",
+          "label": "Underlying coverage coverage additional interests indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_AdditionalInterestsIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes additional interests coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_additionalinterestsindicator_a_0",
+          "label": "Underlying coverage exposure additional interests indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_AdditionalInterestsIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for additional interests coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_carecustodycontrolindicator_a_0",
+          "label": "Underlying coverage coverage care custody control indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_CareCustodyControlIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes care, custody and control coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_carecustodycontrolindicator_a_0",
+          "label": "Underlying coverage exposure care custody control indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_CareCustodyControlIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for care, custody and control coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_employeebenefitsliabilityindicator_a_0",
+          "label": "Underlying coverage coverage employee benefits liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_EmployeeBenefitsLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes employee benefits liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_employeebenefitsliabilityindicator_a_0",
+          "label": "Underlying coverage exposure employee benefits liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_EmployeeBenefitsLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for employee benefits liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_foreignliabilitytravelindicator_a_0",
+          "label": "Underlying coverage coverage foreign liability travel indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_ForeignLiabilityTravelIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes foreign liability/travel coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_foreignliabilitytravelindicator_a_0",
+          "label": "Underlying coverage exposure foreign liability travel indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_ForeignLiabilityTravelIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for foreign liability/travel coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_garagekeepersliabilityindicator_a_0",
+          "label": "Underlying coverage coverage garagekeepers liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_GaragekeepersLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes garage keepers liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_garagekeepersliabilityindicator_a_0",
+          "label": "Underlying coverage exposure garagekeepers liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_GaragekeepersLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for garage keepers liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_incidentalmedicalmalpracticeindicator_a_0",
+          "label": "Underlying coverage coverage incidental medical malpractice indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_IncidentalMedicalMalpracticeIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes incidental medical malpractice coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_incidentalmedicalmalpracticeindicator_a_0",
+          "label": "Underlying coverage exposure incidental medical malpractice indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_IncidentalMedicalMalpracticeIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for incidental medical malpractice coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_liquorliabilityindicator_a_0",
+          "label": "Underlying coverage coverage liquor liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_LiquorLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes liquor liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_liquorliabilityindicator_a_0",
+          "label": "Underlying coverage exposure liquor liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_LiquorLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for liquor liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_pollutionliabilityindicator_a_0",
+          "label": "Underlying coverage coverage pollution liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_PollutionLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes pollution liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_pollutionliabilityindicator_a_0",
+          "label": "Underlying coverage exposure pollution liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_PollutionLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for pollution liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_professionalliabilityindicator_a_0",
+          "label": "Underlying coverage coverage professional liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_ProfessionalLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes professional liability (errors and omissions) coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_professionalliabilityindicator_a_0",
+          "label": "Underlying coverage exposure professional liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_ProfessionalLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for professional liability (errors and omissions) coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_vendorsliabilityindicator_a_0",
+          "label": "Underlying coverage coverage vendors liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_VendorsLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes vendors liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_vendorsliabilityindicator_a_0",
+          "label": "Underlying coverage exposure vendors liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_VendorsLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for vendors liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_watercraftliabilityindicator_a_0",
+          "label": "Underlying coverage coverage watercraft liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_WatercraftLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes watercraft liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_watercraftliabilityindicator_a_0",
+          "label": "Underlying coverage exposure watercraft liability indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_WatercraftLiabilityIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for watercraft liability coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_otherindicator_a_0",
+          "label": "Underlying coverage coverage other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_OtherIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes a coverage not listed",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_otherdescription_a_0",
+          "label": "Underlying coverage coverage other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_OtherDescription_A[0]",
+          "help": "The description of the coverage"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_otherindicator_a_0",
+          "label": "Underlying coverage exposure other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_OtherIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for the coverage described",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_otherindicator_b_0",
+          "label": "Underlying coverage coverage other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_OtherIndicator_B[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes a coverage not listed",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_otherdescription_b_0",
+          "label": "Underlying coverage coverage other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_OtherDescription_B[0]",
+          "help": "The description of the coverage"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_otherindicator_b_0",
+          "label": "Underlying coverage exposure other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_OtherIndicator_B[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for the coverage described",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_otherindicator_c_0",
+          "label": "Underlying coverage coverage other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_OtherIndicator_C[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes a coverage not listed",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_otherdescription_c_0",
+          "label": "Underlying coverage coverage other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_OtherDescription_C[0]",
+          "help": "The description of the coverage"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_otherindicator_c_0",
+          "label": "Underlying coverage exposure other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_OtherIndicator_C[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for the coverage described",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_otherindicator_d_0",
+          "label": "Underlying coverage coverage other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_OtherIndicator_D[0]",
+          "help": "Check the box (if applicable): Indicates the underlying policy includes a coverage not listed",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_coverage_otherdescription_d_0",
+          "label": "Underlying coverage coverage other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Coverage_OtherDescription_D[0]",
+          "help": "The description of the coverage"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_exposure_otherindicator_d_0",
+          "label": "Underlying coverage exposure other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_Exposure_OtherIndicator_D[0]",
+          "help": "Check the box (if applicable): Indicates the limits are less than those shown on the underlying insurance section of the form causing an exposure to exists for the coverage described",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_underlyingcoverage_informationdescription_a_0",
+          "label": "Underlying coverage information description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].UnderlyingCoverage_InformationDescription_A[0]",
+          "help": "The description of underlying insurance coverage information including all restrictions (e.g. laser endorsements, discrimination, subrogation waivers) or extensions of coverage"
+        }
+      ]
+    },
+    {
+      "id": "losshistory",
+      "label": "Loss history",
+      "fields": [
+        {
+          "key": "p2_0_losshistory_claimdate_a_0",
+          "label": "Loss history claim date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_ClaimDate_A[0]",
+          "help": "The date the claim was filed"
+        },
+        {
+          "key": "p2_0_losshistory_lineofbusiness_a_0",
+          "label": "Loss history line of business",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_LineOfBusiness_A[0]",
+          "help": "The line of business involved in the loss (e.g. Automobile Liability, Property, General Liability)"
+        },
+        {
+          "key": "p2_0_losshistory_occurrencedescription_a_0",
+          "label": "Loss history occurrence description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_OccurrenceDescription_A[0]",
+          "help": "A brief description of the loss"
+        },
+        {
+          "key": "p2_0_losshistory_paidamount_a_0",
+          "label": "Loss history paid amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_PaidAmount_A[0]",
+          "help": "The amount that has been paid on this claim to date"
+        },
+        {
+          "key": "p2_0_losshistory_reservedamount_a_0",
+          "label": "Loss history reserved amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_ReservedAmount_A[0]",
+          "help": "The reserve amount the previous carrier is holding open for this claim"
+        },
+        {
+          "key": "p2_0_losshistory_claimdate_b_0",
+          "label": "Loss history claim date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_ClaimDate_B[0]",
+          "help": "The date the claim was filed"
+        },
+        {
+          "key": "p2_0_losshistory_lineofbusiness_b_0",
+          "label": "Loss history line of business",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_LineOfBusiness_B[0]",
+          "help": "The line of business involved in the loss (e.g. Automobile Liability, Property, General Liability)"
+        },
+        {
+          "key": "p2_0_losshistory_occurrencedescription_b_0",
+          "label": "Loss history occurrence description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_OccurrenceDescription_B[0]",
+          "help": "A brief description of the loss"
+        },
+        {
+          "key": "p2_0_losshistory_paidamount_b_0",
+          "label": "Loss history paid amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_PaidAmount_B[0]",
+          "help": "The amount that has been paid on this claim to date"
+        },
+        {
+          "key": "p2_0_losshistory_reservedamount_b_0",
+          "label": "Loss history reserved amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_ReservedAmount_B[0]",
+          "help": "The reserve amount the previous carrier is holding open for this claim"
+        },
+        {
+          "key": "p2_0_losshistory_claimdate_c_0",
+          "label": "Loss history claim date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_ClaimDate_C[0]",
+          "help": "The date the claim was filed"
+        },
+        {
+          "key": "p2_0_losshistory_lineofbusiness_c_0",
+          "label": "Loss history line of business",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_LineOfBusiness_C[0]",
+          "help": "The line of business involved in the loss (e.g. Automobile Liability, Property, General Liability)"
+        },
+        {
+          "key": "p2_0_losshistory_occurrencedescription_c_0",
+          "label": "Loss history occurrence description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_OccurrenceDescription_C[0]",
+          "help": "A brief description of the loss"
+        },
+        {
+          "key": "p2_0_losshistory_paidamount_c_0",
+          "label": "Loss history paid amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_PaidAmount_C[0]",
+          "help": "The amount that has been paid on this claim to date"
+        },
+        {
+          "key": "p2_0_losshistory_reservedamount_c_0",
+          "label": "Loss history reserved amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_ReservedAmount_C[0]",
+          "help": "The reserve amount the previous carrier is holding open for this claim"
+        },
+        {
+          "key": "p2_0_losshistory_claimdate_d_0",
+          "label": "Loss history claim date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_ClaimDate_D[0]",
+          "help": "The date the claim was filed"
+        },
+        {
+          "key": "p2_0_losshistory_lineofbusiness_d_0",
+          "label": "Loss history line of business",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_LineOfBusiness_D[0]",
+          "help": "The line of business involved in the loss (e.g. Automobile Liability, Property, General Liability)"
+        },
+        {
+          "key": "p2_0_losshistory_occurrencedescription_d_0",
+          "label": "Loss history occurrence description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_OccurrenceDescription_D[0]",
+          "help": "A brief description of the loss"
+        },
+        {
+          "key": "p2_0_losshistory_paidamount_d_0",
+          "label": "Loss history paid amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_PaidAmount_D[0]",
+          "help": "The amount that has been paid on this claim to date"
+        },
+        {
+          "key": "p2_0_losshistory_reservedamount_d_0",
+          "label": "Loss history reserved amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_ReservedAmount_D[0]",
+          "help": "The reserve amount the previous carrier is holding open for this claim"
+        },
+        {
+          "key": "p2_0_losshistory_claimdate_e_0",
+          "label": "Loss history claim date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_ClaimDate_E[0]",
+          "help": "The date the claim was filed"
+        },
+        {
+          "key": "p2_0_losshistory_lineofbusiness_e_0",
+          "label": "Loss history line of business",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_LineOfBusiness_E[0]",
+          "help": "The line of business involved in the loss (e.g. Automobile Liability, Property, General Liability)"
+        },
+        {
+          "key": "p2_0_losshistory_occurrencedescription_e_0",
+          "label": "Loss history occurrence description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_OccurrenceDescription_E[0]",
+          "help": "A brief description of the loss"
+        },
+        {
+          "key": "p2_0_losshistory_paidamount_e_0",
+          "label": "Loss history paid amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_PaidAmount_E[0]",
+          "help": "The amount that has been paid on this claim to date"
+        },
+        {
+          "key": "p2_0_losshistory_reservedamount_e_0",
+          "label": "Loss history reserved amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_ReservedAmount_E[0]",
+          "help": "The reserve amount the previous carrier is holding open for this claim"
+        },
+        {
+          "key": "p2_0_losshistory_claimdate_f_0",
+          "label": "Loss history claim date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_ClaimDate_F[0]",
+          "help": "The date the claim was filed"
+        },
+        {
+          "key": "p2_0_losshistory_lineofbusiness_f_0",
+          "label": "Loss history line of business",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_LineOfBusiness_F[0]",
+          "help": "The line of business involved in the loss (e.g. Automobile Liability, Property, General Liability)"
+        },
+        {
+          "key": "p2_0_losshistory_occurrencedescription_f_0",
+          "label": "Loss history occurrence description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_OccurrenceDescription_F[0]",
+          "help": "A brief description of the loss"
+        },
+        {
+          "key": "p2_0_losshistory_paidamount_f_0",
+          "label": "Loss history paid amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_PaidAmount_F[0]",
+          "help": "The amount that has been paid on this claim to date"
+        },
+        {
+          "key": "p2_0_losshistory_reservedamount_f_0",
+          "label": "Loss history reserved amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_ReservedAmount_F[0]",
+          "help": "The reserve amount the previous carrier is holding open for this claim"
+        },
+        {
+          "key": "p2_0_losshistory_nopriorlossesindicator_a_0",
+          "label": "Loss history no prior losses indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].LossHistory_NoPriorLossesIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates there are no prior losses or occurrences that may give rise to claims for the mandated number of years. As used here, also indicates there were no claims exceeding $10,000",
+          "on_value": "1"
+        }
+      ]
+    },
+    {
+      "id": "carecustodyandcontrol",
+      "label": "Care custody and control",
+      "fields": [
+        {
+          "key": "p2_0_carecustodyandcontrol_location_produceridentifier_a_0",
+          "label": "Care custody and control location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CareCustodyAndControl_Location_ProducerIdentifier_A[0]",
+          "help": "The producer assigned number for the location if applicable to the ACORD 125"
+        },
+        {
+          "key": "p2_0_carecustodyandcontrol_property_realindicator_a_0",
+          "label": "Care custody and control property real indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CareCustodyAndControl_Property_RealIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the property in the care, custody and control of the insured is real property",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_carecustodyandcontrol_property_personalindicator_a_0",
+          "label": "Care custody and control property personal indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CareCustodyAndControl_Property_PersonalIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the property in the care, custody and control of the insured is personal property",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_carecustodyandcontrol_property_valueamount_a_0",
+          "label": "Care custody and control property value amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P2[0].CareCustodyAndControl_Property_ValueAmount_A[0]",
+          "help": "The value of the entire building, not just the portion occupied, for real property or the value of the personal property"
+        },
+        {
+          "key": "p2_0_carecustodyandcontrol_insuredliability_heldharmlessindicator_a_0",
+          "label": "Care custody and control insured liability held harmless indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CareCustodyAndControl_InsuredLiability_HeldHarmlessIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the insured is held harmless in the lease",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_carecustodyandcontrol_insuredliability_hassubrogationwaiverindicator_a_0",
+          "label": "Care custody and control insured liability has subrogation waiver indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CareCustodyAndControl_InsuredLiability_HasSubrogationWaiverIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the insured has a waiver of subrogation",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_carecustodyandcontrol_insuredliability_isnamedinsuredonfirepolicy_a_0",
+          "label": "Care custody and control insured liability is named insured on fire policy",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CareCustodyAndControl_InsuredLiability_IsNamedInsuredOnFirePolicy_A[0]",
+          "help": "Check the box (if applicable): Indicates the insured is a named insured on the fire policy",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_carecustodyandcontrol_insuredliability_otherdescription_a_0",
+          "label": "Care custody and control insured liability other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CareCustodyAndControl_InsuredLiability_OtherDescription_A[0]",
+          "help": "The description of the insured's liability for the described premises when other than those listed"
+        },
+        {
+          "key": "p2_0_carecustodyandcontrol_location_occupiedarea_a_0",
+          "label": "Care custody and control location occupied area",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CareCustodyAndControl_Location_OccupiedArea_A[0]",
+          "help": "The total square footage of the premises occupied by the applicant"
+        },
+        {
+          "key": "p2_0_carecustodyandcontrol_property_propertydescription_a_0",
+          "label": "Care custody and control property property description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].CareCustodyAndControl_Property_PropertyDescription_A[0]",
+          "help": "The description of the building occupancy or of the property held by the insured in his care, custody and control"
+        }
+      ]
+    },
+    {
+      "id": "vehiclefleet",
+      "label": "Vehicle fleet",
+      "fields": [
+        {
+          "key": "p2_0_vehiclefleet_privatepassenger_ownedcount_a_0",
+          "label": "Vehicle fleet private passenger owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_PrivatePassenger_OwnedCount_A[0]",
+          "help": "The number of owned private passenger vehicles"
+        },
+        {
+          "key": "p2_0_vehiclefleet_privatepassenger_nonownedcount_a_0",
+          "label": "Vehicle fleet private passenger non owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_PrivatePassenger_NonOwnedCount_A[0]",
+          "help": "The number of non-owned private passenger vehicles"
+        },
+        {
+          "key": "p2_0_vehiclefleet_privatepassenger_leasedcount_a_0",
+          "label": "Vehicle fleet private passenger leased count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_PrivatePassenger_LeasedCount_A[0]",
+          "help": "The number of leased private passenger vehicles"
+        },
+        {
+          "key": "p2_0_vehiclefleet_privatepassenger_propertyhauleddescription_a_0",
+          "label": "Vehicle fleet private passenger property hauled description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_PrivatePassenger_PropertyHauledDescription_A[0]",
+          "help": "The description of property hauled in private passenger vehicles"
+        },
+        {
+          "key": "p2_0_vehiclefleet_privatepassenger_localradiusvehiclecount_a_0",
+          "label": "Vehicle fleet private passenger local radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_PrivatePassenger_LocalRadiusVehicleCount_A[0]",
+          "help": "The number of private passenger vehicles that fall within the category of local radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;local&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_privatepassenger_intermediateradiusvehiclecount_a_0",
+          "label": "Vehicle fleet private passenger intermediate radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_PrivatePassenger_IntermediateRadiusVehicleCount_A[0]",
+          "help": "The number of private passenger vehicles that fall within the category of intermediate radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;intermediate&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_privatepassenger_longdistanceradiusvehiclecount_a_0",
+          "label": "Vehicle fleet private passenger long distance radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_PrivatePassenger_LongDistanceRadiusVehicleCount_A[0]",
+          "help": "The number of private passenger vehicles that fall within the category of long distance radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;long distance&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_lightweighttruck_ownedcount_a_0",
+          "label": "Vehicle fleet light weight truck owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_LightWeightTruck_OwnedCount_A[0]",
+          "help": "The number of owned light weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_lightweighttruck_nonownedcount_a_0",
+          "label": "Vehicle fleet light weight truck non owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_LightWeightTruck_NonOwnedCount_A[0]",
+          "help": "The number of non-owned light weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_lightweighttruck_leasedcount_a_0",
+          "label": "Vehicle fleet light weight truck leased count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_LightWeightTruck_LeasedCount_A[0]",
+          "help": "The number of leased light weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_lightweighttruck_propertyhauleddescription_a_0",
+          "label": "Vehicle fleet light weight truck property hauled description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_LightWeightTruck_PropertyHauledDescription_A[0]",
+          "help": "The description of property hauled in light weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_lightweighttruck_localradiusvehiclecount_a_0",
+          "label": "Vehicle fleet light weight truck local radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_LightWeightTruck_LocalRadiusVehicleCount_A[0]",
+          "help": "The number of light weight trucks that fall within the category of local radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;local&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_lightweighttruck_intermediateradiusvehiclecount_a_0",
+          "label": "Vehicle fleet light weight truck intermediate radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_LightWeightTruck_IntermediateRadiusVehicleCount_A[0]",
+          "help": "The number of light weight trucks that fall within the category of local radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;intermediate&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_lightweighttruck_longdistanceradiusvehiclecount_a_0",
+          "label": "Vehicle fleet light weight truck long distance radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_LightWeightTruck_LongDistanceRadiusVehicleCount_A[0]",
+          "help": "The number of light weight trucks that fall within the category of long distance radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;long distance&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_mediumweighttruck_ownedcount_a_0",
+          "label": "Vehicle fleet medium weight truck owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_MediumWeightTruck_OwnedCount_A[0]",
+          "help": "The number of owned medium weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_mediumweighttruck_nonownedcount_a_0",
+          "label": "Vehicle fleet medium weight truck non owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_MediumWeightTruck_NonOwnedCount_A[0]",
+          "help": "The number of non-owned medium weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_mediumweighttruck_leasedcount_a_0",
+          "label": "Vehicle fleet medium weight truck leased count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_MediumWeightTruck_LeasedCount_A[0]",
+          "help": "The number of leased medium weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_mediumweighttruck_propertyhauleddescription_a_0",
+          "label": "Vehicle fleet medium weight truck property hauled description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_MediumWeightTruck_PropertyHauledDescription_A[0]",
+          "help": "The description of property hauled in medium weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_mediumweighttruck_localradiusvehiclecount_a_0",
+          "label": "Vehicle fleet medium weight truck local radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_MediumWeightTruck_LocalRadiusVehicleCount_A[0]",
+          "help": "The number of medium weight trucks that fall within the category of local radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;local&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_mediumweighttruck_intermediateradiusvehiclecount_a_0",
+          "label": "Vehicle fleet medium weight truck intermediate radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_MediumWeightTruck_IntermediateRadiusVehicleCount_A[0]",
+          "help": "The number of medium weight trucks that fall within the category of local radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;intermediate&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_mediumweighttruck_longdistanceradiusvehiclecount_a_0",
+          "label": "Vehicle fleet medium weight truck long distance radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_MediumWeightTruck_LongDistanceRadiusVehicleCount_A[0]",
+          "help": "The number of medium weight trucks that fall within the category of long distance radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;long distance&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_heavyweighttruck_ownedcount_a_0",
+          "label": "Vehicle fleet heavy weight truck owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_HeavyWeightTruck_OwnedCount_A[0]",
+          "help": "The number of owned heavy weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_heavyweighttruck_nonownedcount_a_0",
+          "label": "Vehicle fleet heavy weight truck non owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_HeavyWeightTruck_NonOwnedCount_A[0]",
+          "help": "The number of non-owned heavy weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_heavyweighttruck_leasedcount_a_0",
+          "label": "Vehicle fleet heavy weight truck leased count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_HeavyWeightTruck_LeasedCount_A[0]",
+          "help": "The number of leased heavy weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_heavyweighttruck_propertyhauleddescription_a_0",
+          "label": "Vehicle fleet heavy weight truck property hauled description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_HeavyWeightTruck_PropertyHauledDescription_A[0]",
+          "help": "The description of property hauled in heavy weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_heavyweighttruck_localradiusvehiclecount_a_0",
+          "label": "Vehicle fleet heavy weight truck local radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_HeavyWeightTruck_LocalRadiusVehicleCount_A[0]",
+          "help": "The number of  heavy weight trucks that fall within the category of local radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;local&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_heavyweighttruck_intermediateradiusvehiclecount_a_0",
+          "label": "Vehicle fleet heavy weight truck intermediate radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_HeavyWeightTruck_IntermediateRadiusVehicleCount_A[0]",
+          "help": "The number of heavy weight trucks that fall within the category of local radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;intermediate&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_heavyweighttruck_longdistanceradiusvehiclecount_a_0",
+          "label": "Vehicle fleet heavy weight truck long distance radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_HeavyWeightTruck_LongDistanceRadiusVehicleCount_A[0]",
+          "help": "The number of  heavy weight trucks that fall within the category of long distance radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;long distance&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_extraheavyweighttruck_ownedcount_a_0",
+          "label": "Vehicle fleet extra heavy weight truck owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_ExtraHeavyWeightTruck_OwnedCount_A[0]",
+          "help": "The number of owned extra heavy weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_extraheavyweighttruck_nonownedcount_a_0",
+          "label": "Vehicle fleet extra heavy weight truck non owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_ExtraHeavyWeightTruck_NonOwnedCount_A[0]",
+          "help": "The number of non-owned extra heavy weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_extraheavyweighttruck_leasedcount_a_0",
+          "label": "Vehicle fleet extra heavy weight truck leased count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_ExtraHeavyWeightTruck_LeasedCount_A[0]",
+          "help": "The number of leased extra heavy weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_extraheavyweighttruck_propertyhauleddescription_a_0",
+          "label": "Vehicle fleet extra heavy weight truck property hauled description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_ExtraHeavyWeightTruck_PropertyHauledDescription_A[0]",
+          "help": "The description of property hauled in extra heavy weight trucks"
+        },
+        {
+          "key": "p2_0_vehiclefleet_extraheavyweighttruck_localradiusvehiclecount_a_0",
+          "label": "Vehicle fleet extra heavy weight truck local radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_ExtraHeavyWeightTruck_LocalRadiusVehicleCount_A[0]",
+          "help": "The number of extra heavy weight trucks that fall within the category of local radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;local&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_extraheavyweighttruck_intermediateradiusvehiclecount_a_0",
+          "label": "Vehicle fleet extra heavy weight truck intermediate radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_ExtraHeavyWeightTruck_IntermediateRadiusVehicleCount_A[0]",
+          "help": "The number of extra heavy weight trucks. that fall within the category of local radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;intermediate&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_extraheavyweighttruck_longdistanceradiusvehiclecount_a_0",
+          "label": "Vehicle fleet extra heavy weight truck long distance radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_ExtraHeavyWeightTruck_LongDistanceRadiusVehicleCount_A[0]",
+          "help": "The number of extra heavy weight trucks that fall within the category of long distance radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;long distance&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_heavyweighttrucktractor_ownedcount_a_0",
+          "label": "Vehicle fleet heavy weight truck tractor owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_HeavyWeightTruckTractor_OwnedCount_A[0]",
+          "help": "The number of owned heavy weight truck tractors"
+        },
+        {
+          "key": "p2_0_vehiclefleet_heavyweighttrucktractor_nonownedcount_a_0",
+          "label": "Vehicle fleet heavy weight truck tractor non owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_HeavyWeightTruckTractor_NonOwnedCount_A[0]",
+          "help": "The number of non-owned heavy weight truck tractors"
+        },
+        {
+          "key": "p2_0_vehiclefleet_heavyweighttrucktractor_leasedcount_a_0",
+          "label": "Vehicle fleet heavy weight truck tractor leased count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_HeavyWeightTruckTractor_LeasedCount_A[0]",
+          "help": "The number of leased heavy weight truck tractors"
+        },
+        {
+          "key": "p2_0_vehiclefleet_heavyweighttrucktractor_propertyhauleddescription_a_0",
+          "label": "Vehicle fleet heavy weight truck tractor property hauled description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_HeavyWeightTruckTractor_PropertyHauledDescription_A[0]",
+          "help": "The description of property hauled in heavy weight truck tractors"
+        },
+        {
+          "key": "p2_0_vehiclefleet_heavyweighttrucktractor_localradiusvehiclecount_a_0",
+          "label": "Vehicle fleet heavy weight truck tractor local radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_HeavyWeightTruckTractor_LocalRadiusVehicleCount_A[0]",
+          "help": "The number of heavy weight truck tractors that fall within the category of local radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;local&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_heavyweighttrucktractor_intermediateradiusvehiclecount_a_0",
+          "label": "Vehicle fleet heavy weight truck tractor intermediate radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_HeavyWeightTruckTractor_IntermediateRadiusVehicleCount_A[0]",
+          "help": "The number of heavy weight truck tractors that fall within the category of local radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;intermediate&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_heavyweighttrucktractor_longdistanceradiusvehiclecount_a_0",
+          "label": "Vehicle fleet heavy weight truck tractor long distance radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_HeavyWeightTruckTractor_LongDistanceRadiusVehicleCount_A[0]",
+          "help": "The number of heavy weight truck tractors that fall within the category of long distance radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;long distance&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_extraheavyweighttrucktractor_ownedcount_a_0",
+          "label": "Vehicle fleet extra heavy weight truck tractor owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_ExtraHeavyWeightTruckTractor_OwnedCount_A[0]",
+          "help": "The number of owned extra heavy weight truck tractors"
+        },
+        {
+          "key": "p2_0_vehiclefleet_extraheavyweighttrucktractor_nonownedcount_a_0",
+          "label": "Vehicle fleet extra heavy weight truck tractor non owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_ExtraHeavyWeightTruckTractor_NonOwnedCount_A[0]",
+          "help": "The number of non-owned extra heavy weight truck tractors"
+        },
+        {
+          "key": "p2_0_vehiclefleet_extraheavyweighttrucktractor_leasedcount_a_0",
+          "label": "Vehicle fleet extra heavy weight truck tractor leased count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_ExtraHeavyWeightTruckTractor_LeasedCount_A[0]",
+          "help": "The number of leased extra heavy weight truck tractors"
+        },
+        {
+          "key": "p2_0_vehiclefleet_extraheavyweighttrucktractor_propertyhauleddescription_a_0",
+          "label": "Vehicle fleet extra heavy weight truck tractor property hauled description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_ExtraHeavyWeightTruckTractor_PropertyHauledDescription_A[0]",
+          "help": "The description of property hauled in extra heavy weight truck tractors"
+        },
+        {
+          "key": "p2_0_vehiclefleet_extraheavyweighttrucktractor_localradiusvehiclecount_a_0",
+          "label": "Vehicle fleet extra heavy weight truck tractor local radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_ExtraHeavyWeightTruckTractor_LocalRadiusVehicleCount_A[0]",
+          "help": "The number of extra heavy weight truck tractors that fall within the category of local radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;local&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_extraheavyweighttrucktractor_intermediateradiusvehiclecount_a_0",
+          "label": "Vehicle fleet extra heavy weight truck tractor intermediate radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_ExtraHeavyWeightTruckTractor_IntermediateRadiusVehicleCount_A[0]",
+          "help": "The number of extra heavy weight truck tractors that fall within the category of local radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;intermediate&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_extraheavyweighttrucktractor_longdistanceradiusvehiclecount_a_0",
+          "label": "Vehicle fleet extra heavy weight truck tractor long distance radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_ExtraHeavyWeightTruckTractor_LongDistanceRadiusVehicleCount_A[0]",
+          "help": "The number of extra heavy weight truck tractors that fall within the category of long distance radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;long distance&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_bus_ownedcount_a_0",
+          "label": "Vehicle fleet bus owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_Bus_OwnedCount_A[0]",
+          "help": "The number of owned buses"
+        },
+        {
+          "key": "p2_0_vehiclefleet_bus_nonownedcount_a_0",
+          "label": "Vehicle fleet bus non owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_Bus_NonOwnedCount_A[0]",
+          "help": "The number of non-owned buses"
+        },
+        {
+          "key": "p2_0_vehiclefleet_bus_leasedcount_a_0",
+          "label": "Vehicle fleet bus leased count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_Bus_LeasedCount_A[0]",
+          "help": "The number of leased buses"
+        },
+        {
+          "key": "p2_0_vehiclefleet_bus_propertyhauleddescription_a_0",
+          "label": "Vehicle fleet bus property hauled description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_Bus_PropertyHauledDescription_A[0]",
+          "help": "The description of property hauled in buses"
+        },
+        {
+          "key": "p2_0_vehiclefleet_bus_localradiusvehiclecount_a_0",
+          "label": "Vehicle fleet bus local radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_Bus_LocalRadiusVehicleCount_A[0]",
+          "help": "The number of buses that fall within the category of local radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;local&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_bus_intermediateradiusvehiclecount_a_0",
+          "label": "Vehicle fleet bus intermediate radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_Bus_IntermediateRadiusVehicleCount_A[0]",
+          "help": "The number of buses that fall within the category of local radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;intermediate&quot;"
+        },
+        {
+          "key": "p2_0_vehiclefleet_bus_longdistanceradiusvehiclecount_a_0",
+          "label": "Vehicle fleet bus long distance radius vehicle count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].VehicleFleet_Bus_LongDistanceRadiusVehicleCount_A[0]",
+          "help": "The number of buses that fall within the category of long distance radius/distance in accordance with a company's rating rules. The Insurance Services Office maintains the definition of &quot;long distance&quot;"
+        }
+      ]
+    },
+    {
+      "id": "advertisersliability",
+      "label": "Advertisers liability",
+      "fields": [
+        {
+          "key": "p3_0_advertisersliability_mediausedcode_a_0",
+          "label": "Advertisers liability media used code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdvertisersLiability_MediaUsedCode_A[0]",
+          "help": "The type of advertising media used (e.g. Print, Television, Radio, etc.)"
+        },
+        {
+          "key": "p3_0_advertisersliability_annualcostamount_a_0",
+          "label": "Advertisers liability annual cost amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdvertisersLiability_AnnualCostAmount_A[0]",
+          "help": "The annual cost of the advertising media used"
+        }
+      ]
+    },
+    {
+      "id": "contractors",
+      "label": "Contractors",
+      "fields": [
+        {
+          "key": "p3_0_contractors_workcontracteddescription_a_0",
+          "label": "Contractors work contracted description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].Contractors_WorkContractedDescription_A[0]",
+          "help": "The description of work performed by the insured.  ACORD 101, Additional Remarks Schedule, may be attached if more space is required"
+        },
+        {
+          "key": "p3_0_contractors_agreementdescription_a_0",
+          "label": "Contractors agreement description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].Contractors_AgreementDescription_A[0]",
+          "help": "The description of the contractual agreement(s) pertaining to the work performed.   ACORD 101, Additional Remarks Schedule, may be attached if more space is required"
+        }
+      ]
+    },
+    {
+      "id": "watercraft",
+      "label": "Watercraft",
+      "fields": [
+        {
+          "key": "p4_0_watercraft_ownedcount_a_0",
+          "label": "Watercraft owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].Watercraft_OwnedCount_A[0]",
+          "help": "The number of watercraft owned. As used here, the number of watercraft owned of the same type"
+        },
+        {
+          "key": "p4_0_watercraft_length_a_0",
+          "label": "Watercraft length",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].Watercraft_Length_A[0]",
+          "help": "The length of the watercraft expressed in feet"
+        },
+        {
+          "key": "p4_0_watercraft_horsepower_a_0",
+          "label": "Watercraft horsepower",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].Watercraft_Horsepower_A[0]",
+          "help": "The horsepower of the engine. There is a method for determining the maximum safe horsepower for a specific boat based on length and width. If the company employs this formula, it may be helpful to make note of the width in remarks"
+        },
+        {
+          "key": "p4_0_watercraft_ownedcount_b_0",
+          "label": "Watercraft owned count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].Watercraft_OwnedCount_B[0]",
+          "help": "The number of watercraft owned. As used here, the number of watercraft owned of the same type"
+        },
+        {
+          "key": "p4_0_watercraft_length_b_0",
+          "label": "Watercraft length",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].Watercraft_Length_B[0]",
+          "help": "The length of the watercraft expressed in feet"
+        },
+        {
+          "key": "p4_0_watercraft_horsepower_b_0",
+          "label": "Watercraft horsepower",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P4[0].Watercraft_Horsepower_B[0]",
+          "help": "The horsepower of the engine. There is a method for determining the maximum safe horsepower for a specific boat based on length and width. If the company employs this formula, it may be helpful to make note of the width in remarks"
+        }
+      ]
+    }
+  ]
+}
