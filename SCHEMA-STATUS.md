@@ -8,6 +8,7 @@ This file tracks what is actually committed in the GitHub repo, not just what ex
 |---|---:|---|---|
 | 25 — Certificate of Liability | 2016/03 | ✅ hand-verified | Reference pattern; PDF fill pipeline proven. |
 | 28 — Evidence of Commercial Property | 2014/01 | draft core committed | Extracted from Logan's uploaded fillable PDF. Maps producer/insured, carrier/policy, property information, coverage/perils, business income/rental value, blanket/terrorism/fungus/replacement cost/coinsurance/equipment breakdown, earth movement/flood/wind/named storm, waiver of subrogation, additional interest/lender, remarks, and authorized representative. PDF has 161 detected fields. |
+| 35 — Cancellation Request / Policy Release | 2011/09 | draft core committed | Extracted from Logan's uploaded fillable PDF. Maps producer/company/insured, cancelled policy details, cancellation request versus policy release, cancellation reason, rewritten policy details, premium calculation, remarks, distribution, and key signatures. PDF has 100 detected fields. |
 | 125 — Commercial Insurance Application | 2013/09 | ✅ hand-verified core committed | Commercial hub. Core/app-proof fields plus Sections Attached hub are committed in `schemas/acord_125.json`. Logan also supplied the full 550-field hand-verified map as the reference source for future expansion. |
 | 126 — Commercial General Liability Section | 2016/09 | draft committed | Extracted from Logan's uploaded fillable PDF. Includes coverages/limits, hazards, claims-made, employee benefits, contractors, products/completed operations, additional interest, general information, and signature. Needs a human pass for radio groups/optional logic. |
 | 127 — Business Auto Section | 2012/03 | draft core committed | Extracted from Logan's uploaded fillable PDF. Maps the high-use Business Auto workflow: policy/applicant, driver rows, general underwriting questions, vehicle description rows, additional interest, remarks, and signature. PDF has 627 detected AcroForm entries; future expansion can add all repeated driver rows and full coverage checkboxes for vehicles 2-4. |
@@ -20,11 +21,7 @@ This file tracks what is actually committed in the GitHub repo, not just what ex
 
 ## Known missing schema commits
 
-These forms were listed in the broader handoff/status notes, but are not yet committed in this repo as schema files:
-
-| Form | Edition | Target status |
-|---|---:|---|
-| 35 — Cancellation / Policy Release | 2011/09 | draft needed |
+None. The originally planned schema set is now represented in this repo.
 
 ## Workers Compensation notes
 
