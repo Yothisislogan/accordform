@@ -1,0 +1,162 @@
+{
+  "_meta": {
+    "acord_number": "28",
+    "edition": "2014/01",
+    "title": "Evidence of Commercial Property Insurance",
+    "template_source": "Acord 28 - Evidence of Commercial Property Insurance.pdf",
+    "field_name_prefix": "",
+    "total_pdf_fields": 161,
+    "checkbox_on_value": "1",
+    "checkbox_off_value": "Off",
+    "status": "DRAFT CORE FIELD MAP",
+    "category": "Commercial",
+    "keywords": "evidence commercial property insurance mortgagee lender loss payable property coverage"
+  },
+  "sections": [
+    {
+      "id": "producer_insured",
+      "label": "Producer / Named Insured",
+      "fields": [
+        {"key":"form_completiondate_a","label":"Date completed","type":"date","priority":"core","required":true,"pdf_field":"F[0].P1[0].Form_CompletionDate_A[0]"},
+        {"key":"producer_fullname_a","label":"Producer / agency name","type":"text","priority":"core","required":true,"pdf_field":"F[0].P1[0].Producer_FullName_A[0]"},
+        {"key":"producer_contactperson_fullname_a","label":"Producer contact person","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_ContactPerson_FullName_A[0]"},
+        {"key":"producer_mailingaddress_lineone_a","label":"Producer address line 1","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_MailingAddress_LineOne_A[0]"},
+        {"key":"producer_mailingaddress_cityname_a","label":"Producer city","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_MailingAddress_CityName_A[0]"},
+        {"key":"producer_mailingaddress_stateorprovincecode_a","label":"Producer state","type":"state","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_MailingAddress_StateOrProvinceCode_A[0]"},
+        {"key":"producer_mailingaddress_postalcode_a","label":"Producer ZIP","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_MailingAddress_PostalCode_A[0]"},
+        {"key":"producer_contactperson_phonenumber_a","label":"Producer phone","type":"phone","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_ContactPerson_PhoneNumber_A[0]"},
+        {"key":"producer_contactperson_emailaddress_a","label":"Producer email","type":"email","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_ContactPerson_EmailAddress_A[0]"},
+        {"key":"producer_customeridentifier_a","label":"Agency customer ID","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_CustomerIdentifier_A[0]"},
+        {"key":"namedinsured_fullname_a","label":"Named insured","type":"text","priority":"core","required":true,"pdf_field":"F[0].P1[0].NamedInsured_FullName_A[0]"},
+        {"key":"namedinsured_mailingaddress_lineone_a","label":"Named insured address line 1","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].NamedInsured_MailingAddress_LineOne_A[0]"},
+        {"key":"namedinsured_mailingaddress_cityname_a","label":"Named insured city","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].NamedInsured_MailingAddress_CityName_A[0]"},
+        {"key":"namedinsured_mailingaddress_stateorprovincecode_a","label":"Named insured state","type":"state","priority":"common","required":false,"pdf_field":"F[0].P1[0].NamedInsured_MailingAddress_StateOrProvinceCode_A[0]"},
+        {"key":"namedinsured_mailingaddress_postalcode_a","label":"Named insured ZIP","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].NamedInsured_MailingAddress_PostalCode_A[0]"},
+        {"key":"namedinsured_fullname_b","label":"Additional named insured(s)","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].NamedInsured_FullName_B[0]"}
+      ]
+    },
+    {
+      "id": "carrier_policy",
+      "label": "Carrier / Policy",
+      "fields": [
+        {"key":"insurer_fullname_a","label":"Company name","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].Insurer_FullName_A[0]"},
+        {"key":"insurer_mailingaddress_addresslineone_a","label":"Company address line 1","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Insurer_MailingAddress_AddressLineOne_A[0]"},
+        {"key":"insurer_mailingaddress_cityname_a","label":"Company city","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Insurer_MailingAddress_CityName_A[0]"},
+        {"key":"insurer_mailingaddress_stateorprovincecode_a","label":"Company state","type":"state","priority":"common","required":false,"pdf_field":"F[0].P1[0].Insurer_MailingAddress_StateOrProvinceCode_A[0]"},
+        {"key":"insurer_mailingaddress_postalcode_a","label":"Company ZIP","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Insurer_MailingAddress_PostalCode_A[0]"},
+        {"key":"insurer_naiccode_a","label":"NAIC code","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Insurer_NAICCode_A[0]"},
+        {"key":"policy_typedescription_a","label":"Policy type","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].Policy_TypeDescription_A[0]"},
+        {"key":"additionalinterest_accountnumberidentifier_a","label":"Loan number","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_AccountNumberIdentifier_A[0]"},
+        {"key":"policy_policynumberidentifier_a","label":"Policy number","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].Policy_PolicyNumberIdentifier_A[0]"},
+        {"key":"policy_effectivedate_a","label":"Effective date","type":"date","priority":"core","required":false,"pdf_field":"F[0].P1[0].Policy_EffectiveDate_A[0]"},
+        {"key":"policy_expirationdate_a","label":"Expiration date","type":"date","priority":"core","required":false,"pdf_field":"F[0].P1[0].Policy_ExpirationDate_A[0]"},
+        {"key":"policy_continueduntilterminatedindicator_a","label":"Continued until terminated","type":"checkbox","priority":"common","required":false,"pdf_field":"F[0].P1[0].Policy_ContinuedUntilTerminatedIndicator_A[0]"},
+        {"key":"evidenceofproperty_priorevidencedate_a","label":"Replaces prior evidence dated","type":"date","priority":"rare","required":false,"pdf_field":"F[0].P1[0].EvidenceOfProperty_PriorEvidenceDate_A[0]"}
+      ]
+    },
+    {
+      "id": "property_information",
+      "label": "Property Information",
+      "fields": [
+        {"key":"property_building_coverageindicator_a","label":"Building","type":"checkbox","priority":"core","required":false,"pdf_field":"F[0].P1[0].Property_Building_CoverageIndicator_A[0]"},
+        {"key":"property_businesspersonalproperty_coverageindicator_a","label":"Business personal property","type":"checkbox","priority":"core","required":false,"pdf_field":"F[0].P1[0].Property_BusinessPersonalProperty_CoverageIndicator_A[0]"},
+        {"key":"location_physicaladdress_lineone_a","label":"Property address line 1","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].Location_PhysicalAddress_LineOne_A[0]"},
+        {"key":"location_physicaladdress_cityname_a","label":"Property city","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].Location_PhysicalAddress_CityName_A[0]"},
+        {"key":"location_physicaladdress_stateorprovincecode_a","label":"Property state","type":"state","priority":"core","required":false,"pdf_field":"F[0].P1[0].Location_PhysicalAddress_StateOrProvinceCode_A[0]"},
+        {"key":"location_physicaladdress_postalcode_a","label":"Property ZIP","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].Location_PhysicalAddress_PostalCode_A[0]"},
+        {"key":"location_locationdescription_a","label":"Location / description","type":"textarea","priority":"common","required":false,"pdf_field":"F[0].P1[0].Location_LocationDescription_A[0]"}
+      ]
+    },
+    {
+      "id": "coverage_information",
+      "label": "Coverage Information",
+      "fields": [
+        {"key":"perils_insured","label":"Perils insured","type":"radio_group","group":"perils_insured","priority":"core","options":[{"label":"Basic","pdf_field":"F[0].P1[0].Policy_PolicyType_BasicIndicator_A[0]"},{"label":"Broad","pdf_field":"F[0].P1[0].Policy_PolicyType_BroadIndicator_A[0]"},{"label":"Special","pdf_field":"F[0].P1[0].Policy_PolicyType_SpecialIndicator_A[0]"},{"label":"Other","pdf_field":"F[0].P1[0].Policy_PolicyType_OtherIndicator_A[0]"}]},
+        {"key":"policy_policytype_otherdescription_a","label":"Other perils description","type":"text","priority":"rare","required":false,"pdf_field":"F[0].P1[0].Policy_PolicyType_OtherDescription_A[0]"},
+        {"key":"commercialpropertycoverage_property_limitamount_a","label":"Commercial property amount of insurance","type":"currency","priority":"core","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_Property_LimitAmount_A[0]"},
+        {"key":"commercialpropertycoverage_property_deductibleamount_a","label":"Commercial property deductible","type":"currency","priority":"core","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_Property_DeductibleAmount_A[0]"},
+        {"key":"businessincome_coverageindicator_a","label":"Business income","type":"checkbox","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_BusinessIncomeOrRentalValue_BusinessIncomeCoverageIndicator_A[0]"},
+        {"key":"rentalvalue_coverageindicator_a","label":"Rental value","type":"checkbox","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_BusinessIncomeOrRentalValue_RentalValueCoverageIndicator_A[0]"},
+        {"key":"business_income_or_rental_value","label":"Business income / rental value","type":"radio_group","group":"business_income_or_rental_value","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_BusinessIncomeOrRentalValue_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_BusinessIncomeOrRentalValue_NoIndicator_A[0]"},{"label":"N/A","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_BusinessIncomeOrRentalValue_NotApplicableIndicator_A[0]"}]},
+        {"key":"businessincome_limitamount_a","label":"Business income / rental value limit","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_BusinessIncomeOrRentalValue_LimitAmount_A[0]"},
+        {"key":"businessincome_actuallosssustainedindicator_a","label":"Actual loss sustained","type":"checkbox","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_BusinessIncomeOrRentalValue_ActualLossSustainedIndicator_A[0]"},
+        {"key":"businessincome_actuallosssustainedmonthcount_a","label":"Actual loss sustained months","type":"number","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_BusinessIncomeOrRentalValue_ActualLossSustainedMonthCount_A[0]"},
+        {"key":"blanket_coverage","label":"Blanket coverage","type":"radio_group","group":"blanket_coverage","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialProperty_Blanket_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialProperty_Blanket_NoIndicator_A[0]"},{"label":"N/A","pdf_field":"F[0].P1[0].CommercialProperty_Blanket_NotApplicableIndicator_A[0]"}]},
+        {"key":"statementofvalues_premises_valueamount_a","label":"Values reported on property identified above","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].StatementOfValues_Premises_ValueAmount_A[0]"}
+      ]
+    },
+    {
+      "id": "coverage_options",
+      "label": "Coverage Options / Exclusions",
+      "fields": [
+        {"key":"terrorism_coverage","label":"Terrorism coverage","type":"radio_group","group":"terrorism_coverage","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_Terrorism_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_Terrorism_NoIndicator_A[0]"},{"label":"N/A","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_Terrorism_NotApplicableIndicator_A[0]"}]},
+        {"key":"terrorism_specific_exclusion","label":"Terrorism-specific exclusion","type":"radio_group","group":"terrorism_specific_exclusion","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_TerrorismExclusion_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_TerrorismExclusion_NoIndicator_A[0]"},{"label":"N/A","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_TerrorismExclusion_NotApplicableIndicator_A[0]"}]},
+        {"key":"domestic_terrorism_exclusion","label":"Domestic terrorism excluded","type":"radio_group","group":"domestic_terrorism_exclusion","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_DomesticTerrorismExclusion_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_DomesticTerrorismExclusion_NoIndicator_A[0]"},{"label":"N/A","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_DomesticTerrorismExclusion_NotApplicableIndicator_A[0]"}]},
+        {"key":"limited_fungus_coverage","label":"Limited fungus coverage","type":"radio_group","group":"limited_fungus_coverage","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_LimitedFungus_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_LimitedFungus_NoIndicator_A[0]"},{"label":"N/A","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_LimitedFungus_NotApplicableIndicator_A[0]"}]},
+        {"key":"limitedfungus_limitamount_a","label":"Limited fungus coverage limit","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_LimitedFungus_LimitAmount_A[0]"},
+        {"key":"limitedfungus_deductibleamount_a","label":"Limited fungus coverage deductible","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_LimitedFungus_DeductibleAmount_A[0]"},
+        {"key":"fungus_exclusion","label":"Fungus exclusion","type":"radio_group","group":"fungus_exclusion","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_FungusExclusion_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_FungusExclusion_NoIndicator_A[0]"},{"label":"N/A","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_FungusExclusion_NotApplicableIndicator_A[0]"}]},
+        {"key":"formendorsement_formidentifier_a","label":"Fungus exclusion form identifier","type":"text","priority":"rare","required":false,"pdf_field":"F[0].P1[0].FormEndorsement_FormIdentifier_A[0]"},
+        {"key":"replacement_cost","label":"Replacement cost","type":"radio_group","group":"replacement_cost","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_ReplacementCost_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_ReplacementCost_NoIndicator_A[0]"},{"label":"N/A","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_ReplacementCost_NotApplicableIndicator_A[0]"}]},
+        {"key":"agreed_value","label":"Agreed value","type":"radio_group","group":"agreed_value","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_AgreedValue_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_AgreedValue_NoIndicator_A[0]"},{"label":"N/A","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_AgreedValue_NotApplicableIndicator_A[0]"}]},
+        {"key":"coinsurance","label":"Coinsurance","type":"radio_group","group":"coinsurance","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_Coinsurance_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_Coinsurance_NoIndicator_A[0]"},{"label":"N/A","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_Coinsurance_NotApplicableIndicator_A[0]"}]},
+        {"key":"commercialproperty_premises_coinsurancepercent_a","label":"Coinsurance %","type":"number","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialProperty_Premises_CoinsurancePercent_A[0]"},
+        {"key":"equipment_breakdown","label":"Equipment breakdown","type":"radio_group","group":"equipment_breakdown","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_EquipmentBreakdown_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_EquipmentBreakdown_NoIndicator_A[0]"},{"label":"N/A","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_EquipmentBreakdown_NotApplicableIndicator_A[0]"}]},
+        {"key":"equipmentbreakdown_limitamount_a","label":"Equipment breakdown limit","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_EquipmentBreakdown_LimitAmount_A[0]"},
+        {"key":"equipmentbreakdown_deductibleamount_a","label":"Equipment breakdown deductible","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_EquipmentBreakdown_DeductibleAmount_A[0]"}
+      ]
+    },
+    {
+      "id": "ordinance_law_catastrophe",
+      "label": "Ordinance/Law, Earth Movement, Flood, Wind & Named Storm",
+      "fields": [
+        {"key":"earth_movement","label":"Earth movement","type":"radio_group","group":"earth_movement","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_EarthMovement_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_EarthMovement_NoIndicator_A[0]"},{"label":"N/A","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_EarthMovement_NotApplicableIndicator_A[0]"}]},
+        {"key":"earthmovement_limitamount_a","label":"Earth movement limit","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_EarthMovement_LimitAmount_A[0]"},
+        {"key":"earthmovement_deductibleamount_a","label":"Earth movement deductible","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_EarthMovement_DeductibleAmount_A[0]"},
+        {"key":"flood","label":"Flood","type":"radio_group","group":"flood","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_Flood_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_Flood_NoIndicator_A[0]"},{"label":"N/A","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_Flood_NotApplicableIndicator_A[0]"}]},
+        {"key":"flood_limitamount_a","label":"Flood limit","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_Flood_LimitAmount_A[0]"},
+        {"key":"flood_deductibleamount_a","label":"Flood deductible","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_Flood_DeductibleAmount_A[0]"},
+        {"key":"wind_hail_included","label":"Wind/hail included","type":"radio_group","group":"wind_hail_included","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_WindHail_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_WindHail_NoIndicator_A[0]"},{"label":"N/A","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_WindHail_NotApplicableIndicator_A[0]"}]},
+        {"key":"windhail_limitamount_a","label":"Wind/hail limit","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_WindHail_LimitAmount_A[0]"},
+        {"key":"windhail_deductibleamount_a","label":"Wind/hail deductible","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_WindHail_DeductibleAmount_A[0]"},
+        {"key":"named_storm_included","label":"Named storm included","type":"radio_group","group":"named_storm_included","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_NamedWindstorm_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialPropertyCoverage_NamedWindstorm_NoIndicator_A[0]"}]},
+        {"key":"namedwindstorm_limitamount_a","label":"Named storm limit","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_NamedWindstorm_LimitAmount_A[0]"},
+        {"key":"namedwindstorm_deductibleamount_a","label":"Named storm deductible","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].CommercialPropertyCoverage_NamedWindstorm_DeductibleAmount_A[0]"},
+        {"key":"waiver_of_subrogation","label":"Permission to waive subrogation in favor of mortgage holder prior to loss","type":"radio_group","group":"waiver_of_subrogation","priority":"common","options":[{"label":"Yes","pdf_field":"F[0].P1[0].CommercialProperty_SubrogationWaiver_YesIndicator_A[0]"},{"label":"No","pdf_field":"F[0].P1[0].CommercialProperty_SubrogationWaiver_NoIndicator_A[0]"},{"label":"N/A","pdf_field":"F[0].P1[0].CommercialProperty_SubrogationWaiver_NotApplicableIndicator_A[0]"}]}
+      ]
+    },
+    {
+      "id": "additional_interest",
+      "label": "Additional Interest / Lender",
+      "fields": [
+        {"key":"additionalinterest_interest_mortgageeindicator_a","label":"Mortgagee","type":"checkbox","priority":"core","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_Interest_MortgageeIndicator_A[0]"},
+        {"key":"additionalinterest_interest_lenderslosspayableindicator_a","label":"Lender's loss payable","type":"checkbox","priority":"core","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_Interest_LendersLossPayableIndicator_A[0]"},
+        {"key":"additionalinterest_interest_contractofsaleindicator_a","label":"Contract of sale","type":"checkbox","priority":"common","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_Interest_ContractOfSaleIndicator_A[0]"},
+        {"key":"additionalinterest_interest_otherindicator_a","label":"Other additional interest","type":"checkbox","priority":"rare","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_Interest_OtherIndicator_A[0]"},
+        {"key":"additionalinterest_interest_otherdescription_a","label":"Other additional interest description","type":"textarea","priority":"rare","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_Interest_OtherDescription_A[0]"},
+        {"key":"additionalinterest_fullname_a","label":"Additional interest name","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_FullName_A[0]"},
+        {"key":"additionalinterest_mailingaddress_lineone_a","label":"Additional interest address line 1","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_MailingAddress_LineOne_A[0]"},
+        {"key":"additionalinterest_mailingaddress_cityname_a","label":"Additional interest city","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_MailingAddress_CityName_A[0]"},
+        {"key":"additionalinterest_mailingaddress_stateorprovincecode_a","label":"Additional interest state","type":"state","priority":"core","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_MailingAddress_StateOrProvinceCode_A[0]"},
+        {"key":"additionalinterest_mailingaddress_postalcode_a","label":"Additional interest ZIP","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_MailingAddress_PostalCode_A[0]"},
+        {"key":"additionalinterest_fullname_b","label":"Lender servicing agent name","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_FullName_B[0]"},
+        {"key":"additionalinterest_mailingaddress_lineone_b","label":"Lender servicing agent address line 1","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_MailingAddress_LineOne_B[0]"},
+        {"key":"additionalinterest_mailingaddress_cityname_b","label":"Lender servicing agent city","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_MailingAddress_CityName_B[0]"},
+        {"key":"additionalinterest_mailingaddress_stateorprovincecode_b","label":"Lender servicing agent state","type":"state","priority":"common","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_MailingAddress_StateOrProvinceCode_B[0]"},
+        {"key":"additionalinterest_mailingaddress_postalcode_b","label":"Lender servicing agent ZIP","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].AdditionalInterest_MailingAddress_PostalCode_B[0]"}
+      ]
+    },
+    {
+      "id": "remarks_signature",
+      "label": "Remarks / Authorized Representative",
+      "fields": [
+        {"key":"remarks_a","label":"Remarks / special conditions","type":"textarea","priority":"common","required":false,"pdf_field":"F[0].P2[0].EvidenceOfCommercialPropertyInsurance_ACORDForm_RemarkText_A[0]"},
+        {"key":"producer_authorizedrepresentative_signature_a","label":"Authorized representative","type":"text","priority":"rare","required":false,"pdf_field":"F[0].P1[0].Producer_AuthorizedRepresentative_Signature_A[0]"}
+      ]
+    }
+  ],
+  "logic": {
+    "attach_to": "125",
+    "notes": "Draft core schema generated from Logan's uploaded fillable ACORD 28 PDF. The PDF contains 161 detected AcroForm entries. ACORD 28 is the Evidence of Commercial Property Insurance form; page 1 handles producer/insured/carrier/policy/property/coverage/additional interest and page 2 is remarks. Future expansion can add the remaining rare subject-to-different-provisions and ordinance/law limit/deductible fields."
+  }
+}

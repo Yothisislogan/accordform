@@ -1,0 +1,91 @@
+{
+  "_meta": {
+    "acord_number": "35",
+    "edition": "2011/09",
+    "title": "Cancellation Request / Policy Release",
+    "template_source": "Acord 35 - Cancellation Request _ Policy Release.pdf",
+    "field_name_prefix": "",
+    "total_pdf_fields": 100,
+    "checkbox_on_value": "1",
+    "checkbox_off_value": "Off",
+    "status": "DRAFT CORE FIELD MAP",
+    "category": "Commercial",
+    "keywords": "cancellation request policy release cancel nonrenew insured request not taken rewritten return premium"
+  },
+  "sections": [
+    {
+      "id": "producer_company_insured",
+      "label": "Producer, Company & Insured",
+      "fields": [
+        {"key":"form_completiondate_a","label":"Date completed","type":"date","priority":"core","required":true,"pdf_field":"F[0].P1[0].Form_CompletionDate_A[0]"},
+        {"key":"producer_cancellation_fullname_a","label":"Producer / agency name","type":"text","priority":"core","required":true,"pdf_field":"F[0].P1[0].Producer_Cancellation_FullName_A[0]"},
+        {"key":"producer_mailingaddress_lineone_a","label":"Producer address","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_MailingAddress_LineOne_A[0]"},
+        {"key":"producer_mailingaddress_cityname_a","label":"Producer city","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_MailingAddress_CityName_A[0]"},
+        {"key":"producer_mailingaddress_stateorprovincecode_a","label":"Producer state","type":"state","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_MailingAddress_StateOrProvinceCode_A[0]"},
+        {"key":"producer_mailingaddress_postalcode_a","label":"Producer ZIP","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_MailingAddress_PostalCode_A[0]"},
+        {"key":"producer_contactperson_phonenumber_a","label":"Producer phone","type":"phone","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_ContactPerson_PhoneNumber_A[0]"},
+        {"key":"insurer_produceridentifier_a","label":"Agency code","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Insurer_ProducerIdentifier_A[0]"},
+        {"key":"insurer_subproduceridentifier_a","label":"Sub code","type":"text","priority":"rare","required":false,"pdf_field":"F[0].P1[0].Insurer_SubProducerIdentifier_A[0]"},
+        {"key":"producer_customeridentifier_a","label":"Agency customer ID","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_CustomerIdentifier_A[0]"},
+        {"key":"insurer_fullname_a","label":"Company name","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].Insurer_FullName_A[0]"},
+        {"key":"insurer_naiccode_a","label":"NAIC code","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Insurer_NAICCode_A[0]"},
+        {"key":"policy_typedescription_a","label":"Policy type","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].Policy_TypeDescription_A[0]"},
+        {"key":"namedinsured_fullname_a","label":"Insured name","type":"text","priority":"core","required":true,"pdf_field":"F[0].P1[0].NamedInsured_FullName_A[0]"},
+        {"key":"namedinsured_mailingaddress_lineone_a","label":"Insured address","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].NamedInsured_MailingAddress_LineOne_A[0]"},
+        {"key":"namedinsured_mailingaddress_cityname_a","label":"Insured city","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].NamedInsured_MailingAddress_CityName_A[0]"},
+        {"key":"namedinsured_mailingaddress_stateorprovincecode_a","label":"Insured state","type":"state","priority":"common","required":false,"pdf_field":"F[0].P1[0].NamedInsured_MailingAddress_StateOrProvinceCode_A[0]"},
+        {"key":"namedinsured_mailingaddress_postalcode_a","label":"Insured ZIP","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].NamedInsured_MailingAddress_PostalCode_A[0]"}
+      ]
+    },
+    {
+      "id": "cancelled_policy",
+      "label": "Cancelled Policy Information",
+      "fields": [
+        {"key":"policy_policynumberidentifier_a","label":"Cancelled policy number","type":"text","priority":"core","required":true,"pdf_field":"F[0].P1[0].Policy_PolicyNumberIdentifier_A[0]"},
+        {"key":"cancelnonrenew_cancelnonrenewdate_a","label":"Cancellation date","type":"date","priority":"core","required":true,"pdf_field":"F[0].P1[0].CancelNonRenew_CancelNonRenewDate_A[0]"},
+        {"key":"cancelnonrenew_cancelnonrenewtime_a","label":"Cancellation time","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].CancelNonRenew_CancelNonRenewTime_A[0]"},
+        {"key":"cancelnonrenew_cancelnonrenewtimemorningindicator_a","label":"AM","type":"checkbox","priority":"common","required":false,"pdf_field":"F[0].P1[0].CancelNonRenew_CancelNonRenewTimeMorningIndicator_A[0]"},
+        {"key":"cancelnonrenew_cancelnonrenewtimeafternoonoreveningindicator_a","label":"PM","type":"checkbox","priority":"common","required":false,"pdf_field":"F[0].P1[0].CancelNonRenew_CancelNonRenewTimeAfternoonOrEveningIndicator_A[0]"},
+        {"key":"policy_effectivedate_a","label":"Policy effective date","type":"date","priority":"core","required":false,"pdf_field":"F[0].P1[0].Policy_EffectiveDate_A[0]"},
+        {"key":"policy_expirationdate_a","label":"Policy expiration date","type":"date","priority":"core","required":false,"pdf_field":"F[0].P1[0].Policy_ExpirationDate_A[0]"},
+        {"key":"cancellation_request_or_release","label":"Request type","type":"radio_group","group":"cancellation_request_or_release","priority":"core","options":[{"label":"Cancellation Request - policy attached","pdf_field":"F[0].P1[0].CancelNonRenew_CancellationRequestIndicator_A[0]"},{"label":"Policy Release - complete statement section","pdf_field":"F[0].P1[0].CancelNonRenew_PolicyReleaseIndicator_A[0]"}]}
+      ]
+    },
+    {
+      "id": "reason_and_premium",
+      "label": "Reason, Premium Calculation & Remarks",
+      "fields": [
+        {"key":"reason_for_cancellation","label":"Reason for cancellation","type":"radio_group","group":"reason_for_cancellation","priority":"core","options":[{"label":"Not Taken","pdf_field":"F[0].P1[0].CancelNonRenew_NotTakenIndicator_A[0]"},{"label":"Requested by Insured","pdf_field":"F[0].P1[0].CancelNonRenew_InsuredRequestIndicator_A[0]"},{"label":"Rewritten","pdf_field":"F[0].P1[0].CancelNonRenew_RewrittenIndicator_A[0]"},{"label":"Other","pdf_field":"F[0].P1[0].CancelNonRenew_OtherIndicator_A[0]"}]},
+        {"key":"cancelnonrenew_otherdescription_a","label":"Other reason description","type":"textarea","priority":"common","required":false,"pdf_field":"F[0].P1[0].CancelNonRenew_OtherDescription_A[0]"},
+        {"key":"cancelnonrenew_newinsurer_fullname_a","label":"Rewritten company","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].CancelNonRenew_NewInsurer_FullName_A[0]"},
+        {"key":"policy_policynumberidentifier_b","label":"Rewritten policy number","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Policy_PolicyNumberIdentifier_B[0]"},
+        {"key":"policy_effectivedate_b","label":"Rewritten effective date","type":"date","priority":"common","required":false,"pdf_field":"F[0].P1[0].Policy_EffectiveDate_B[0]"},
+        {"key":"premium_calculation_method","label":"Premium calculation method","type":"radio_group","group":"premium_calculation_method","priority":"core","options":[{"label":"Flat","pdf_field":"F[0].P1[0].CancelNonRenew_PremiumCalculation_FlatIndicator_A[0]"},{"label":"Short Rate","pdf_field":"F[0].P1[0].CancelNonRenew_PremiumCalculation_ShortRateIndicator_A[0]"},{"label":"Pro Rata","pdf_field":"F[0].P1[0].CancelNonRenew_PremiumCalculation_ProRataIndicator_A[0]"}]},
+        {"key":"cancelnonrenew_premiumcalculation_subjecttoauditindicator_a","label":"Premium calculation subject to audit","type":"checkbox","priority":"common","required":false,"pdf_field":"F[0].P1[0].CancelNonRenew_PremiumCalculation_SubjectToAuditIndicator_A[0]"},
+        {"key":"policy_payment_fulltermpremiumamount_a","label":"Full term premium","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].Policy_Payment_FullTermPremiumAmount_A[0]"},
+        {"key":"cancelnonrenew_premiumcalculation_unearnedfactor_a","label":"Unearned factor","type":"number","priority":"common","required":false,"pdf_field":"F[0].P1[0].CancelNonRenew_PremiumCalculation_UnearnedFactor_A[0]"},
+        {"key":"cancelnonrenew_premiumcalculation_returnpremiumamount_a","label":"Return premium","type":"currency","priority":"common","required":false,"pdf_field":"F[0].P1[0].CancelNonRenew_PremiumCalculation_ReturnPremiumAmount_A[0]"},
+        {"key":"cancelnonrenew_remarktext_a","label":"Remarks","type":"textarea","priority":"common","required":false,"pdf_field":"F[0].P1[0].CancelNonRenew_RemarkText_A[0]"}
+      ]
+    },
+    {
+      "id": "signatures_distribution",
+      "label": "Signatures & Distribution",
+      "fields": [
+        {"key":"namedinsured_signature_a","label":"Named insured signature","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].NamedInsured_Signature_A[0]"},
+        {"key":"namedinsured_signaturedate_a","label":"Named insured signature date","type":"date","priority":"core","required":false,"pdf_field":"F[0].P1[0].NamedInsured_SignatureDate_A[0]"},
+        {"key":"cancelnonrenew_distribution_fullname_a","label":"Distribution name","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].CancelNonRenew_Distribution_FullName_A[0]"},
+        {"key":"cancelnonrenew_distribution_insuredindicator_a","label":"Send to insured","type":"checkbox","priority":"common","required":false,"pdf_field":"F[0].P1[0].CancelNonRenew_Distribution_InsuredIndicator_A[0]"},
+        {"key":"cancelnonrenew_distribution_mortgageeindicator_a","label":"Send to mortgagee","type":"checkbox","priority":"common","required":false,"pdf_field":"F[0].P1[0].CancelNonRenew_Distribution_MortgageeIndicator_A[0]"},
+        {"key":"cancelnonrenew_distribution_lienholderindicator_a","label":"Send to lienholder","type":"checkbox","priority":"common","required":false,"pdf_field":"F[0].P1[0].CancelNonRenew_Distribution_LienholderIndicator_A[0]"},
+        {"key":"cancelnonrenew_distribution_companyindicator_a","label":"Send to company","type":"checkbox","priority":"common","required":false,"pdf_field":"F[0].P1[0].CancelNonRenew_Distribution_CompanyIndicator_A[0]"},
+        {"key":"cancelnonrenew_distribution_financecompanyindicator_a","label":"Send to finance company","type":"checkbox","priority":"common","required":false,"pdf_field":"F[0].P1[0].CancelNonRenew_Distribution_FinanceCompanyIndicator_A[0]"},
+        {"key":"producer_authorizedrepresentative_signature_a","label":"Producer signature","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].Producer_AuthorizedRepresentative_Signature_A[0]"},
+        {"key":"producer_authorizedrepresentative_signaturedate_a","label":"Producer signature date","type":"date","priority":"core","required":false,"pdf_field":"F[0].P1[0].Producer_AuthorizedRepresentative_SignatureDate_A[0]"}
+      ]
+    }
+  ],
+  "logic": {
+    "notes": "Draft core schema generated from Logan's uploaded fillable ACORD 35 PDF. The PDF contains 100 detected AcroForm entries. This first pass maps the high-use cancellation workflow: producer/company/insured, cancelled policy details, cancellation request versus policy release, cancellation reason, rewritten policy details, premium calculation, remarks, distribution, and key signatures."
+  }
+}
