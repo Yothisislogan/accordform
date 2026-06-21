@@ -1,8 +1,8 @@
 """WIT Forms — Flask application factory and routes.
 
 Wires together auth (M1), the PDF pipeline (M2), catalog/search/render (M3),
-preview + 3 actions (M4), profiles (M5), and field-usage tracking (M7).
-Phase-2 endpoints (drafts, NowCerts, admin re-tag) are stubbed with clean
+preview + local output actions (M4), profiles (M5), and field-usage tracking
+(M7). Phase-2 endpoints (drafts, NowCerts, admin re-tag) are stubbed with clean
 hooks — they return 501, they do not pretend to work.
 
 Run (dev):   python app.py
@@ -22,7 +22,6 @@ from flask import (
 import auth
 import db
 from config import load_config
-from email_service import EmailError, send_form_email
 from forms_catalog import (
     get_form, get_form_schema, search_forms, seed_catalog,
 )
@@ -50,8 +49,8 @@ def create_app(config=None) -> Flask:
         db.init_db(Path(app.config["DB_PATH"]))
         try:
             seed_catalog(db.get_db())
-        except Exception as e:  # malformed schema must fail loud — but not on a
-            app.logger.error("Catalog seed failed: %s", e)  # bare static asset.
+        except Exception as e:  # malformed schema must fail loud.
+            app.logger.error("Catalog seed failed: %s", e)
             raise
 
     _register_security(app)
@@ -100,11 +99,12 @@ def _register_routes(app: Flask) -> None:
     @app.route("/api/config")
     @auth.api_login_required
     def api_config():
-        # Non-secret client config: locked owner CC + csrf token.
+        # Non-secret client config. Email is local-download/user-owned email in Phase 1.
         return jsonify({
             "owner_cc_email": cfg.OWNER_CC_EMAIL,
             "csrf_token": session.get("csrf"),
-            "email_enabled": cfg.email_configured(),
+            "email_enabled": False,
+            "email_mode": "local_download",
         })
 
     # ---- Catalog + search (M3) ----
@@ -154,7 +154,7 @@ def _register_routes(app: Flask) -> None:
             return jsonify({"error": str(e)}), 400
         return jsonify(prof)
 
-    # ---- Preview + 3 actions (M4) ----
+    # ---- Preview + local output actions (M4) ----
     @app.route("/api/forms/<int:form_id>/preview", methods=["POST"])
     @auth.api_login_required
     def api_preview(form_id):
@@ -185,50 +185,11 @@ def _register_routes(app: Flask) -> None:
     @app.route("/api/forms/<int:form_id>/email", methods=["POST"])
     @auth.api_login_required
     def api_email(form_id):
-        body = request.get_json(silent=True) or {}
-        recipients = [r for r in (body.get("recipients") or []) if r and r.strip()]
-        if not recipients:
-            return jsonify({"error": "at least one recipient is required"}), 400
-
-        ctx = _prepare_fill(form_id)
-        if isinstance(ctx, tuple):
-            return ctx
-        schema, template, answers = ctx
-
-        try:
-            out = _output_path(form_id, "email")
-            _, result = produce_pdf(schema, template, answers, out,
-                                    flatten=True, pdftk_bin=cfg.PDFTK_BIN)
-        except PdfFillError as e:
-            return jsonify({"error": str(e)}), 500
-
-        title = schema["_meta"]["title"]
-        subject = body.get("subject") or f"Your {title} from We Insure Things"
-        message = body.get("message") or (
-            f"Attached is your {title}.\n\n— We Insure Things"
-        )
-        try:
-            # OWNER_CC is enforced inside send_form_email regardless of input.
-            sent = send_form_email(
-                to=recipients, subject=subject, body=message,
-                pdf_path=out,
-                pdf_filename=f"ACORD_{schema['_meta']['acord_number']}.pdf",
-                config=cfg,
-            )
-        except EmailError as e:
-            return jsonify({"error": str(e)}), 502
-
-        record_field_usage(db.get_db(), form_id, result.filled_keys, result.skipped_keys)
-        log_submission(
-            db.get_db(), user_id=auth.current_user_id(), form_id=form_id,
-            action="email", answers=answers,
-            recipient_emails=",".join(sent["to"]),
-            cc_emails=",".join(sent["cc"]), output_path=str(out),
-        )
-        app.logger.info("email sent form=%s to=%d cc=%d answers=%s",
-                        form_id, len(sent["to"]), len(sent["cc"]),
-                        mask_pii(answers))
-        return jsonify({"ok": True, "to": sent["to"], "cc": sent["cc"]})
+        # Server-side email is intentionally disabled. The Phase 1 flow is:
+        # generate a flattened PDF, download it, and let the user attach/send it
+        # from their own Gmail/Outlook/mail account. Keeping this endpoint as a
+        # download-compatible alias prevents stale UI/API clients from failing.
+        return _action(form_id, "download")
 
     # ---- Field usage (M7) / admin (Phase-2 hook) ----
     @app.route("/api/admin/field-usage/<int:form_id>")
@@ -318,6 +279,7 @@ def _register_routes(app: Flask) -> None:
 
 def _purge_old_outputs(out_dir: Path, retention_days: int) -> None:
     """Best-effort retention: delete generated PDFs older than the window.
+
     The submissions metadata row is kept regardless (spec §12)."""
     if retention_days <= 0:
         return
