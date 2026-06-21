@@ -80,11 +80,13 @@
     $("#preview-btn").addEventListener("click", onPreview);
     $("#download-btn").addEventListener("click", () => onAction("download"));
     $("#print-btn").addEventListener("click", () => onAction("print"));
-    $("#email-btn").addEventListener("click", onUseOwnEmail);
+    $("#email-btn").addEventListener("click", onUseOwnEmail);          // local download
+    $("#server-email-btn").addEventListener("click", openEmailDialog);  // owner-CC server send
     $("#save-profile-btn").addEventListener("click", openProfileDialog);
     $("#agency-select").addEventListener("change", () => applyProfile("agency"));
     $("#client-select").addEventListener("change", () => applyProfile("client"));
     wireProfileDialog();
+    wireEmailDialog();
   }
 
   function debounce(fn, ms) {
@@ -131,7 +133,38 @@
     const schema = state.schema;
     if (schema.insurers && schema.insurers.rows) form.append(renderInsurers(schema.insurers));
     for (const section of schema.sections) form.append(renderSection(section));
+    // ACORD 125 "Sections Attached" hub: a top-level block (a list, in the
+    // verified 125 schema) of checkbox+premium rows. Rendered + filled like
+    // everything else; emits flat pdf_field values.
+    if (schema.sections_attached) form.append(renderSectionsAttached(schema.sections_attached));
     refreshConditionalVisibility();
+  }
+
+  // Tolerant of the block being a bare list (verified 125) or an object wrapper.
+  function attachedRows(block) {
+    return Array.isArray(block) ? block : (block.rows || block.items || block.sections || []);
+  }
+
+  function renderSectionsAttached(block) {
+    const body = el("div", { class: "section-body" });
+    const table = el("table", { class: "insurer-table" });
+    table.append(el("tr", {}, el("th", {}, "Attach"), el("th", {}, "Section"), el("th", {}, "Premium")));
+    for (const row of attachedRows(block)) {
+      table.append(el("tr", {},
+        el("td", {}, el("input", { type: "checkbox", "data-attached-ind": row.indicator_pdf_field || "" })),
+        el("td", {}, (row.label || row.indicator_pdf_field || "") +
+          (row.attaches_form ? ` (ACORD ${row.attaches_form})` : "")),
+        el("td", {}, row.premium_pdf_field
+          ? el("input", { type: "text", inputmode: "decimal", placeholder: "$0",
+              "data-attached-prem": row.premium_pdf_field })
+          : el("span", { class: "muted" }, "—")),
+      ));
+    }
+    body.append(table);
+    return el("section", { class: "section", "data-section": "sections_attached" },
+      el("div", { class: "section-head" },
+        el("h3", {}, (Array.isArray(block) ? null : block.label) || "Sections Attached")),
+      body);
   }
 
   function renderInsurers(insurers) {
@@ -354,7 +387,89 @@
     return false;
   }
 
-  function payload() { return { answers: collectAnswers() }; }
+  // Integration contract (TEST-WIRE-UP §0): the front end resolves ALL schema
+  // logic and sends the backend a flat { relative_pdf_field: value } map
+  // (authoritative for filling). We also send the keyed `answers` so the server
+  // keeps doing validation, field-usage analytics, and the audit snapshot.
+  function payload() { return { answers: collectAnswers(), fields: collectFlatMap() }; }
+
+  const _truthy = (v) =>
+    v === true || ["1", "true", "yes", "y", "on", "checked"].includes(String(v).toLowerCase());
+
+  function fieldVisible(key) {
+    const dom = document.querySelector(`.field[data-field="${cssEscape(key)}"]`);
+    if (!dom) return true;
+    if (dom.style.display === "none") return false;
+    const inp = dom.querySelector("[data-key], [data-radio-group] input");
+    return !(inp && inp.disabled);
+  }
+
+  function collectFlatMap() {
+    const schema = state.schema;
+    const answers = collectAnswers();
+    const flat = {};
+
+    if (schema.insurers && schema.insurers.rows) {
+      const ins = answers._insurers || {};
+      for (const row of schema.insurers.rows) {
+        const info = ins[row.letter];
+        if (info && info.name) {
+          flat[row.name_pdf_field] = info.name;
+          if (row.naic_pdf_field && info.naic) flat[row.naic_pdf_field] = info.naic;
+        }
+      }
+    }
+
+    for (const section of schema.sections) {
+      if (section.optional_block) {
+        const tog = section.include_toggle;
+        if (!_truthy(answers[tog.key])) continue;            // excluded block: emit nothing
+        if (tog.pdf_field && tog.type === "checkbox") flat[tog.pdf_field] = String(tog.on_value || "1");
+      }
+      for (const f of section.fields) {
+        if (!fieldVisible(f.key)) continue;                  // hidden by show_if/reveal/off block
+        emitField(f, answers[f.key], flat);
+      }
+    }
+
+    if (schema.sections_attached) {
+      for (const row of attachedRows(schema.sections_attached)) {
+        const cb = document.querySelector(`[data-attached-ind="${cssEscape(row.indicator_pdf_field || "")}"]`);
+        if (cb && cb.checked && row.indicator_pdf_field) {
+          flat[row.indicator_pdf_field] = "1";
+          const prem = document.querySelector(`[data-attached-prem="${cssEscape(row.premium_pdf_field || "")}"]`);
+          if (prem && prem.value.trim() && row.premium_pdf_field) flat[row.premium_pdf_field] = prem.value.trim();
+        }
+      }
+    }
+    return flat;
+  }
+
+  // Mirror of backend pdf_fill.build_field_values, resolved client-side.
+  function emitField(f, v, flat) {
+    switch (f.type) {
+      case "checkbox":
+        if (_truthy(v)) flat[f.pdf_field] = String(f.on_value || "1");
+        break;
+      case "radio_group":
+        if (v !== undefined && v !== null && v !== "") {
+          for (const opt of f.options) {
+            const on = String(opt.label) === String(v) || String(opt.value) === String(v);
+            flat[opt.pdf_field] = on ? String(opt.on_value || "1") : "Off";
+          }
+        }
+        break;
+      case "yn_code":
+        if (v) flat[f.pdf_field] = String(v).toUpperCase().startsWith("Y") ? "Y" : "N";
+        break;
+      case "insurer_ref":
+        if (v) flat[f.pdf_field] = String(v).trim().toUpperCase();
+        break;
+      default:
+        if (v !== undefined && v !== null && String(v).trim() !== "")
+          flat[f.pdf_field] = String(v).trim();
+    }
+  }
 
   async function onPreview() {
     setBusy(true);
@@ -417,8 +532,43 @@
   function fileName() { return `ACORD_${state.schema._meta.acord_number}.pdf`; }
 
   function setBusy(b) {
-    ["#preview-btn", "#download-btn", "#print-btn", "#email-btn"].forEach((s) => ($(s).disabled = b));
+    ["#preview-btn", "#download-btn", "#print-btn", "#email-btn", "#server-email-btn"]
+      .forEach((s) => ($(s).disabled = b));
   }
+
+  // ---- Server-email dialog (owner CC enforced server-side) ----
+  function openEmailDialog() {
+    $("#email-cc").value = (state.config.owner_cc_email || "") + " (locked)";
+    $("#email-to").value = "";
+    $("#email-message").value = "";
+    const err = $("#email-error"); err.classList.add("hidden");
+    if (!state.config.email_enabled) {
+      err.textContent = "Server email isn't configured yet (TODO from Logan). Use \"Use my email\" instead.";
+      err.classList.remove("hidden");
+    }
+    $("#email-dialog").showModal();
+  }
+
+  function wireEmailDialog() {
+    $("#email-form").addEventListener("submit", async (e) => {
+      if (!e.submitter || e.submitter.value !== "send") return;  // cancel just closes
+      e.preventDefault();
+      const recipients = $("#email-to").value.split(",").map((s) => s.trim()).filter(Boolean);
+      if (!recipients.length) { showEmailError("Add at least one recipient."); return; }
+      try {
+        const res = await api(`/api/forms/${state.formId}/email`, {
+          method: "POST",
+          body: JSON.stringify({ ...payload(), recipients, message: $("#email-message").value }),
+        });
+        const d = await res.json().catch(() => ({}));
+        if (res.status === 422) { $("#email-dialog").close(); showValidation(d.fields); return; }
+        if (!res.ok) { showEmailError(d.error || res.statusText); return; }
+        $("#email-dialog").close();
+        toast(`Emailed to ${d.to.join(", ")} (cc ${d.cc.join(", ") || "—"})`, "success");
+      } catch (err) { showEmailError(err.message); }
+    });
+  }
+  function showEmailError(msg) { const e = $("#email-error"); e.textContent = msg; e.classList.remove("hidden"); }
 
   function openProfileDialog() { $("#profile-name").value = ""; $("#profile-dialog").showModal(); }
 

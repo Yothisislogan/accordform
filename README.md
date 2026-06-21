@@ -29,6 +29,31 @@ The frontend never hardcodes a form layout — it renders whatever the schema
 says. See `schemas/acord_25.json` for the complete, verified pattern every other
 form must follow, and the **Schema contract** section below.
 
+### The integration contract (front end resolves logic, backend stays dumb)
+
+Per TEST-WIRE-UP §0: the SPA resolves every logic construct (`radio_group`,
+`insurer_ref`, `yn_code`, `optional_block`, `show_if`, the 125
+`sections_attached` hub) and POSTs the backend a flat `{ relative_pdf_field:
+value }` map (authoritative for filling). The backend builds the full AcroForm
+name and fills:
+
+```
+full = field_name_prefix + (page token if _meta.page_token_pattern) + relative_pdf_field
+```
+
+`fill_pdf._resolve_pdf_data` then maps that onto the template's real field names,
+so editions that nest fields by page (e.g. `P2[0].…`) resolve generically.
+`preview|download|email` accept `{ "fields": {…} }` plus, optionally,
+`{ "answers": {…} }` (keyed) — when present the server still runs validation,
+field-usage analytics, and the audit snapshot. The SPA sends both; a flat-map-
+only POST also works (the contract's acceptance test). See
+`pdf_fill.build_full_field_name` / `flat_map_to_pdf_data`.
+
+**Final actions:** Preview, Download, Print, **Use my email** (local download —
+attach from your own client, no server send) and **Send via server…**
+(server-side email with the owner address always CC'd). Both are kept; every
+download/print/email writes an audit row.
+
 ### The verified PDF pipeline (do not redesign)
 
 Real ACORD PDFs are **XFA + owner-password encrypted**. Filling only the
