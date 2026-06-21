@@ -159,6 +159,45 @@ def _write_field(f: dict, answers: dict, put, res: FillResult) -> None:
         res.skipped_keys.append(key)
 
 
+import re as _re
+
+_PAGE_TOKEN_RE = _re.compile(r"^P\d+\[\d+\]\.")
+
+
+def build_full_field_name(meta: dict, relative: str, page: int | None = None) -> str:
+    """Resolve a relative pdf_field to its full AcroForm name (flat-map contract).
+
+    full = field_name_prefix + (page token if _meta.page_token_pattern set and the
+    relative name lacks one) + relative
+
+    In our schemas the page token is baked into the prefix (ACORD 25), baked into
+    the relative name (128/131), or absent (135 NC) — so this is usually just
+    prefix + relative. fill_pdf's _resolve_pdf_data then maps the result onto the
+    template's real field names, covering any remaining page-token differences.
+    """
+    prefix = meta.get("field_name_prefix", "") or ""
+    pattern = meta.get("page_token_pattern")
+    token = ""
+    if pattern and not _PAGE_TOKEN_RE.match(relative):
+        token = str(pattern).replace("{n}", str(page if page is not None else 1))
+    return prefix + token + relative
+
+
+def flat_map_to_pdf_data(meta: dict, flat_fields: dict) -> dict[str, str]:
+    """Convert a front-end flat { relative_pdf_field: value } map into the
+    { full_pdf_field: value } dict the filler writes. Empty values are dropped;
+    explicit "Off" (radio/checkbox off-states) is preserved."""
+    out: dict[str, str] = {}
+    for rel, val in (flat_fields or {}).items():
+        if val is None:
+            continue
+        sval = str(val)
+        if sval == "" and sval != CHECKBOX_OFF:
+            continue
+        out[build_full_field_name(meta, rel)] = sval
+    return out
+
+
 def _logical_suffix(field_name: str) -> str:
     """Return the logical ACORD field tail after the outer F[0]. prefix.
 
@@ -239,11 +278,23 @@ def flatten_pdf(in_path: str | Path, out_path: str | Path,
     return out_path
 
 
-def produce_pdf(schema: dict, clean_template_path: str | Path, answers: dict,
-                out_path: str | Path, *, flatten: bool = True,
-                pdftk_bin: str = "pdftk") -> tuple[Path, FillResult]:
-    """End-to-end: map answers -> fill -> optionally flatten."""
-    result = build_field_values(schema, answers)
+def produce_pdf(schema: dict, clean_template_path: str | Path,
+                answers: dict | None = None, out_path: str | Path = "",
+                *, pdf_data: dict[str, str] | None = None,
+                flatten: bool = True, pdftk_bin: str = "pdftk"
+                ) -> tuple[Path, FillResult]:
+    """End-to-end: (resolve ->) fill -> optionally flatten.
+
+    Provide EITHER `pdf_data` (a pre-resolved { full_pdf_field: value } map — the
+    flat-map contract, where the front end resolved all logic) or `answers`
+    (keyed; resolved here via build_field_values — the back-compat path). In both
+    cases fill_pdf's _resolve_pdf_data maps names onto the real template fields,
+    so page-token differences are handled uniformly.
+    """
+    if pdf_data is not None:
+        result = FillResult(pdf_data=dict(pdf_data))
+    else:
+        result = build_field_values(schema, answers or {})
     out_path = Path(out_path)
 
     if not flatten:

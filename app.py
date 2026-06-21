@@ -25,7 +25,9 @@ from config import load_config
 from forms_catalog import (
     get_form, get_form_schema, search_forms, seed_catalog,
 )
-from pdf_fill import PdfFillError, produce_pdf
+from pdf_fill import (
+    PdfFillError, build_field_values, flat_map_to_pdf_data, produce_pdf,
+)
 from profiles import apply_profiles, get_profile, list_profiles, save_profile
 from submissions import (
     field_usage_stats, log_submission, mask_pii, record_field_usage,
@@ -159,12 +161,13 @@ def _register_routes(app: Flask) -> None:
     @auth.api_login_required
     def api_preview(form_id):
         ctx = _prepare_fill(form_id)
-        if isinstance(ctx, tuple):  # (error_json, status)
+        if not isinstance(ctx, dict):  # error (response, status)
             return ctx
-        schema, template, answers = ctx
+        schema = ctx["schema"]
         try:
             out = _output_path(form_id, "preview")
-            produce_pdf(schema, template, answers, out, flatten=True,
+            produce_pdf(schema, ctx["template"], out_path=out,
+                        pdf_data=_fill_data(ctx), flatten=True,
                         pdftk_bin=cfg.PDFTK_BIN)
         except PdfFillError as e:
             return jsonify({"error": str(e)}), 500
@@ -185,6 +188,51 @@ def _register_routes(app: Flask) -> None:
     @app.route("/api/forms/<int:form_id>/email", methods=["POST"])
     @auth.api_login_required
     def api_email(form_id):
+        body = request.get_json(silent=True) or {}
+        recipients = [r for r in (body.get("recipients") or []) if r and r.strip()]
+        if not recipients:
+            return jsonify({"error": "at least one recipient is required"}), 400
+
+        ctx = _prepare_fill(form_id)
+        if not isinstance(ctx, dict):
+            return ctx
+        schema = ctx["schema"]
+
+        try:
+            out = _output_path(form_id, "email")
+            produce_pdf(schema, ctx["template"], out_path=out,
+                        pdf_data=_fill_data(ctx), flatten=True,
+                        pdftk_bin=cfg.PDFTK_BIN)
+        except PdfFillError as e:
+            return jsonify({"error": str(e)}), 500
+
+        title = schema["_meta"]["title"]
+        subject = body.get("subject") or f"Your {title} from We Insure Things"
+        message = body.get("message") or (
+            f"Attached is your {title}.\n\n— We Insure Things"
+        )
+        try:
+            # OWNER_CC is enforced inside send_form_email regardless of input.
+            sent = send_form_email(
+                to=recipients, subject=subject, body=message,
+                pdf_path=out,
+                pdf_filename=f"ACORD_{schema['_meta']['acord_number']}.pdf",
+                config=cfg,
+            )
+        except EmailError as e:
+            return jsonify({"error": str(e)}), 502
+
+        _record_usage(ctx, form_id)
+        log_submission(
+            db.get_db(), user_id=auth.current_user_id(), form_id=form_id,
+            action="email", answers=ctx["answers"],
+            recipient_emails=",".join(sent["to"]),
+            cc_emails=",".join(sent["cc"]), output_path=str(out),
+        )
+        app.logger.info("email sent form=%s to=%d cc=%d answers=%s",
+                        form_id, len(sent["to"]), len(sent["cc"]),
+                        mask_pii(ctx["answers"]))
+        return jsonify({"ok": True, "to": sent["to"], "cc": sent["cc"]})
         # Server-side email is intentionally disabled. The Phase 1 flow is:
         # generate a flattened PDF, download it, and let the user attach/send it
         # from their own Gmail/Outlook/mail account. Keeping this endpoint as a
@@ -216,21 +264,36 @@ def _register_routes(app: Flask) -> None:
 
     # ---- Shared helpers (closures over cfg) ----
     def _prepare_fill(form_id):
+        """Validate + locate template. Returns a CONTEXT DICT on success, or a
+        Flask (response, status) tuple on error.
+
+        Accepts the flat-map contract (TEST-WIRE-UP §0): the front end resolves
+        all schema logic and sends `fields` = { relative_pdf_field: value }
+        (authoritative for filling). Keyed `answers` remain optional and drive
+        server-side validation, field-usage analytics, and the audit snapshot.
+        """
         schema = get_form_schema(db.get_db(), form_id)
         if not schema:
             return jsonify({"error": "form not found"}), 404
         body = request.get_json(silent=True) or {}
-        answers = body.get("answers", {}) or {}
+        has_answers = "answers" in body          # distinguishes {} from absent
+        answers = body.get("answers") or {}
+        flat = body.get("fields")  # flat {relative_pdf_field: value} map
 
-        # Merge selected profiles (agency/client) before validating/filling.
+        # Merge selected profiles into the keyed answers (validation/usage view).
         profile_ids = body.get("profile_ids") or []
         profs = [p for p in (get_profile(db.get_db(), pid) for pid in profile_ids) if p]
-        if profs:
+        if profs and answers:
             answers = apply_profiles(schema, answers, profs)
 
-        errors = validate_answers(schema, answers)
-        if errors:
-            return jsonify({"error": "validation failed", "fields": errors}), 422
+        # Server-side validation runs whenever the client sends keyed answers
+        # (defense in depth — the SPA always does). A flat-map-ONLY POST skips it.
+        if has_answers:
+            errors = validate_answers(schema, answers)
+            if errors:
+                return jsonify({"error": "validation failed", "fields": errors}), 422
+        elif flat is None:
+            return jsonify({"error": "no answers or fields provided"}), 400
 
         form = get_form(db.get_db(), form_id)
         template = Path(form["template_path"])
@@ -244,26 +307,44 @@ def _register_routes(app: Flask) -> None:
                     f"{schema['_meta']['acord_number']} PDF first."
                 )
             }), 503
-        return schema, str(template), answers
+        return {"schema": schema, "template": str(template),
+                "answers": answers, "flat": flat}
+
+    def _fill_data(ctx):
+        """Authoritative fill data: the flat map when present (front end resolved
+        the logic), else resolve the keyed answers server-side (back-compat). In
+        both cases fill_pdf's page-token resolver maps names to the template."""
+        if ctx["flat"] is not None:
+            return flat_map_to_pdf_data(ctx["schema"]["_meta"], ctx["flat"])
+        return build_field_values(ctx["schema"], ctx["answers"]).pdf_data
+
+    def _record_usage(ctx, form_id):
+        """field_usage is keyed by field_key, so derive it from the keyed
+        answers (the flat map has no keys). No-op for flat-map-only POSTs."""
+        if not ctx["answers"]:
+            return
+        res = build_field_values(ctx["schema"], ctx["answers"])
+        record_field_usage(db.get_db(), form_id, res.filled_keys, res.skipped_keys)
 
     def _action(form_id, action):
         ctx = _prepare_fill(form_id)
-        if isinstance(ctx, tuple):
+        if not isinstance(ctx, dict):
             return ctx
-        schema, template, answers = ctx
+        schema = ctx["schema"]
         try:
             out = _output_path(form_id, action)
-            _, result = produce_pdf(schema, template, answers, out,
-                                    flatten=True, pdftk_bin=cfg.PDFTK_BIN)
+            produce_pdf(schema, ctx["template"], out_path=out,
+                        pdf_data=_fill_data(ctx), flatten=True,
+                        pdftk_bin=cfg.PDFTK_BIN)
         except PdfFillError as e:
             return jsonify({"error": str(e)}), 500
 
-        record_field_usage(db.get_db(), form_id, result.filled_keys, result.skipped_keys)
+        _record_usage(ctx, form_id)
         log_submission(
             db.get_db(), user_id=auth.current_user_id(), form_id=form_id,
-            action=action, answers=answers, output_path=str(out),
+            action=action, answers=ctx["answers"], output_path=str(out),
         )
-        app.logger.info("%s form=%s answers=%s", action, form_id, mask_pii(answers))
+        app.logger.info("%s form=%s answers=%s", action, form_id, mask_pii(ctx["answers"]))
         return send_file(
             out, mimetype="application/pdf", as_attachment=(action == "download"),
             download_name=f"ACORD_{schema['_meta']['acord_number']}.pdf",
