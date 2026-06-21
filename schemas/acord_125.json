@@ -1,0 +1,196 @@
+{
+  "_meta": {
+    "acord_number": "125",
+    "edition": "2013/09",
+    "title": "Commercial Insurance Application — Applicant Information Section",
+    "template_source": "Acord 125 - Commercial Insurance Application - Applicant Information Section.pdf",
+    "field_name_prefix": "F[0].",
+    "total_pdf_fields": 550,
+    "checkbox_on_value": "1",
+    "checkbox_off_value": "Off",
+    "status": "HAND-VERIFIED CORE",
+    "description": "ACORD 125 commercial application hub. This schema contains the app-proof core fields plus the Sections Attached hub. Long-tail page 2-4 fields can be expanded from Logan's full 550-field map."
+  },
+  "sections": [
+    {
+      "id": "producer",
+      "label": "Producer / Agency",
+      "prefill_from": "agency",
+      "fields": [
+        {"key":"producer_fullname_a0","label":"Agency name","type":"text","priority":"core","required":true,"pdf_field":"Producer_FullName_A[0]"},
+        {"key":"producer_mailingaddress_lineone_a0","label":"Agency address","type":"text","priority":"core","required":false,"pdf_field":"Producer_MailingAddress_LineOne_A[0]"},
+        {"key":"producer_mailingaddress_cityname_a0","label":"Agency city","type":"text","priority":"core","required":false,"pdf_field":"Producer_MailingAddress_CityName_A[0]"},
+        {"key":"producer_mailingaddress_stateorprovincecode_a0","label":"Agency state","type":"state","priority":"core","required":false,"pdf_field":"Producer_MailingAddress_StateOrProvinceCode_A[0]"},
+        {"key":"producer_mailingaddress_postalcode_a0","label":"Agency ZIP","type":"text","priority":"core","required":false,"pdf_field":"Producer_MailingAddress_PostalCode_A[0]"},
+        {"key":"producer_contactperson_fullname_a0","label":"Contact name","type":"text","priority":"core","required":false,"pdf_field":"Producer_ContactPerson_FullName_A[0]"},
+        {"key":"producer_contactperson_phonenumber_a0","label":"Contact phone","type":"phone","priority":"core","required":false,"pdf_field":"Producer_ContactPerson_PhoneNumber_A[0]"},
+        {"key":"producer_contactperson_emailaddress_a0","label":"Contact email","type":"email","priority":"core","required":false,"pdf_field":"Producer_ContactPerson_EmailAddress_A[0]"},
+        {"key":"producer_customeridentifier_a0","label":"Agency customer ID","type":"text","priority":"rare","required":false,"pdf_field":"Producer_CustomerIdentifier_A[0]"},
+        {"key":"form_completiondate_a0","label":"Date completed","type":"date","priority":"core","required":true,"pdf_field":"Form_CompletionDate_A[0]"}
+      ]
+    },
+    {
+      "id": "carrier",
+      "label": "Carrier",
+      "fields": [
+        {"key":"insurer_fullname_a0","label":"Carrier name","type":"text","priority":"common","required":false,"pdf_field":"Insurer_FullName_A[0]"},
+        {"key":"insurer_naiccode_a0","label":"Carrier NAIC code","type":"text","priority":"common","required":false,"pdf_field":"Insurer_NAICCode_A[0]"},
+        {"key":"insurer_productdescription_a0","label":"Company policy or program name","type":"textarea","priority":"common","required":false,"pdf_field":"Insurer_ProductDescription_A[0]"},
+        {"key":"insurer_productcode_a0","label":"Program code","type":"text","priority":"common","required":false,"pdf_field":"Insurer_ProductCode_A[0]"},
+        {"key":"policy_policynumberidentifier_a0","label":"Policy number","type":"text","priority":"common","required":false,"pdf_field":"Policy_PolicyNumberIdentifier_A[0]"},
+        {"key":"insurer_underwriter_fullname_a0","label":"Underwriter","type":"text","priority":"common","required":false,"pdf_field":"Insurer_Underwriter_FullName_A[0]"},
+        {"key":"insurer_underwriter_officeidentifier_a0","label":"Underwriter office","type":"text","priority":"common","required":false,"pdf_field":"Insurer_Underwriter_OfficeIdentifier_A[0]"}
+      ]
+    },
+    {
+      "id": "transaction",
+      "label": "Status of Transaction",
+      "fields": [
+        {"key":"transaction_status","label":"Status of transaction","type":"radio_group","group":"txn_status","priority":"common","options":[
+          {"label":"Quote","pdf_field":"Policy_Status_QuoteIndicator_A[0]"},
+          {"label":"Issue Policy","pdf_field":"Policy_Status_IssueIndicator_A[0]"},
+          {"label":"Renew","pdf_field":"Policy_Status_RenewIndicator_A[0]"},
+          {"label":"Bound","pdf_field":"Policy_Status_BoundIndicator_A[0]"},
+          {"label":"Change","pdf_field":"Policy_Status_ChangeIndicator_A[0]"},
+          {"label":"Cancel","pdf_field":"Policy_Status_CancelIndicator_A[0]"}
+        ]},
+        {"key":"policy_status_effectivedate_a0","label":"Bound/change/cancel effective date","type":"date","priority":"rare","required":false,"pdf_field":"Policy_Status_EffectiveDate_A[0]"},
+        {"key":"policy_status_effectivetime_a0","label":"Bound/change/cancel effective time","type":"text","priority":"rare","required":false,"pdf_field":"Policy_Status_EffectiveTime_A[0]"},
+        {"key":"policy_status_effectivetimeamindicator_a0","label":"AM","type":"checkbox","priority":"rare","required":false,"pdf_field":"Policy_Status_EffectiveTimeAMIndicator_A[0]"},
+        {"key":"policy_status_effectivetimepmindicator_a0","label":"PM","type":"checkbox","priority":"rare","required":false,"pdf_field":"Policy_Status_EffectiveTimePMIndicator_A[0]"}
+      ]
+    },
+    {
+      "id": "sections_attached",
+      "label": "Sections Attached",
+      "fields": [
+        {"key":"section_attached_general_liability","label":"General Liability","type":"checkbox","priority":"common","required":false,"pdf_field":"Policy_SectionAttached_GeneralLiabilityIndicator_A[0]","attaches_form":"126"},
+        {"key":"section_premium_general_liability","label":"General Liability premium","type":"currency","priority":"common","required":false,"pdf_field":"GeneralLiabilityLineOfBusiness_TotalPremiumAmount_A[0]","show_if":"section_attached_general_liability"},
+        {"key":"section_attached_business_auto","label":"Business Auto","type":"checkbox","priority":"common","required":false,"pdf_field":"Policy_SectionAttached_BusinessAutoIndicator_A[0]","attaches_form":"127"},
+        {"key":"section_premium_business_auto","label":"Business Auto premium","type":"currency","priority":"common","required":false,"pdf_field":"CommercialVehicleLineOfBusiness_PremiumAmount_A[0]","show_if":"section_attached_business_auto"},
+        {"key":"section_attached_property","label":"Property","type":"checkbox","priority":"common","required":false,"pdf_field":"Policy_SectionAttached_PropertyIndicator_A[0]","attaches_form":"140"},
+        {"key":"section_premium_property","label":"Property premium","type":"currency","priority":"common","required":false,"pdf_field":"CommercialPropertyLineOfBusiness_PremiumAmount_A[0]","show_if":"section_attached_property"},
+        {"key":"section_attached_crime","label":"Crime","type":"checkbox","priority":"common","required":false,"pdf_field":"Policy_SectionAttached_CrimeIndicator_A[0]","attaches_form":"141"},
+        {"key":"section_premium_crime","label":"Crime premium","type":"currency","priority":"common","required":false,"pdf_field":"CrimeLineOfBusiness_PremiumAmount_A[0]","show_if":"section_attached_crime"},
+        {"key":"section_attached_umbrella","label":"Umbrella","type":"checkbox","priority":"common","required":false,"pdf_field":"Policy_SectionAttached_UmbrellaIndicator_A[0]","attaches_form":"131"},
+        {"key":"section_premium_umbrella","label":"Umbrella premium","type":"currency","priority":"common","required":false,"pdf_field":"CommercialUmbrellaLineOfBusiness_PremiumAmount_A[0]","show_if":"section_attached_umbrella"},
+        {"key":"section_attached_garage_and_dealers","label":"Garage and Dealers","type":"checkbox","priority":"common","required":false,"pdf_field":"Policy_SectionAttached_GarageAndDealersIndicator_A[0]","attaches_form":"128"},
+        {"key":"section_premium_garage_and_dealers","label":"Garage and Dealers premium","type":"currency","priority":"common","required":false,"pdf_field":"GarageAndDealersLineOfBusiness_PremiumAmount_A[0]","show_if":"section_attached_garage_and_dealers"},
+        {"key":"section_attached_dealers","label":"Dealers","type":"checkbox","priority":"rare","required":false,"pdf_field":"Policy_SectionAttached_DealerIndicator_A[0]","attaches_form":"128"},
+        {"key":"section_premium_dealers","label":"Dealers premium","type":"currency","priority":"rare","required":false,"pdf_field":"DealersLineOfBusiness_PremiumAmount_A[0]","show_if":"section_attached_dealers"},
+        {"key":"section_attached_business_owners","label":"Business Owners","type":"checkbox","priority":"common","required":false,"pdf_field":"Policy_PolicyType_BusinessOwnersIndicator_A[0]"},
+        {"key":"section_premium_business_owners","label":"Business Owners premium","type":"currency","priority":"common","required":false,"pdf_field":"BusinessOwnersLineOfBusiness_PremiumAmount_A[0]","show_if":"section_attached_business_owners"},
+        {"key":"section_attached_equipment_floater","label":"Equipment Floater","type":"checkbox","priority":"rare","required":false,"pdf_field":"Policy_SectionAttached_EquipmentFloaterIndicator_A[0]"},
+        {"key":"section_premium_equipment_floater","label":"Equipment Floater premium","type":"currency","priority":"rare","required":false,"pdf_field":"EquipmentFloaterLineOfBusiness_PremiumAmount_A[0]","show_if":"section_attached_equipment_floater"},
+        {"key":"section_attached_transportation_motor_truck_cargo","label":"Transportation / Motor Truck Cargo","type":"checkbox","priority":"rare","required":false,"pdf_field":"Policy_SectionAttached_TransportationIndicator_A[0]"},
+        {"key":"section_premium_transportation_motor_truck_cargo","label":"Transportation / Motor Truck Cargo premium","type":"currency","priority":"rare","required":false,"pdf_field":"TransportationLineOfBusiness_PremiumAmount_A[0]","show_if":"section_attached_transportation_motor_truck_cargo"}
+      ]
+    },
+    {
+      "id": "policy_info",
+      "label": "Policy Information",
+      "fields": [
+        {"key":"policy_effectivedate_a0","label":"Proposed effective date","type":"date","priority":"common","required":false,"pdf_field":"Policy_EffectiveDate_A[0]"},
+        {"key":"policy_expirationdate_a0","label":"Proposed expiration date","type":"date","priority":"common","required":false,"pdf_field":"Policy_ExpirationDate_A[0]"},
+        {"key":"policy_payment_directbillindicator_a0","label":"Direct bill","type":"checkbox","priority":"rare","required":false,"pdf_field":"Policy_Payment_DirectBillIndicator_A[0]"},
+        {"key":"policy_payment_producerbillindicator_a0","label":"Agency bill","type":"checkbox","priority":"rare","required":false,"pdf_field":"Policy_Payment_ProducerBillIndicator_A[0]"},
+        {"key":"policy_payment_paymentschedulecode_a0","label":"Billing/payment plan","type":"text","priority":"rare","required":false,"pdf_field":"Policy_Payment_PaymentScheduleCode_A[0]"},
+        {"key":"policy_paymentmethod_methoddescription_a0","label":"Method of payment","type":"textarea","priority":"rare","required":false,"pdf_field":"Policy_PaymentMethod_MethodDescription_A[0]"},
+        {"key":"policy_audit_frequencycode_a0","label":"Audit frequency","type":"text","priority":"rare","required":false,"pdf_field":"Policy_Audit_FrequencyCode_A[0]"},
+        {"key":"policy_payment_depositamount_a0","label":"Deposit","type":"currency","priority":"rare","required":false,"pdf_field":"Policy_Payment_DepositAmount_A[0]"},
+        {"key":"policy_payment_minimumpremiumamount_a0","label":"Minimum premium","type":"currency","priority":"rare","required":false,"pdf_field":"Policy_Payment_MinimumPremiumAmount_A[0]"},
+        {"key":"policy_payment_estimatedtotalamount_a0","label":"Policy premium","type":"currency","priority":"rare","required":false,"pdf_field":"Policy_Payment_EstimatedTotalAmount_A[0]"}
+      ]
+    },
+    {
+      "id": "applicant",
+      "label": "Applicant / First Named Insured",
+      "prefill_from": "client",
+      "fields": [
+        {"key":"namedinsured_fullname_a0","label":"Named insured","type":"text","priority":"core","required":true,"pdf_field":"NamedInsured_FullName_A[0]"},
+        {"key":"namedinsured_mailingaddress_lineone_a0","label":"Mailing address","type":"text","priority":"core","required":true,"pdf_field":"NamedInsured_MailingAddress_LineOne_A[0]"},
+        {"key":"namedinsured_mailingaddress_cityname_a0","label":"City","type":"text","priority":"core","required":true,"pdf_field":"NamedInsured_MailingAddress_CityName_A[0]"},
+        {"key":"namedinsured_mailingaddress_stateorprovincecode_a0","label":"State","type":"state","priority":"core","required":true,"pdf_field":"NamedInsured_MailingAddress_StateOrProvinceCode_A[0]"},
+        {"key":"namedinsured_mailingaddress_postalcode_a0","label":"ZIP","type":"text","priority":"core","required":true,"pdf_field":"NamedInsured_MailingAddress_PostalCode_A[0]"},
+        {"key":"namedinsured_taxidentifier_a0","label":"FEIN or Social Security number","type":"text","priority":"core","required":false,"pdf_field":"NamedInsured_TaxIdentifier_A[0]"},
+        {"key":"namedinsured_primary_phonenumber_a0","label":"Business phone","type":"phone","priority":"core","required":false,"pdf_field":"NamedInsured_Primary_PhoneNumber_A[0]"},
+        {"key":"namedinsured_primary_websiteaddress_a0","label":"Website address","type":"text","priority":"common","required":false,"pdf_field":"NamedInsured_Primary_WebsiteAddress_A[0]"},
+        {"key":"namedinsured_generalliabilitycode_a0","label":"GL code","type":"text","priority":"common","required":false,"pdf_field":"NamedInsured_GeneralLiabilityCode_A[0]"},
+        {"key":"namedinsured_siccode_a0","label":"SIC code","type":"text","priority":"common","required":false,"pdf_field":"NamedInsured_SICCode_A[0]"},
+        {"key":"namedinsured_naicscode_a0","label":"NAICS code","type":"text","priority":"common","required":false,"pdf_field":"NamedInsured_NAICSCode_A[0]"},
+        {"key":"entity_type","label":"Legal entity type","type":"radio_group","group":"ni_entity_A","priority":"common","options":[
+          {"label":"Corporation","pdf_field":"NamedInsured_LegalEntity_CorporationIndicator_A[0]"},
+          {"label":"Individual","pdf_field":"NamedInsured_LegalEntity_IndividualIndicator_A[0]"},
+          {"label":"Partnership","pdf_field":"NamedInsured_LegalEntity_PartnershipIndicator_A[0]"},
+          {"label":"LLC","pdf_field":"NamedInsured_LegalEntity_LimitedLiabilityCorporationIndicator_A[0]"},
+          {"label":"Joint Venture","pdf_field":"NamedInsured_LegalEntity_JointVentureIndicator_A[0]"},
+          {"label":"Not For Profit","pdf_field":"NamedInsured_LegalEntity_NotForProfitIndicator_A[0]"},
+          {"label":"Subchapter S","pdf_field":"NamedInsured_LegalEntity_SubchapterSCorporationIndicator_A[0]"},
+          {"label":"Trust","pdf_field":"NamedInsured_LegalEntity_TrustIndicator_A[0]"},
+          {"label":"Other","pdf_field":"NamedInsured_LegalEntity_OtherIndicator_A[0]"}
+        ]},
+        {"key":"namedinsured_legalentity_membermanagercount_a0","label":"Number of members and managers","type":"number","priority":"rare","required":false,"pdf_field":"NamedInsured_LegalEntity_MemberManagerCount_A[0]"},
+        {"key":"namedinsured_legalentity_otherdescription_a0","label":"Other legal entity description","type":"textarea","priority":"rare","required":false,"pdf_field":"NamedInsured_LegalEntity_OtherDescription_A[0]"}
+      ]
+    },
+    {
+      "id": "nature",
+      "label": "Nature of Business",
+      "fields": [
+        {"key":"businessinformation_businesstype_apartmentsindicator_a0","label":"Apartments","type":"checkbox","priority":"common","required":false,"pdf_field":"BusinessInformation_BusinessType_ApartmentsIndicator_A[0]"},
+        {"key":"businessinformation_businesstype_condominiumsindicator_a0","label":"Condominiums","type":"checkbox","priority":"common","required":false,"pdf_field":"BusinessInformation_BusinessType_CondominiumsIndicator_A[0]"},
+        {"key":"businessinformation_businesstype_contractorindicator_a0","label":"Contractor","type":"checkbox","priority":"common","required":false,"pdf_field":"BusinessInformation_BusinessType_ContractorIndicator_A[0]"},
+        {"key":"businessinformation_businesstype_institutionalindicator_a0","label":"Institutional","type":"checkbox","priority":"common","required":false,"pdf_field":"BusinessInformation_BusinessType_InstitutionalIndicator_A[0]"},
+        {"key":"businessinformation_businesstype_manufacturingindicator_a0","label":"Manufacturing","type":"checkbox","priority":"common","required":false,"pdf_field":"BusinessInformation_BusinessType_ManufacturingIndicator_A[0]"},
+        {"key":"businessinformation_businesstype_officeindicator_a0","label":"Office","type":"checkbox","priority":"common","required":false,"pdf_field":"BusinessInformation_BusinessType_OfficeIndicator_A[0]"},
+        {"key":"businessinformation_businesstype_restaurantindicator_a0","label":"Restaurant","type":"checkbox","priority":"common","required":false,"pdf_field":"BusinessInformation_BusinessType_RestaurantIndicator_A[0]"},
+        {"key":"businessinformation_businesstype_retailindicator_a0","label":"Retail","type":"checkbox","priority":"common","required":false,"pdf_field":"BusinessInformation_BusinessType_RetailIndicator_A[0]"},
+        {"key":"businessinformation_businesstype_serviceindicator_a0","label":"Service","type":"checkbox","priority":"common","required":false,"pdf_field":"BusinessInformation_BusinessType_ServiceIndicator_A[0]"},
+        {"key":"businessinformation_businesstype_wholesaleindicator_a0","label":"Wholesale","type":"checkbox","priority":"common","required":false,"pdf_field":"BusinessInformation_BusinessType_WholesaleIndicator_A[0]"},
+        {"key":"businessinformation_businesstype_otherindicator_a0","label":"Other","type":"checkbox","priority":"common","required":false,"pdf_field":"BusinessInformation_BusinessType_OtherIndicator_A[0]"},
+        {"key":"businessinformation_businesstype_otherdescription_a0","label":"Other nature/type of business","type":"textarea","priority":"common","required":false,"pdf_field":"BusinessInformation_BusinessType_OtherDescription_A[0]"},
+        {"key":"namedinsured_businessstartdate_a0","label":"Date business started","type":"date","priority":"rare","required":false,"pdf_field":"NamedInsured_BusinessStartDate_A[0]"},
+        {"key":"commercialpolicy_operationsdescription_a0","label":"Description of primary operations","type":"textarea","priority":"common","required":false,"pdf_field":"CommercialPolicy_OperationsDescription_A[0]"},
+        {"key":"commercialpolicy_operationsdescription_b0","label":"Description of operations of other named insureds","type":"textarea","priority":"rare","required":false,"pdf_field":"CommercialPolicy_OperationsDescription_B[0]"}
+      ]
+    },
+    {
+      "id": "general_info",
+      "label": "General Information / Remarks",
+      "fields": [
+        {"key":"commercialpolicy_question_kaacode_a0","label":"Formal safety program in operation?","type":"yn_code","priority":"rare","required":false,"pdf_field":"CommercialPolicy_Question_KAACode_A[0]"},
+        {"key":"commercialpolicy_formalsafetyprogram_safetymanualindicator_a0","label":"Safety manual","type":"checkbox","priority":"rare","required":false,"pdf_field":"CommercialPolicy_FormalSafetyProgram_SafetyManualIndicator_A[0]"},
+        {"key":"commercialpolicy_formalsafetyprogram_monthlymeetingsindicator_b0","label":"Monthly safety meetings","type":"checkbox","priority":"rare","required":false,"pdf_field":"CommercialPolicy_FormalSafetyProgram_MonthlyMeetingsIndicator_B[0]"},
+        {"key":"commercialpolicy_question_abccode_a0","label":"Any exposure to flammables, explosives, chemicals?","type":"yn_code","priority":"rare","required":false,"pdf_field":"CommercialPolicy_Question_ABCCode_A[0]"},
+        {"key":"commercialpolicy_anyexposuretoflammableexplosiveschemicalsexplanation_a0","label":"Exposure explanation","type":"textarea","priority":"rare","required":false,"pdf_field":"CommercialPolicy_AnyExposureToFlammableExplosivesChemicalsExplanation_A[0]"},
+        {"key":"commercialpolicy_question_kamcode_a0","label":"Other business ventures for which coverage is not requested?","type":"yn_code","priority":"rare","required":false,"pdf_field":"CommercialPolicy_Question_KAMCode_A[0]"},
+        {"key":"commercialpolicy_applicantotherbusinessventurescoveragenotrequestedexplanation_a0","label":"Other business ventures explanation","type":"textarea","priority":"rare","required":false,"pdf_field":"CommercialPolicy_ApplicantOtherBusinessVenturesCoverageNotRequestedExplanation_A[0]"},
+        {"key":"commercialpolicy_remarktext_a0","label":"Remarks / processing instructions","type":"textarea","priority":"common","required":false,"pdf_field":"CommercialPolicy_RemarkText_A[0]"}
+      ]
+    },
+    {
+      "id": "signature",
+      "label": "Signature",
+      "fields": [
+        {"key":"producer_authorizedrepresentative_fullname_a0","label":"Producer name","type":"text","priority":"rare","required":false,"pdf_field":"Producer_AuthorizedRepresentative_FullName_A[0]"},
+        {"key":"producer_statelicenseidentifier_a0","label":"State producer license number","type":"text","priority":"rare","required":false,"pdf_field":"Producer_StateLicenseIdentifier_A[0]"},
+        {"key":"producer_nationalidentifier_a0","label":"National producer number","type":"text","priority":"rare","required":false,"pdf_field":"Producer_NationalIdentifier_A[0]"},
+        {"key":"namedinsured_signaturedate_a0","label":"Applicant signature date","type":"date","priority":"rare","required":false,"pdf_field":"NamedInsured_SignatureDate_A[0]"},
+        {"key":"policy_informationpracticesnoticeindicator_a0","label":"Privacy notice given to applicant","type":"checkbox","priority":"rare","required":false,"pdf_field":"Policy_InformationPracticesNoticeIndicator_A[0]"},
+        {"key":"namedinsured_initials_a0","label":"Applicant initials","type":"text","priority":"rare","required":false,"pdf_field":"NamedInsured_Initials_A[0]"}
+      ]
+    }
+  ],
+  "sections_attached": [
+    {"label":"General Liability","indicator_pdf_field":"Policy_SectionAttached_GeneralLiabilityIndicator_A[0]","premium_pdf_field":"GeneralLiabilityLineOfBusiness_TotalPremiumAmount_A[0]","attaches_form":"126"},
+    {"label":"Business Auto","indicator_pdf_field":"Policy_SectionAttached_BusinessAutoIndicator_A[0]","premium_pdf_field":"CommercialVehicleLineOfBusiness_PremiumAmount_A[0]","attaches_form":"127"},
+    {"label":"Property","indicator_pdf_field":"Policy_SectionAttached_PropertyIndicator_A[0]","premium_pdf_field":"CommercialPropertyLineOfBusiness_PremiumAmount_A[0]","attaches_form":"140"},
+    {"label":"Crime","indicator_pdf_field":"Policy_SectionAttached_CrimeIndicator_A[0]","premium_pdf_field":"CrimeLineOfBusiness_PremiumAmount_A[0]","attaches_form":"141"},
+    {"label":"Umbrella","indicator_pdf_field":"Policy_SectionAttached_UmbrellaIndicator_A[0]","premium_pdf_field":"CommercialUmbrellaLineOfBusiness_PremiumAmount_A[0]","attaches_form":"131"},
+    {"label":"Garage and Dealers","indicator_pdf_field":"Policy_SectionAttached_GarageAndDealersIndicator_A[0]","premium_pdf_field":"GarageAndDealersLineOfBusiness_PremiumAmount_A[0]","attaches_form":"128"}
+  ],
+  "logic": {
+    "sections_attached": "Rendered as a normal section so current app can fill hub checkboxes/premiums. Companion form shortcuts can be added next.",
+    "prefill": "producer.* <- agency profile; applicant/first named insured <- client profile."
+  }
+}
