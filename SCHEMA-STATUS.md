@@ -1,33 +1,53 @@
 # WIT Forms — Schema Status
 
-All 12 uploaded ACORD forms now have field-map schemas. One is hand-verified (ACORD 25); the rest are **auto-generated drafts** produced by `tools/build_schema.py` and need a human pass on **priorities, required flags, and cross-field logic** (insurer-letter refs, optional coverage blocks, radio groups). Labels, types, sections, and exact PDF field names are extracted from the real files and are accurate.
+This file tracks what is actually committed in the GitHub repo, not just what exists in local handoff files.
 
-| Form | Edition | Fields | Status | Notes |
-|---|---|---|---|---|
-| 25 — Certificate of Liability | 2016/03 | 128 | ✅ hand-verified | reference pattern; fill pipeline proven |
-| 28 — Evidence of Commercial Property | 2014/01 | 158 | draft | `prefix=F[0].` |
-| 35 — Cancellation / Policy Release | 2011/09 | 98 | draft | lightest form |
-| 125 — Commercial Insurance App | 2013/09 | 550 | draft | 4 pages; heaviest applicant form |
-| 126 — Commercial GL Section | 2016/09 | 255 | draft | attaches to 125 |
-| 127 — Business Auto Section | 2012/03 | 623 | draft | most fields (vehicle blocks repeat) |
-| 130 — Workers Comp App | 2013/09 | 484 | draft | 4 pages (full form) |
-| 140 — Property Section | 2016/03 | 356 | draft | attaches to 125 |
-| 141 — Crime Section | 2016/03 | 364 | draft | attaches to 125 |
-| **128 — Garage & Dealers** | 2012/04 | 360 | draft | ⚠️ beyond original 9 |
-| **131 — Umbrella / Excess** | 2013/12 | 396 | draft | ⚠️ beyond original 9 |
-| **135 NC — NC Assigned-Risk WC** | 2015/10 | 420 | draft | ⚠️ beyond original 9; `prefix=""` (different designer, not XFA layout) |
+## Current committed schemas
 
-## Decisions for Logan
-1. **Three extra forms** (128, 131, 135 NC) were in this batch but not in the agreed Phase-1 nine. 131 (Umbrella/Excess) is a natural fit; 128 (Garage) is niche; 135 NC is a NC Rate Bureau assigned-risk form (relevant since WIT writes NC). Keep all three, or defer some?
-2. **Duplicate upload:** `Acord_130_WC_page_2.pdf` is redundant — the main ACORD 130 file already contains all 4 pages. Ignore it.
+| Form | Edition | Status | Notes |
+|---|---:|---|---|
+| 25 — Certificate of Liability | 2016/03 | ✅ hand-verified | Reference pattern; PDF fill pipeline proven. |
+| 125 — Commercial Insurance Application | 2013/09 | ✅ hand-verified core committed | Commercial hub. Core/app-proof fields plus Sections Attached hub are committed in `schemas/acord_125.json`. Logan also supplied the full 550-field hand-verified map as the reference source for future expansion. |
+| 128 — Garage & Dealers | 2012/04 | draft | Beyond original Phase 1, but useful for garage/dealer risks. |
+| 131 — Umbrella / Excess | 2013/12 | draft | Natural companion to 125. |
+| 135 NC — NC Assigned-Risk WC | 2015/10 | draft | NC-specific; relevant for WIT. `prefix=""` because it uses a different PDF designer/layout. |
 
-## Per-form review checklist (for the draft schemas)
+## Known missing schema commits
+
+These forms were listed in the broader handoff/status notes, but are not yet committed in this repo as schema files:
+
+| Form | Edition | Target status |
+|---|---:|---|
+| 28 — Evidence of Commercial Property | 2014/01 | draft needed |
+| 35 — Cancellation / Policy Release | 2011/09 | draft needed |
+| 126 — Commercial General Liability Section | 2016/09 | draft needed; next best target after 125 |
+| 127 — Business Auto Section | 2012/03 | draft needed |
+| 130 — Workers Compensation Application | 2013/09 | draft needed |
+| 140 — Property Section | 2016/03 | draft needed |
+| 141 — Crime Section | 2016/03 | draft needed |
+
+## ACORD 125 implementation notes
+
+ACORD 125 is the commercial hub. The form's page 1 "Sections Attached" area should drive companion form shortcuts:
+
+- General Liability → ACORD 126
+- Business Auto → ACORD 127
+- Property → ACORD 140
+- Crime → ACORD 141
+- Umbrella → ACORD 131
+- Garage and Dealers / Dealers → ACORD 128
+
+The current committed `acord_125.json` duplicates the important `sections_attached` map as a normal rendered schema section. That lets the current app render/fill the checkboxes and premium fields without needing immediate renderer changes.
+
+## Per-form review checklist for draft schemas
+
 For each draft, a human pass should:
-- Set `priority` (core/common/rare) per field — generator guessed from name tokens.
-- Set `required` flags (generator left most `false`).
-- Add cross-field logic where the form has it: insurer-letter dropdowns, optional coverage blocks (`optional_block` + `include_toggle`), mutually-exclusive `radio_group`s, and `yn_code` Y/N text fields. See `acord_25.json` for the worked pattern.
-- Spot-check a filled+flattened output renders (use the verified pipeline in the build spec §7).
 
-## Regenerating / adding forms
-`python3 tools/build_schema.py <form.pdf> <acord_number> <edition> > schemas/acord_<n>.json`
-Reads field names + tooltips straight from the PDF; output matches the ACORD 25 shape.
+- Set `priority` values: `core`, `common`, or `rare`.
+- Set `required` flags.
+- Add cross-field logic where the form has it: insurer-letter dropdowns, optional coverage blocks, mutually exclusive radio groups, and Y/N code fields.
+- Spot-check a filled and flattened output against the real ACORD PDF.
+
+## Template handling
+
+Licensed blank PDFs stay out of git. Drop them on the server under `templates/acord/`, prep with `tools/prep_template.py`, then run the live fill smoke test.
