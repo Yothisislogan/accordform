@@ -1,12 +1,11 @@
-/* WIT Forms SPA — search-first, schema-driven. No form layout is hardcoded;
- * everything renders from the schema returned by /api/forms/<id>. */
+/* WIT Forms SPA — search-first, schema-driven. */
 (() => {
   "use strict";
 
   const state = {
     user: null,
     config: { owner_cc_email: "", csrf_token: "", email_enabled: false },
-    schema: null,      // active form schema
+    schema: null,
     formId: null,
     profiles: { agency: [], client: [] },
   };
@@ -24,16 +23,15 @@
     return n;
   };
 
-  // ---- API helpers ----
   async function api(path, opts = {}) {
     const headers = { ...(opts.headers || {}) };
     if (opts.body) headers["Content-Type"] = "application/json";
     if (["POST", "PUT", "PATCH", "DELETE"].includes((opts.method || "GET").toUpperCase())) {
       headers["X-CSRF-Token"] = state.config.csrf_token;
     }
-    const res = await fetch(path, { ...opts, headers });
-    return res;
+    return fetch(path, { ...opts, headers });
   }
+
   async function apiJson(path, opts) {
     const res = await api(path, opts);
     const data = await res.json().catch(() => ({}));
@@ -45,10 +43,10 @@
     const t = $("#toast");
     t.textContent = msg;
     t.className = "toast " + kind;
-    setTimeout(() => t.classList.add("hidden"), 3200);
+    t.classList.remove("hidden");
+    setTimeout(() => t.classList.add("hidden"), 3600);
   }
 
-  // ---- Auth bootstrap ----
   async function boot() {
     try {
       const me = await fetch("/auth/me");
@@ -82,11 +80,10 @@
     $("#preview-btn").addEventListener("click", onPreview);
     $("#download-btn").addEventListener("click", () => onAction("download"));
     $("#print-btn").addEventListener("click", () => onAction("print"));
-    $("#email-btn").addEventListener("click", openEmailDialog);
+    $("#email-btn").addEventListener("click", onUseOwnEmail);
     $("#save-profile-btn").addEventListener("click", openProfileDialog);
     $("#agency-select").addEventListener("change", () => applyProfile("agency"));
     $("#client-select").addEventListener("change", () => applyProfile("client"));
-    wireEmailDialog();
     wireProfileDialog();
   }
 
@@ -94,7 +91,6 @@
     let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
   }
 
-  // ---- Catalog / search (M3) ----
   async function loadResults(q) {
     const { forms } = await apiJson("/api/forms?q=" + encodeURIComponent(q || ""));
     const list = $("#results");
@@ -114,7 +110,6 @@
     $("#search-view").classList.remove("hidden");
   }
 
-  // ---- Open + render form (M3) ----
   async function openForm(formId) {
     state.schema = await apiJson("/api/forms/" + formId);
     state.formId = formId;
@@ -134,10 +129,7 @@
     const form = $("#dynamic-form");
     form.innerHTML = "";
     const schema = state.schema;
-
-    // Insurer A–F reference table (rendered once, drives insurer_ref dropdowns).
     if (schema.insurers && schema.insurers.rows) form.append(renderInsurers(schema.insurers));
-
     for (const section of schema.sections) form.append(renderSection(section));
     refreshConditionalVisibility();
   }
@@ -145,33 +137,27 @@
   function renderInsurers(insurers) {
     const body = el("div", { class: "section-body" });
     const table = el("table", { class: "insurer-table" });
-    table.append(el("tr", {},
-      el("th", {}, "#"), el("th", {}, "Insurer name"), el("th", {}, "NAIC #")));
+    table.append(el("tr", {}, el("th", {}, "#"), el("th", {}, "Insurer name"), el("th", {}, "NAIC #")));
     for (const row of insurers.rows) {
       table.append(el("tr", {},
         el("td", { class: "insurer-letter" }, row.letter),
-        el("td", {}, el("input", { type: "text", "data-insurer-name": row.letter,
-          oninput: refreshInsurerOptions })),
+        el("td", {}, el("input", { type: "text", "data-insurer-name": row.letter, oninput: refreshInsurerOptions })),
         el("td", {}, el("input", { type: "text", "data-insurer-naic": row.letter })),
       ));
     }
     body.append(table);
     return el("section", { class: "section" },
-      el("div", { class: "section-head" }, el("h3", {}, insurers.label || "Insurers Affording Coverage")),
-      body);
+      el("div", { class: "section-head" }, el("h3", {}, insurers.label || "Insurers Affording Coverage")), body);
   }
 
   function renderSection(section) {
     const head = el("div", { class: "section-head" }, el("h3", {}, section.label));
     const body = el("div", { class: "section-body" });
 
-    // Optional coverage block toggle.
     if (section.optional_block) {
       const tog = section.include_toggle;
-      const cb = el("input", { type: "checkbox", id: "tog_" + tog.key, "data-key": tog.key,
-        onchange: refreshConditionalVisibility });
-      head.append(el("label", { class: "toggle-row" }, cb,
-        el("span", {}, tog.label || ("Include " + section.label))));
+      const cb = el("input", { type: "checkbox", id: "tog_" + tog.key, "data-key": tog.key, onchange: refreshConditionalVisibility });
+      head.append(el("label", { class: "toggle-row" }, cb, el("span", {}, tog.label || ("Include " + section.label))));
     }
 
     const core = [], rare = [];
@@ -184,12 +170,10 @@
     if (rare.length) {
       const rareWrap = el("div", { class: "section-body rare-fields collapsed" });
       rare.forEach((n) => rareWrap.append(n));
-      const btn = el("button", { type: "button", class: "more-toggle" },
-        `+ ${rare.length} more field${rare.length > 1 ? "s" : ""}`);
+      const btn = el("button", { type: "button", class: "more-toggle" }, `+ ${rare.length} more field${rare.length > 1 ? "s" : ""}`);
       btn.addEventListener("click", () => {
         rareWrap.classList.toggle("collapsed");
-        btn.textContent = rareWrap.classList.contains("collapsed")
-          ? `+ ${rare.length} more fields` : "− Hide extra fields";
+        btn.textContent = rareWrap.classList.contains("collapsed") ? `+ ${rare.length} more fields` : "− Hide extra fields";
       });
       sectionEl.append(btn, rareWrap);
     }
@@ -201,25 +185,22 @@
     const wrap = el("div", { class: "field" + (isWide(f) ? " full" : ""), "data-field": f.key });
     if (f.show_if) wrap.dataset.showIf = f.show_if;
 
-    const labelText = f.label + (f.required ? " " : "");
-    const label = el("label", { for: id }, labelText);
+    const label = el("label", { for: id }, f.label + (f.required ? " " : ""));
     if (f.required) label.append(el("span", { class: "req" }, "*"));
     if (f.priority === "rare") label.append(el("span", { class: "pill" }, "  (rare)"));
+    if (f.attaches_form) label.append(el("span", { class: "pill" }, `  opens ${f.attaches_form}`));
     wrap.append(label);
 
     let input;
     switch (f.type) {
-      case "textarea":
-        input = el("textarea", { id, rows: "3", "data-key": f.key }); break;
-      case "state":
-        input = stateSelect(id, f.key); break;
+      case "textarea": input = el("textarea", { id, rows: "3", "data-key": f.key }); break;
+      case "state": input = stateSelect(id, f.key); break;
       case "select":
         input = el("select", { id, "data-key": f.key });
         input.append(el("option", { value: "" }, "—"));
         (f.options || []).forEach((o) => input.append(el("option", { value: o.value ?? o.label }, o.label)));
         break;
-      case "checkbox":
-        input = el("input", { type: "checkbox", id, "data-key": f.key }); break;
+      case "checkbox": input = el("input", { type: "checkbox", id, "data-key": f.key, onchange: refreshConditionalVisibility }); break;
       case "yn_code":
         input = el("select", { id, "data-key": f.key });
         ["", "Y", "N"].forEach((v) => input.append(el("option", { value: v }, v || "—")));
@@ -228,8 +209,7 @@
         input = el("select", { id, "data-key": f.key, "data-insurer-ref": "1" });
         input.append(el("option", { value: "" }, "— select insurer —"));
         break;
-      case "radio_group":
-        input = renderRadioGroup(f); break;
+      case "radio_group": input = renderRadioGroup(f); break;
       default:
         input = el("input", { type: inputType(f.type), id, "data-key": f.key,
           inputmode: f.type === "currency" || f.type === "number" ? "decimal" : null,
@@ -243,15 +223,14 @@
   function renderRadioGroup(f) {
     const row = el("div", { class: "radio-row", "data-key": f.key, "data-radio-group": "1" });
     for (const opt of f.options) {
-      const r = el("input", { type: "radio", name: "radio_" + f.key, value: opt.label,
-        onchange: refreshConditionalVisibility });
+      const r = el("input", { type: "radio", name: "radio_" + f.key, value: opt.label, onchange: refreshConditionalVisibility });
       if (opt.reveals) r.dataset.reveals = opt.reveals;
       row.append(el("label", {}, r, el("span", {}, opt.label)));
     }
     return row;
   }
 
-  const US_STATES = "AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY DC".split(" ");
+  const US_STATES = "AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY DC PR".split(" ");
   function stateSelect(id, key) {
     const s = el("select", { id, "data-key": key });
     s.append(el("option", { value: "" }, "—"));
@@ -263,10 +242,8 @@
   const inputType = (t) => ({ date: "text", phone: "tel", email: "email", number: "text", currency: "text" }[t] || "text");
   const placeholderFor = (t) => ({ date: "MM/DD/YYYY", currency: "$0", phone: "(555) 555-5555" }[t] || "");
 
-  // ---- Conditional visibility (optional blocks, show_if, reveals) ----
   function refreshConditionalVisibility() {
     const answers = collectAnswers();
-    // Optional block sections.
     document.querySelectorAll(".section[data-toggle]").forEach((sec) => {
       const on = !!answers[sec.dataset.toggle];
       sec.querySelectorAll(".section-body, .more-toggle, .rare-fields").forEach((b) => {
@@ -277,12 +254,9 @@
         inp.disabled = !on;
       });
     });
-    // show_if fields + radio reveals.
     document.querySelectorAll(".field[data-show-if]").forEach((fld) => {
       const cond = fld.dataset.showIf;
       let visible = !!answers[cond];
-      // A radio option may reveal a field via its `reveals` key; if any checked
-      // radio reveals this field, show it regardless of the virtual show_if flag.
       document.querySelectorAll("input[type=radio][data-reveals]:checked").forEach((r) => {
         if (r.dataset.reveals === fld.dataset.field) visible = true;
       });
@@ -291,7 +265,6 @@
     refreshInsurerOptions();
   }
 
-  // ---- Insurer dropdowns ----
   function refreshInsurerOptions() {
     const filled = [];
     document.querySelectorAll("input[data-insurer-name]").forEach((inp) => {
@@ -306,7 +279,6 @@
     });
   }
 
-  // ---- Collect answers ----
   function collectAnswers() {
     const answers = {};
     document.querySelectorAll("[data-key]").forEach((inp) => {
@@ -318,7 +290,6 @@
       const checked = g.querySelector("input[type=radio]:checked");
       if (checked) answers[g.dataset.key] = checked.value;
     });
-    // Insurers table.
     const insurers = {};
     document.querySelectorAll("input[data-insurer-name]").forEach((inp) => {
       const letter = inp.dataset.insurerName;
@@ -331,7 +302,6 @@
     return answers;
   }
 
-  // ---- Profiles (M5) ----
   async function loadProfiles() {
     try {
       const a = await apiJson("/api/profiles?type=agency");
@@ -339,6 +309,7 @@
       state.profiles.agency = a.profiles; state.profiles.client = c.profiles;
     } catch {}
   }
+
   function populateProfileSelects() {
     for (const t of ["agency", "client"]) {
       const sel = $(`#${t}-select`);
@@ -347,6 +318,7 @@
       state.profiles[t].forEach((p) => sel.append(el("option", { value: p.id }, p.name)));
     }
   }
+
   function applyProfile(type) {
     const id = $(`#${type}-select`).value;
     if (!id) return;
@@ -363,7 +335,6 @@
   }
   const cssEscape = (s) => (window.CSS && CSS.escape ? CSS.escape(s) : s);
 
-  // ---- Validation display ----
   function showValidation(fields) {
     document.querySelectorAll(".field.invalid").forEach((f) => f.classList.remove("invalid"));
     document.querySelectorAll(".field-err").forEach((e) => (e.textContent = ""));
@@ -383,17 +354,12 @@
     return false;
   }
 
-  function payload() {
-    return { answers: collectAnswers() };
-  }
+  function payload() { return { answers: collectAnswers() }; }
 
-  // ---- Preview + actions (M4) ----
   async function onPreview() {
     setBusy(true);
     try {
-      const res = await api(`/api/forms/${state.formId}/preview`, {
-        method: "POST", body: JSON.stringify(payload()),
-      });
+      const res = await api(`/api/forms/${state.formId}/preview`, { method: "POST", body: JSON.stringify(payload()) });
       if (res.status === 422) { const d = await res.json(); showValidation(d.fields); return; }
       if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.error || res.statusText); }
       showValidation([]);
@@ -408,17 +374,14 @@
   async function onAction(action) {
     setBusy(true);
     try {
-      const res = await api(`/api/forms/${state.formId}/${action}`, {
-        method: "POST", body: JSON.stringify(payload()),
-      });
+      const res = await api(`/api/forms/${state.formId}/${action}`, { method: "POST", body: JSON.stringify(payload()) });
       if (res.status === 422) { const d = await res.json(); showValidation(d.fields); return; }
       if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.error || res.statusText); }
       showValidation([]);
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       if (action === "download") {
-        const a = el("a", { href: url, download: `ACORD_${state.schema._meta.acord_number}.pdf` });
-        document.body.append(a); a.click(); a.remove();
+        triggerDownload(blob, fileName());
         toast("Downloaded", "success");
       } else if (action === "print") {
         const w = window.open(url);
@@ -429,46 +392,36 @@
     finally { setBusy(false); }
   }
 
+  async function onUseOwnEmail() {
+    setBusy(true);
+    try {
+      const res = await api(`/api/forms/${state.formId}/download`, { method: "POST", body: JSON.stringify(payload()) });
+      if (res.status === 422) { const d = await res.json(); showValidation(d.fields); return; }
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.error || res.statusText); }
+      showValidation([]);
+      const blob = await res.blob();
+      const name = fileName();
+      triggerDownload(blob, name);
+      toast(`Downloaded ${name}. Open your email and attach it.`, "success");
+    } catch (e) { toast(e.message, "error"); }
+    finally { setBusy(false); }
+  }
+
+  function triggerDownload(blob, name) {
+    const url = URL.createObjectURL(blob);
+    const a = el("a", { href: url, download: name });
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+  }
+
+  function fileName() { return `ACORD_${state.schema._meta.acord_number}.pdf`; }
+
   function setBusy(b) {
     ["#preview-btn", "#download-btn", "#print-btn", "#email-btn"].forEach((s) => ($(s).disabled = b));
   }
 
-  // ---- Email dialog ----
-  function openEmailDialog() {
-    $("#email-cc").value = state.config.owner_cc_email + " (locked)";
-    $("#email-to").value = "";
-    $("#email-message").value = "";
-    $("#email-error").classList.add("hidden");
-    if (!state.config.email_enabled) {
-      $("#email-error").textContent = "Email transport is not configured yet (TODO from Logan).";
-      $("#email-error").classList.remove("hidden");
-    }
-    $("#email-dialog").showModal();
-  }
-  function wireEmailDialog() {
-    $("#email-form").addEventListener("submit", async (e) => {
-      const btn = e.submitter && e.submitter.value;
-      if (btn !== "send") return; // cancel closes
-      e.preventDefault();
-      const recipients = $("#email-to").value.split(",").map((s) => s.trim()).filter(Boolean);
-      if (!recipients.length) { showEmailError("Add at least one recipient."); return; }
-      try {
-        const res = await api(`/api/forms/${state.formId}/email`, {
-          method: "POST",
-          body: JSON.stringify({ ...payload(), recipients, message: $("#email-message").value }),
-        });
-        const d = await res.json().catch(() => ({}));
-        if (res.status === 422) { $("#email-dialog").close(); showValidation(d.fields); return; }
-        if (!res.ok) { showEmailError(d.error || res.statusText); return; }
-        $("#email-dialog").close();
-        toast(`Emailed to ${d.to.join(", ")} (cc ${d.cc.join(", ") || "—"})`, "success");
-      } catch (err) { showEmailError(err.message); }
-    });
-  }
-  function showEmailError(msg) { const e = $("#email-error"); e.textContent = msg; e.classList.remove("hidden"); }
-
-  // ---- Save-profile dialog ----
   function openProfileDialog() { $("#profile-name").value = ""; $("#profile-dialog").showModal(); }
+
   function wireProfileDialog() {
     $("#profile-form").addEventListener("submit", async (e) => {
       if (!e.submitter || e.submitter.value !== "save") return;
@@ -476,10 +429,8 @@
       const type = $("#profile-type").value;
       const name = $("#profile-name").value.trim();
       if (!name) return;
-      // Collect only keys belonging to sections with prefill_from == type.
       const keys = new Set();
-      for (const s of state.schema.sections)
-        if (s.prefill_from === type) s.fields.forEach((f) => keys.add(f.key));
+      for (const s of state.schema.sections) if (s.prefill_from === type) s.fields.forEach((f) => keys.add(f.key));
       const all = collectAnswers();
       const data = {};
       for (const k of keys) if (k in all) data[k] = all[k];
