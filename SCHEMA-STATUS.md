@@ -9,6 +9,7 @@ This file tracks what is actually committed in the GitHub repo, not just what ex
 | 25 — Certificate of Liability | 2016/03 | ✅ hand-verified | Reference pattern; PDF fill pipeline proven. |
 | 125 — Commercial Insurance Application | 2013/09 | ✅ hand-verified core committed | Commercial hub. Core/app-proof fields plus Sections Attached hub are committed in `schemas/acord_125.json`. Logan also supplied the full 550-field hand-verified map as the reference source for future expansion. |
 | 126 — Commercial General Liability Section | 2016/09 | draft committed | Extracted from Logan's uploaded fillable PDF. Includes coverages/limits, hazards, claims-made, employee benefits, contractors, products/completed operations, additional interest, general information, and signature. Needs a human pass for radio groups/optional logic. |
+| 127 — Business Auto Section | 2012/03 | draft core committed | Extracted from Logan's uploaded fillable PDF. Maps the high-use Business Auto workflow: policy/applicant, driver rows, general underwriting questions, vehicle description rows, additional interest, remarks, and signature. PDF has 627 detected AcroForm entries; future expansion can add all repeated driver rows and full coverage checkboxes for vehicles 2-4. |
 | 140 — Property Section | 2016/03 | draft core committed | Extracted from Logan's uploaded fillable PDF. Maps the high-use Property workflow: policy/applicant, blanket summary, first premises/building, coverage rows, additional coverages/options, construction/security, additional interest, remarks, and signature. PDF has 356 fields; future expansion can add all repeated additional-premises page 2 fields. |
 | 128 — Garage & Dealers | 2012/04 | draft | Beyond original Phase 1, but useful for garage/dealer risks. |
 | 131 — Umbrella / Excess | 2013/12 | draft | Natural companion to 125. |
@@ -22,7 +23,6 @@ These forms were listed in the broader handoff/status notes, but are not yet com
 |---|---:|---|
 | 28 — Evidence of Commercial Property | 2014/01 | draft needed |
 | 35 — Cancellation / Policy Release | 2011/09 | draft needed |
-| 127 — Business Auto Section | 2012/03 | draft needed |
 | 130 — Workers Compensation Application | 2013/09 | draft needed |
 | 141 — Crime Section | 2016/03 | draft needed |
 
