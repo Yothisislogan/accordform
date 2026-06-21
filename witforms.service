@@ -1,0 +1,32 @@
+# WIT Forms — systemd unit
+# Install: sudo cp witforms.service /etc/systemd/system/witforms.service
+#          sudo systemctl daemon-reload && sudo systemctl enable --now witforms
+# Logs:    journalctl -u witforms -f
+[Unit]
+Description=WIT Forms (ACORD form filler)
+After=network.target
+
+[Service]
+Type=simple
+User=witforms
+Group=witforms
+WorkingDirectory=/opt/wit-forms
+# Secrets live here, NOT in git (chmod 600, owned by witforms):
+EnvironmentFile=/etc/wit-forms/witforms.env
+ExecStart=/opt/wit-forms/.venv/bin/gunicorn \
+    --workers 3 \
+    --bind 127.0.0.1:8097 \
+    --timeout 120 \
+    "app:create_app()"
+Restart=on-failure
+RestartSec=3
+
+# Hardening (PII at rest / least privilege)
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/opt/wit-forms/data
+
+[Install]
+WantedBy=multi-user.target
