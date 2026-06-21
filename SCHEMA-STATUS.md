@@ -13,6 +13,7 @@ This file tracks what is actually committed in the GitHub repo, not just what ex
 | 130 — Workers Compensation Application | 2013/09 | draft core committed | General WC application. Extracted from Logan's uploaded fillable PDF. Maps producer/applicant, billing/audit/policy, locations, contacts, included/excluded individuals, state rating worksheet, prior/loss history, operations/general questions, and signature. The separate uploaded page 2 is the state rating worksheet and is represented inside this schema. |
 | 135 NC — NC Assigned-Risk WC | 2015/10 | draft committed | Special North Carolina Workers Compensation Insurance Plan / assigned-risk application. Keep this separate from ACORD 130 because it is NC bureau/assigned-risk specific. PDF has 420 detected fields. |
 | 140 — Property Section | 2016/03 | draft core committed | Extracted from Logan's uploaded fillable PDF. Maps the high-use Property workflow: policy/applicant, blanket summary, first premises/building, coverage rows, additional coverages/options, construction/security, additional interest, remarks, and signature. PDF has 356 fields; future expansion can add all repeated additional-premises page 2 fields. |
+| 141 — Crime Section | 2016/03 | draft core committed | Extracted from Logan's uploaded fillable PDF. Maps coverage limits/deductibles, ERISA plan information, general questions, employee classes, hiring/audit/banking controls, money/securities, property, safe/vault, messenger/alarm protection, employee schedule, remarks, and signature. PDF has 364 detected fields; future expansion can add every employee-class count and all schedule rows. |
 | 128 — Garage & Dealers | 2012/04 | draft | Beyond original Phase 1, but useful for garage/dealer risks. |
 | 131 — Umbrella / Excess | 2013/12 | draft | Natural companion to 125. |
 
@@ -24,7 +25,6 @@ These forms were listed in the broader handoff/status notes, but are not yet com
 |---|---:|---|
 | 28 — Evidence of Commercial Property | 2014/01 | draft needed |
 | 35 — Cancellation / Policy Release | 2011/09 | draft needed |
-| 141 — Crime Section | 2016/03 | draft needed |
 
 ## Workers Compensation notes
 
