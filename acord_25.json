@@ -1,0 +1,208 @@
+{
+  "_meta": {
+    "acord_number": "25",
+    "edition": "2016/03",
+    "title": "Certificate of Liability Insurance",
+    "template_source": "ACORD_25_fillable.pdf",
+    "field_name_prefix": "F[0].P1[0].",
+    "total_pdf_fields": 128,
+    "checkbox_on_value": "1",
+    "checkbox_off_value": "Off",
+    "notes": [
+      "All pdf_field values below are RELATIVE — prepend field_name_prefix before filling.",
+      "These are the verified names dumped from the real PDF via `pdftk dump_data_fields`.",
+      "Prep each template once: `pdftk template.pdf output clean.pdf drop_xfa` (strips XFA + owner-pw).",
+      "Fill clean.pdf with pypdf update_page_form_field_values(auto_regenerate=False), then `pdftk ... flatten`.",
+      "ADDL INSD / SUBR WVD fields are TEXT expecting 'Y' or 'N' (NOT checkboxes)."
+    ]
+  },
+
+  "insurers": {
+    "_comment": "Reference table A-F. User fills these once; coverage blocks reference a letter. UX renders the *_InsurerLetterCode_A fields as a dropdown populated from whichever of these are filled.",
+    "label": "Insurers Affording Coverage",
+    "rows": [
+      { "letter": "A", "name_pdf_field": "Insurer_FullName_A[0]", "naic_pdf_field": "Insurer_NAICCode_A[0]" },
+      { "letter": "B", "name_pdf_field": "Insurer_FullName_B[0]", "naic_pdf_field": "Insurer_NAICCode_B[0]" },
+      { "letter": "C", "name_pdf_field": "Insurer_FullName_C[0]", "naic_pdf_field": "Insurer_NAICCode_C[0]" },
+      { "letter": "D", "name_pdf_field": "Insurer_FullName_D[0]", "naic_pdf_field": "Insurer_NAICCode_D[0]" },
+      { "letter": "E", "name_pdf_field": "Insurer_FullName_E[0]", "naic_pdf_field": "Insurer_NAICCode_E[0]" },
+      { "letter": "F", "name_pdf_field": "Insurer_FullName_F[0]", "naic_pdf_field": "Insurer_NAICCode_F[0]" }
+    ]
+  },
+
+  "sections": [
+    {
+      "id": "header",
+      "label": "Certificate Info",
+      "fields": [
+        { "key": "completion_date", "label": "Date", "type": "date", "priority": "core", "required": true, "pdf_field": "Form_CompletionDate_A[0]" },
+        { "key": "cert_number", "label": "Certificate number", "type": "text", "priority": "common", "required": false, "pdf_field": "CertificateOfInsurance_CertificateNumberIdentifier_A[0]" },
+        { "key": "revision_number", "label": "Revision number", "type": "text", "priority": "rare", "required": false, "pdf_field": "CertificateOfInsurance_RevisionNumberIdentifier_A[0]" }
+      ]
+    },
+
+    {
+      "id": "producer",
+      "label": "Producer / Agency",
+      "prefill_from": "agency",
+      "fields": [
+        { "key": "producer_name", "label": "Agency name", "type": "text", "priority": "core", "required": true, "pdf_field": "Producer_FullName_A[0]" },
+        { "key": "producer_addr1", "label": "Address line 1", "type": "text", "priority": "core", "required": true, "pdf_field": "Producer_MailingAddress_LineOne_A[0]" },
+        { "key": "producer_addr2", "label": "Address line 2", "type": "text", "priority": "rare", "required": false, "pdf_field": "Producer_MailingAddress_LineTwo_A[0]" },
+        { "key": "producer_city", "label": "City", "type": "text", "priority": "core", "required": true, "pdf_field": "Producer_MailingAddress_CityName_A[0]" },
+        { "key": "producer_state", "label": "State", "type": "state", "priority": "core", "required": true, "pdf_field": "Producer_MailingAddress_StateOrProvinceCode_A[0]" },
+        { "key": "producer_zip", "label": "ZIP", "type": "text", "priority": "core", "required": true, "pdf_field": "Producer_MailingAddress_PostalCode_A[0]" },
+        { "key": "producer_contact", "label": "Contact name", "type": "text", "priority": "common", "required": false, "pdf_field": "Producer_ContactPerson_FullName_A[0]" },
+        { "key": "producer_phone", "label": "Phone", "type": "phone", "priority": "common", "required": false, "pdf_field": "Producer_ContactPerson_PhoneNumber_A[0]" },
+        { "key": "producer_fax", "label": "Fax", "type": "phone", "priority": "rare", "required": false, "pdf_field": "Producer_FaxNumber_A[0]" },
+        { "key": "producer_email", "label": "Email", "type": "email", "priority": "common", "required": false, "pdf_field": "Producer_ContactPerson_EmailAddress_A[0]" }
+      ]
+    },
+
+    {
+      "id": "insured",
+      "label": "Named Insured",
+      "prefill_from": "client",
+      "fields": [
+        { "key": "insured_name", "label": "Insured name", "type": "text", "priority": "core", "required": true, "pdf_field": "NamedInsured_FullName_A[0]" },
+        { "key": "insured_addr1", "label": "Address line 1", "type": "text", "priority": "core", "required": true, "pdf_field": "NamedInsured_MailingAddress_LineOne_A[0]" },
+        { "key": "insured_addr2", "label": "Address line 2", "type": "text", "priority": "rare", "required": false, "pdf_field": "NamedInsured_MailingAddress_LineTwo_A[0]" },
+        { "key": "insured_city", "label": "City", "type": "text", "priority": "core", "required": true, "pdf_field": "NamedInsured_MailingAddress_CityName_A[0]" },
+        { "key": "insured_state", "label": "State", "type": "state", "priority": "core", "required": true, "pdf_field": "NamedInsured_MailingAddress_StateOrProvinceCode_A[0]" },
+        { "key": "insured_zip", "label": "ZIP", "type": "text", "priority": "core", "required": true, "pdf_field": "NamedInsured_MailingAddress_PostalCode_A[0]" }
+      ]
+    },
+
+    {
+      "id": "gl",
+      "label": "Commercial General Liability",
+      "optional_block": true,
+      "include_toggle": { "key": "gl_included", "label": "Include General Liability", "pdf_field": "GeneralLiability_CoverageIndicator_A[0]", "type": "checkbox" },
+      "fields": [
+        { "key": "gl_insurer", "label": "Insurer (letter)", "type": "insurer_ref", "priority": "core", "required": true, "pdf_field": "GeneralLiability_InsurerLetterCode_A[0]", "show_if": "gl_included" },
+        { "key": "gl_form", "label": "Form basis", "type": "radio_group", "group": "gl_form_basis", "priority": "common", "show_if": "gl_included",
+          "options": [
+            { "label": "Occurrence", "pdf_field": "GeneralLiability_OccurrenceIndicator_A[0]" },
+            { "label": "Claims-Made", "pdf_field": "GeneralLiability_ClaimsMadeIndicator_A[0]" }
+          ] },
+        { "key": "gl_addl_insured", "label": "Additional insured? (Y/N)", "type": "yn_code", "priority": "common", "show_if": "gl_included", "pdf_field": "CertificateOfInsurance_GeneralLiability_AdditionalInsuredCode_A[0]" },
+        { "key": "gl_subr_waived", "label": "Subrogation waived? (Y/N)", "type": "yn_code", "priority": "common", "show_if": "gl_included", "pdf_field": "Policy_GeneralLiability_SubrogationWaivedCode_A[0]" },
+        { "key": "gl_policy_no", "label": "Policy number", "type": "text", "priority": "core", "required": true, "show_if": "gl_included", "pdf_field": "Policy_GeneralLiability_PolicyNumberIdentifier_A[0]" },
+        { "key": "gl_eff", "label": "Effective date", "type": "date", "priority": "core", "required": true, "show_if": "gl_included", "pdf_field": "Policy_GeneralLiability_EffectiveDate_A[0]" },
+        { "key": "gl_exp", "label": "Expiration date", "type": "date", "priority": "core", "required": true, "show_if": "gl_included", "pdf_field": "Policy_GeneralLiability_ExpirationDate_A[0]" },
+        { "key": "gl_each_occ", "label": "Each occurrence", "type": "currency", "priority": "common", "show_if": "gl_included", "pdf_field": "GeneralLiability_EachOccurrence_LimitAmount_A[0]" },
+        { "key": "gl_rented", "label": "Damage to rented premises", "type": "currency", "priority": "rare", "show_if": "gl_included", "pdf_field": "GeneralLiability_FireDamageRentedPremises_EachOccurrenceLimitAmount_A[0]" },
+        { "key": "gl_med_exp", "label": "Med exp (any one person)", "type": "currency", "priority": "rare", "show_if": "gl_included", "pdf_field": "GeneralLiability_MedicalExpense_EachPersonLimitAmount_A[0]" },
+        { "key": "gl_pers_adv", "label": "Personal & adv injury", "type": "currency", "priority": "common", "show_if": "gl_included", "pdf_field": "GeneralLiability_PersonalAndAdvertisingInjury_LimitAmount_A[0]" },
+        { "key": "gl_gen_agg", "label": "General aggregate", "type": "currency", "priority": "common", "show_if": "gl_included", "pdf_field": "GeneralLiability_GeneralAggregate_LimitAmount_A[0]" },
+        { "key": "gl_prod_agg", "label": "Products - comp/op agg", "type": "currency", "priority": "common", "show_if": "gl_included", "pdf_field": "GeneralLiability_ProductsAndCompletedOperations_AggregateLimitAmount_A[0]" },
+        { "key": "gl_agg_applies", "label": "Gen'l aggregate applies per", "type": "radio_group", "group": "gl_agg_per", "priority": "rare", "show_if": "gl_included",
+          "options": [
+            { "label": "Policy", "pdf_field": "GeneralLiability_GeneralAggregate_LimitAppliesPerPolicyIndicator_A[0]" },
+            { "label": "Project", "pdf_field": "GeneralLiability_GeneralAggregate_LimitAppliesPerProjectIndicator_A[0]" },
+            { "label": "Loc", "pdf_field": "GeneralLiability_GeneralAggregate_LimitAppliesPerLocationIndicator_A[0]" },
+            { "label": "Other", "pdf_field": "GeneralLiability_GeneralAggregate_LimitAppliesToOtherIndicator_A[0]", "reveals": "gl_agg_other_desc" }
+          ] },
+        { "key": "gl_agg_other_desc", "label": "Other (describe)", "type": "text", "priority": "rare", "show_if": "gl_agg_other", "pdf_field": "GeneralLiability_GeneralAggregate_LimitAppliesToCode_A[0]" }
+      ]
+    },
+
+    {
+      "id": "auto",
+      "label": "Automobile Liability",
+      "optional_block": true,
+      "include_toggle": { "key": "auto_included", "label": "Include Automobile Liability", "type": "virtual" },
+      "fields": [
+        { "key": "auto_insurer", "label": "Insurer (letter)", "type": "insurer_ref", "priority": "core", "required": true, "show_if": "auto_included", "pdf_field": "Vehicle_InsurerLetterCode_A[0]" },
+        { "key": "auto_any", "label": "Any auto", "type": "checkbox", "priority": "common", "show_if": "auto_included", "pdf_field": "Vehicle_AnyAutoIndicator_A[0]" },
+        { "key": "auto_owned", "label": "Owned autos only", "type": "checkbox", "priority": "common", "show_if": "auto_included", "pdf_field": "Vehicle_AllOwnedAutosIndicator_A[0]" },
+        { "key": "auto_scheduled", "label": "Scheduled autos", "type": "checkbox", "priority": "common", "show_if": "auto_included", "pdf_field": "Vehicle_ScheduledAutosIndicator_A[0]" },
+        { "key": "auto_hired", "label": "Hired autos only", "type": "checkbox", "priority": "common", "show_if": "auto_included", "pdf_field": "Vehicle_HiredAutosIndicator_A[0]" },
+        { "key": "auto_nonowned", "label": "Non-owned autos only", "type": "checkbox", "priority": "common", "show_if": "auto_included", "pdf_field": "Vehicle_NonOwnedAutosIndicator_A[0]" },
+        { "key": "auto_addl_insured", "label": "Additional insured? (Y/N)", "type": "yn_code", "priority": "common", "show_if": "auto_included", "pdf_field": "CertificateOfInsurance_AutomobileLiability_AdditionalInsuredCode_A[0]" },
+        { "key": "auto_subr_waived", "label": "Subrogation waived? (Y/N)", "type": "yn_code", "priority": "common", "show_if": "auto_included", "pdf_field": "Policy_AutomobileLiability_SubrogationWaivedCode_A[0]" },
+        { "key": "auto_policy_no", "label": "Policy number", "type": "text", "priority": "core", "required": true, "show_if": "auto_included", "pdf_field": "Policy_AutomobileLiability_PolicyNumberIdentifier_A[0]" },
+        { "key": "auto_eff", "label": "Effective date", "type": "date", "priority": "core", "required": true, "show_if": "auto_included", "pdf_field": "Policy_AutomobileLiability_EffectiveDate_A[0]" },
+        { "key": "auto_exp", "label": "Expiration date", "type": "date", "priority": "core", "required": true, "show_if": "auto_included", "pdf_field": "Policy_AutomobileLiability_ExpirationDate_A[0]" },
+        { "key": "auto_csl", "label": "Combined single limit", "type": "currency", "priority": "common", "show_if": "auto_included", "pdf_field": "Vehicle_CombinedSingleLimit_EachAccidentAmount_A[0]" },
+        { "key": "auto_bi_person", "label": "Bodily injury (per person)", "type": "currency", "priority": "rare", "show_if": "auto_included", "pdf_field": "Vehicle_BodilyInjury_PerPersonLimitAmount_A[0]" },
+        { "key": "auto_bi_accident", "label": "Bodily injury (per accident)", "type": "currency", "priority": "rare", "show_if": "auto_included", "pdf_field": "Vehicle_BodilyInjury_PerAccidentLimitAmount_A[0]" },
+        { "key": "auto_pd", "label": "Property damage (per accident)", "type": "currency", "priority": "rare", "show_if": "auto_included", "pdf_field": "Vehicle_PropertyDamage_PerAccidentLimitAmount_A[0]" }
+      ]
+    },
+
+    {
+      "id": "umbrella",
+      "label": "Umbrella / Excess Liability",
+      "optional_block": true,
+      "include_toggle": { "key": "umb_included", "label": "Include Umbrella / Excess", "type": "virtual" },
+      "fields": [
+        { "key": "umb_insurer", "label": "Insurer (letter)", "type": "insurer_ref", "priority": "core", "required": true, "show_if": "umb_included", "pdf_field": "ExcessUmbrella_InsurerLetterCode_A[0]" },
+        { "key": "umb_type", "label": "Type", "type": "radio_group", "group": "umb_type", "priority": "core", "show_if": "umb_included",
+          "options": [
+            { "label": "Umbrella", "pdf_field": "Policy_PolicyType_UmbrellaIndicator_A[0]" },
+            { "label": "Excess", "pdf_field": "Policy_PolicyType_ExcessIndicator_A[0]" }
+          ] },
+        { "key": "umb_form", "label": "Form basis", "type": "radio_group", "group": "umb_form", "priority": "common", "show_if": "umb_included",
+          "options": [
+            { "label": "Occurrence", "pdf_field": "ExcessUmbrella_OccurrenceIndicator_A[0]" },
+            { "label": "Claims-Made", "pdf_field": "ExcessUmbrella_ClaimsMadeIndicator_A[0]" }
+          ] },
+        { "key": "umb_dedret", "label": "Deductible or retention", "type": "radio_group", "group": "umb_dedret", "priority": "rare", "show_if": "umb_included",
+          "options": [
+            { "label": "Deductible", "pdf_field": "ExcessUmbrella_DeductibleIndicator_A[0]" },
+            { "label": "Retention", "pdf_field": "ExcessUmbrella_RetentionIndicator_A[0]" }
+          ] },
+        { "key": "umb_dedret_amt", "label": "Ded/Retention amount", "type": "currency", "priority": "rare", "show_if": "umb_included", "pdf_field": "ExcessUmbrella_Umbrella_DeductibleOrRetentionAmount_A[0]" },
+        { "key": "umb_policy_no", "label": "Policy number", "type": "text", "priority": "core", "required": true, "show_if": "umb_included", "pdf_field": "Policy_ExcessLiability_PolicyNumberIdentifier_A[0]" },
+        { "key": "umb_eff", "label": "Effective date", "type": "date", "priority": "core", "required": true, "show_if": "umb_included", "pdf_field": "Policy_ExcessLiability_EffectiveDate_A[0]" },
+        { "key": "umb_exp", "label": "Expiration date", "type": "date", "priority": "core", "required": true, "show_if": "umb_included", "pdf_field": "Policy_ExcessLiability_ExpirationDate_A[0]" },
+        { "key": "umb_each_occ", "label": "Each occurrence", "type": "currency", "priority": "common", "show_if": "umb_included", "pdf_field": "ExcessUmbrella_Umbrella_EachOccurrenceAmount_A[0]" },
+        { "key": "umb_agg", "label": "Aggregate", "type": "currency", "priority": "common", "show_if": "umb_included", "pdf_field": "ExcessUmbrella_Umbrella_AggregateAmount_A[0]" }
+      ]
+    },
+
+    {
+      "id": "wc",
+      "label": "Workers Compensation & Employers' Liability",
+      "optional_block": true,
+      "include_toggle": { "key": "wc_included", "label": "Include Workers Comp", "type": "virtual" },
+      "fields": [
+        { "key": "wc_insurer", "label": "Insurer (letter)", "type": "insurer_ref", "priority": "core", "required": true, "show_if": "wc_included", "pdf_field": "WorkersCompensationEmployersLiability_InsurerLetterCode_A[0]" },
+        { "key": "wc_statutory", "label": "Per statute", "type": "checkbox", "priority": "common", "show_if": "wc_included", "pdf_field": "WorkersCompensationEmployersLiability_WorkersCompensationStatutoryLimitIndicator_A[0]" },
+        { "key": "wc_excluded", "label": "Any proprietor/partner/exec excluded? (Y/N)", "type": "yn_code", "priority": "common", "show_if": "wc_included", "pdf_field": "WorkersCompensationEmployersLiability_AnyPersonsExcludedIndicator_A[0]", "note": "If Y, describe under Description of Operations." },
+        { "key": "wc_subr_waived", "label": "Subrogation waived? (Y/N)", "type": "yn_code", "priority": "common", "show_if": "wc_included", "pdf_field": "Policy_WorkersCompensation_SubrogationWaivedCode_A[0]" },
+        { "key": "wc_policy_no", "label": "Policy number", "type": "text", "priority": "core", "required": true, "show_if": "wc_included", "pdf_field": "Policy_WorkersCompensationAndEmployersLiability_PolicyNumberIdentifier_A[0]" },
+        { "key": "wc_eff", "label": "Effective date", "type": "date", "priority": "core", "required": true, "show_if": "wc_included", "pdf_field": "Policy_WorkersCompensationAndEmployersLiability_EffectiveDate_A[0]" },
+        { "key": "wc_exp", "label": "Expiration date", "type": "date", "priority": "core", "required": true, "show_if": "wc_included", "pdf_field": "Policy_WorkersCompensationAndEmployersLiability_ExpirationDate_A[0]" },
+        { "key": "wc_el_each", "label": "E.L. each accident", "type": "currency", "priority": "common", "show_if": "wc_included", "pdf_field": "WorkersCompensationEmployersLiability_EmployersLiability_EachAccidentLimitAmount_A[0]" },
+        { "key": "wc_el_disease_emp", "label": "E.L. disease - ea employee", "type": "currency", "priority": "common", "show_if": "wc_included", "pdf_field": "WorkersCompensationEmployersLiability_EmployersLiability_DiseaseEachEmployeeLimitAmount_A[0]" },
+        { "key": "wc_el_disease_pol", "label": "E.L. disease - policy limit", "type": "currency", "priority": "common", "show_if": "wc_included", "pdf_field": "WorkersCompensationEmployersLiability_EmployersLiability_DiseasePolicyLimitAmount_A[0]" }
+      ]
+    },
+
+    {
+      "id": "footer",
+      "label": "Operations / Certificate Holder",
+      "fields": [
+        { "key": "description", "label": "Description of operations / locations / vehicles", "type": "textarea", "priority": "common", "required": false, "pdf_field": "CertificateOfLiabilityInsurance_ACORDForm_RemarkText_A[0]" },
+        { "key": "holder_name", "label": "Certificate holder name", "type": "text", "priority": "core", "required": true, "pdf_field": "CertificateHolder_FullName_A[0]" },
+        { "key": "holder_addr1", "label": "Address line 1", "type": "text", "priority": "core", "required": true, "pdf_field": "CertificateHolder_MailingAddress_LineOne_A[0]" },
+        { "key": "holder_addr2", "label": "Address line 2", "type": "text", "priority": "rare", "required": false, "pdf_field": "CertificateHolder_MailingAddress_LineTwo_A[0]" },
+        { "key": "holder_city", "label": "City", "type": "text", "priority": "core", "required": true, "pdf_field": "CertificateHolder_MailingAddress_CityName_A[0]" },
+        { "key": "holder_state", "label": "State", "type": "state", "priority": "core", "required": true, "pdf_field": "CertificateHolder_MailingAddress_StateOrProvinceCode_A[0]" },
+        { "key": "holder_zip", "label": "ZIP", "type": "text", "priority": "core", "required": true, "pdf_field": "CertificateHolder_MailingAddress_PostalCode_A[0]" }
+      ]
+    }
+  ],
+
+  "logic": {
+    "_comment": "Cross-field rules the renderer/validator must enforce.",
+    "insurer_references": "Every *_insurer field (insurer_ref) must reference a letter (A-F) whose insurers.row name is filled. Render as a dropdown of filled insurers; write the chosen LETTER to the InsurerLetterCode field.",
+    "optional_blocks": "gl / auto / umbrella / wc are optional. When a block's include toggle is off, skip ALL its pdf_fields (leave blank). At least one coverage block must be included to produce a valid cert.",
+    "radio_groups": "Within a group only one option's checkbox may be set to '1'; the rest 'Off'. Groups: gl_form_basis, gl_agg_per, umb_type, umb_form, umb_dedret.",
+    "reveals": "gl_agg_per=Other reveals gl_agg_other_desc. wc_excluded=Y should prompt the user to fill Description of Operations.",
+    "yn_codes": "yn_code fields write literal 'Y' or 'N' text (not checkbox states).",
+    "auto_other_slots": "Vehicle_OtherCoveredAuto* and GeneralLiability_OtherCoverage* / OtherPolicy_* slots exist in the PDF but are intentionally omitted from v1 as 'rare'. Add later if needed."
+  }
+}
