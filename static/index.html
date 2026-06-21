@@ -73,7 +73,7 @@
         <button id="preview-btn" class="btn btn-primary" type="button">Preview</button>
         <button id="download-btn" class="btn btn-secondary" type="button">Download</button>
         <button id="print-btn" class="btn btn-secondary" type="button">Print</button>
-        <button id="email-btn" class="btn btn-secondary" type="button">Email…</button>
+        <button id="email-btn" class="btn btn-secondary" type="button">Use my email</button>
       </div>
 
       <!-- Preview pane -->
@@ -83,27 +83,6 @@
       </div>
     </main>
   </div>
-
-  <!-- Email dialog -->
-  <dialog id="email-dialog" class="dialog">
-    <form method="dialog" id="email-form">
-      <h3>Email this form</h3>
-      <label>Recipient(s) <span class="muted small">comma-separated</span>
-        <input id="email-to" type="text" placeholder="client@example.com" required />
-      </label>
-      <label>CC (always copied)
-        <input id="email-cc" type="text" readonly class="locked" />
-      </label>
-      <label>Message <span class="muted small">optional</span>
-        <textarea id="email-message" rows="3"></textarea>
-      </label>
-      <p id="email-error" class="error hidden"></p>
-      <div class="dialog-actions">
-        <button value="cancel" class="btn btn-ghost" type="submit">Cancel</button>
-        <button id="email-send" value="send" class="btn btn-primary" type="submit">Send</button>
-      </div>
-    </form>
-  </dialog>
 
   <!-- Save-profile dialog -->
   <dialog id="profile-dialog" class="dialog">
