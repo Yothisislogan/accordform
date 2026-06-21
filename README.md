@@ -171,12 +171,37 @@ fails loudly at startup, not at fill time.
 | M3 Catalog + search + schema render | ✅ |
 | M4 Preview + download/print/email + audit log | ✅ (email needs transport creds) |
 | M5 Agency/client profiles + prefill | ✅ |
-| M6 Author remaining 8 forms (28/35/125/126/127/130/140/141) | ⛔ blocked: licensed PDFs not yet supplied |
+| M6 Author remaining forms | 🟡 in progress — generator + 4 schemas in repo (25 verified; 128, 131, 135 NC drafts). 8 more draft via the generator once their PDFs land |
 | M7 Field-usage tracking | ✅ |
 | Phase 2 (NowCerts, drafts, admin re-tag) | hooks stubbed only |
+
+### M6 — authoring the other forms
+
+`tools/build_schema.py` auto-drafts a schema straight from a fillable ACORD PDF
+(field names + `FieldNameAlt` tooltips + checkbox export values), matching the
+`acord_25.json` shape:
+
+```bash
+python tools/build_schema.py templates/acord/ACORD_140_clean.pdf 140 2016/03 > schemas/acord_140.json
+```
+
+Drafts are intentionally partial: labels/types/sections/PDF-field-names are
+accurate, but **priorities, required flags, and cross-field logic**
+(insurer-letter refs, optional coverage blocks, radio groups, Y/N codes) need a
+human pass — see `SCHEMA-STATUS.md` for the per-form checklist and current
+status. Draft schemas omit `_meta.title`; the catalog supplies a display title
+(`forms_catalog.derive_title` / `FORM_TITLES`). Checkbox export values are read
+from each field's `on_value` (default `"1"`).
+
+Three forms beyond the original nine were supplied (128 Garage, 131 Umbrella,
+135 NC assigned-risk WC) and are included as active drafts — flagged for Logan's
+keep/defer call in `SCHEMA-STATUS.md`. The duplicate `Acord_130_WC_page_2.pdf`
+is ignored (the main 130 already contains all pages).
 
 ### Waiting on Logan
 - `OWNER_CC_EMAIL`, email transport (SMTP creds or SendGrid key)
 - Google OAuth client ID/secret for `forms.weinsurethings.com`
-- The 8 remaining licensed ACORD PDFs (28, 35, 125, 126, 127, 130, 140, 141) —
-  these gate M6 (field maps are written against the real dumped field names).
+- The licensed fillable PDFs dropped into `templates/acord/` (gitignored). The
+  schemas reference real field names; to fill live, prep each template
+  (`tools/prep_template.py`) and — for forms without a schema yet — draft one
+  with `tools/build_schema.py`, then hand-tune per `SCHEMA-STATUS.md`.

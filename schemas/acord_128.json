@@ -1,0 +1,3392 @@
+{
+  "_meta": {
+    "acord_number": "128",
+    "edition": "2012/04",
+    "template_source": "Acord_128_-_Garage_and_Dealers_Section.pdf",
+    "field_name_prefix": "F[0].",
+    "total_pdf_fields": 360,
+    "checkbox_off_value": "Off",
+    "_DRAFT": "Auto-generated. Labels/types/sections inferred; REVIEW priorities, required flags, and cross-field logic (insurer letter refs, optional blocks, radio groups) by hand."
+  },
+  "sections": [
+    {
+      "id": "producer",
+      "label": "Producer / Agency",
+      "fields": [
+        {
+          "key": "p1_0_producer_customeridentifier_a_0",
+          "label": "Producer customer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Producer_CustomerIdentifier_A[0]",
+          "help": "The customer's identification number assigned by the producer (e.g. agency or brokerage)"
+        },
+        {
+          "key": "p1_0_producer_fullname_a_0",
+          "label": "Producer full name",
+          "type": "text",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].Producer_FullName_A[0]",
+          "help": "The full name of the producer/agency"
+        },
+        {
+          "key": "p2_0_producer_customeridentifier_a_0",
+          "label": "Producer customer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Producer_CustomerIdentifier_A[0]",
+          "help": "The customer's identification number assigned by the producer (e.g. agency or brokerage)"
+        },
+        {
+          "key": "p3_0_producer_customeridentifier_a_0",
+          "label": "Producer customer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].Producer_CustomerIdentifier_A[0]",
+          "help": "The customer's identification number assigned by the producer (e.g. agency or brokerage)"
+        }
+      ],
+      "prefill_from": "agency"
+    },
+    {
+      "id": "form",
+      "label": "Certificate Info",
+      "fields": [
+        {
+          "key": "p1_0_form_completiondate_a_0",
+          "label": "Form completion date",
+          "type": "date",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].Form_CompletionDate_A[0]",
+          "help": "The date on which the form is completed"
+        }
+      ]
+    },
+    {
+      "id": "policy",
+      "label": "Policy",
+      "fields": [
+        {
+          "key": "p1_0_policy_policynumberidentifier_a_0",
+          "label": "Policy policy number identifier",
+          "type": "text",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].Policy_PolicyNumberIdentifier_A[0]",
+          "help": "The identifier assigned by the insurer to the policy, or submission, being referenced exactly as it appears on the policy, including prefix and suffix symbols. If required for self-insurance, the self-insured license or contract number"
+        },
+        {
+          "key": "p1_0_policy_effectivedate_a_0",
+          "label": "Policy effective date",
+          "type": "date",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].Policy_EffectiveDate_A[0]",
+          "help": "The effective date of the policy.  The date that the terms and conditions of the policy commence"
+        }
+      ]
+    },
+    {
+      "id": "insurer",
+      "label": "Insurer / Carrier",
+      "fields": [
+        {
+          "key": "p1_0_insurer_fullname_a_0",
+          "label": "Insurer full name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Insurer_FullName_A[0]",
+          "help": "The insurer's full legal company name(s) as found in the file copy of the policy.  Use the actual name of the company within the group to which the policy has been issued.  This is not the insurer's group name or trade name"
+        },
+        {
+          "key": "p1_0_insurer_naiccode_a_0",
+          "label": "Insurer naiccode",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Insurer_NAICCode_A[0]",
+          "help": "The identification code assigned to the insurer by the NAIC"
+        }
+      ]
+    },
+    {
+      "id": "namedinsured",
+      "label": "Named Insured",
+      "fields": [
+        {
+          "key": "p1_0_namedinsured_fullname_a_0",
+          "label": "Named insured full name",
+          "type": "text",
+          "priority": "core",
+          "required": false,
+          "pdf_field": "P1[0].NamedInsured_FullName_A[0]",
+          "help": "The named insured(s) as it/they will appear on the policy declarations page"
+        }
+      ],
+      "prefill_from": "client"
+    },
+    {
+      "id": "businessinformation",
+      "label": "Business information",
+      "fields": [
+        {
+          "key": "p1_0_businessinformation_businesstype_repairshopindicator_a_0",
+          "label": "Business information business type repair shop indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_BusinessType_RepairShopIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the nature of business is a repair shop",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_businessinformation_businesstype_mobilehometrailerdealerindicator_a_0",
+          "label": "Business information business type mobile home trailer dealer indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_BusinessType_MobileHomeTrailerDealerIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the nature of business is a mobile home trailer dealer",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_businessinformation_businesstype_servicestationindicator_a_0",
+          "label": "Business information business type service station indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_BusinessType_ServiceStationIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the nature of business is a service station",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_businessinformation_businesstype_commercialtrailerdealerindicator_a_0",
+          "label": "Business information business type commercial trailer dealer indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_BusinessType_CommercialTrailerDealerIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the nature of business is a commercial trailer dealer",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_businessinformation_businesstype_storagegaragepublicparkingindicator_a_0",
+          "label": "Business information business type storage garage public parking indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_BusinessType_StorageGaragePublicParkingIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the nature of business is a storage, garage or public parking facility",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_businessinformation_businesstype_otherindicator_a_0",
+          "label": "Business information business type other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_BusinessType_OtherIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the nature of business is other than those listed",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_businessinformation_businesstype_otherdescription_a_0",
+          "label": "Business information business type other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_BusinessType_OtherDescription_A[0]",
+          "help": "The description of the nature/type of business"
+        },
+        {
+          "key": "p1_0_businessinformation_franchisedindicator_a_0",
+          "label": "Business information franchised indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_FranchisedIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the operations are franchised",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_businessinformation_nonfranchisedindicator_a_0",
+          "label": "Business information non franchised indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_NonFranchisedIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the operations are not franchised",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_businessinformation_annualgrossreceiptsamount_a_0",
+          "label": "Business information annual gross receipts amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].BusinessInformation_AnnualGrossReceiptsAmount_A[0]",
+          "help": "The total annual gross sales or receipts"
+        }
+      ]
+    },
+    {
+      "id": "garageanddealers",
+      "label": "Garage and dealers",
+      "fields": [
+        {
+          "key": "p1_0_garageanddealers_vehicletype_carindicator_a_0",
+          "label": "Garage and dealers vehicle type car indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_VehicleType_CarIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the business deals with cars",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealers_inventory_carpercent_a_0",
+          "label": "Garage and dealers inventory car percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_Inventory_CarPercent_A[0]",
+          "help": "The percentage of total inventory kept in cars"
+        },
+        {
+          "key": "p1_0_garageanddealers_vehicletype_trucktractorindicator_a_0",
+          "label": "Garage and dealers vehicle type truck tractor indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_VehicleType_TruckTractorIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the business deals with truck-tractors",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealers_inventory_trucktractorpercent_a_0",
+          "label": "Garage and dealers inventory truck tractor percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_Inventory_TruckTractorPercent_A[0]",
+          "help": "The percentage of total inventory kept in truck-tractors"
+        },
+        {
+          "key": "p1_0_garageanddealers_vehicletype_motorcycleindicator_a_0",
+          "label": "Garage and dealers vehicle type motorcycle indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_VehicleType_MotorcycleIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the business deals with motorcycles",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealers_inventory_motorcyclepercent_a_0",
+          "label": "Garage and dealers inventory motorcycle percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_Inventory_MotorcyclePercent_A[0]",
+          "help": "The percentage of total inventory kept in motorcycles"
+        },
+        {
+          "key": "p1_0_garageanddealers_vehicletype_recreationalvehicleindicator_a_0",
+          "label": "Garage and dealers vehicle type recreational vehicle indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_VehicleType_RecreationalVehicleIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the business deals with recreational vehicles",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealers_inventory_recreationalvehiclepercent_a_0",
+          "label": "Garage and dealers inventory recreational vehicle percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_Inventory_RecreationalVehiclePercent_A[0]",
+          "help": "The percentage of total inventory kept in recreational vehicles"
+        },
+        {
+          "key": "p1_0_garageanddealers_vehicletype_snowmobileindicator_a_0",
+          "label": "Garage and dealers vehicle type snowmobile indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_VehicleType_SnowmobileIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the business deals with snowmobiles",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealers_inventory_snowmobilepercent_a_0",
+          "label": "Garage and dealers inventory snowmobile percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_Inventory_SnowmobilePercent_A[0]",
+          "help": "The percentage of total inventory kept in snowmobiles"
+        },
+        {
+          "key": "p1_0_garageanddealers_vehicletype_otherindicator_a_0",
+          "label": "Garage and dealers vehicle type other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_VehicleType_OtherIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the business deals with vehicles other than those listed",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealers_vehicletype_otherdescription_a_0",
+          "label": "Garage and dealers vehicle type other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_VehicleType_OtherDescription_A[0]",
+          "help": "The description of the types of vehicles dealt with in the business"
+        },
+        {
+          "key": "p1_0_garageanddealers_inventory_otherpercent_a_0",
+          "label": "Garage and dealers inventory other percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_Inventory_OtherPercent_A[0]",
+          "help": "The percentage of total inventory kept in vehicles other than those listed"
+        },
+        {
+          "key": "p1_0_garageanddealers_facilitytype_buildingpercent_a_0",
+          "label": "Garage and dealers facility type building percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_FacilityType_BuildingPercent_A[0]",
+          "help": "The percentage of inventory stored within a building"
+        },
+        {
+          "key": "p1_0_garageanddealers_facilitytype_standardopenlotpercent_a_0",
+          "label": "Garage and dealers facility type standard open lot percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_FacilityType_StandardOpenLotPercent_A[0]",
+          "help": "The percentage of inventory stored in a standard open lot.  The lot is enclosed by walls or fences at least six feet in height, with openings securely locked when unattended"
+        },
+        {
+          "key": "p1_0_garageanddealers_facilitytype_nonstandardopenlotpercent_a_0",
+          "label": "Garage and dealers facility type non standard open lot percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_FacilityType_NonStandardOpenLotPercent_A[0]",
+          "help": "The percentage of inventory stored in a non-standard open lot.  The lot is either an open lot or an unroofed space and the building is not securely enclosed or locked when unattended"
+        },
+        {
+          "key": "p1_0_garageanddealers_facilitytype_otherdescription_a_0",
+          "label": "Garage and dealers facility type other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_FacilityType_OtherDescription_A[0]",
+          "help": "The description of the type of facility"
+        },
+        {
+          "key": "p1_0_garageanddealers_facilitytype_otherstorageareapercent_a_0",
+          "label": "Garage and dealers facility type other storage area percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_FacilityType_OtherStorageAreaPercent_A[0]",
+          "help": "The percentage of inventory stored in an area other than those listed"
+        },
+        {
+          "key": "p1_0_garageanddealers_facilitytype_buildingpercent_b_0",
+          "label": "Garage and dealers facility type building percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_FacilityType_BuildingPercent_B[0]",
+          "help": "The percentage of inventory stored within a building"
+        },
+        {
+          "key": "p1_0_garageanddealers_facilitytype_standardopenlotpercent_b_0",
+          "label": "Garage and dealers facility type standard open lot percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_FacilityType_StandardOpenLotPercent_B[0]",
+          "help": "The percentage of inventory stored in a standard open lot.  The lot is enclosed by walls or fences at least six feet in height, with openings securely locked when unattended"
+        },
+        {
+          "key": "p1_0_garageanddealers_facilitytype_nonstandardopenlotpercent_b_0",
+          "label": "Garage and dealers facility type non standard open lot percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_FacilityType_NonStandardOpenLotPercent_B[0]",
+          "help": "The percentage of inventory stored in a non-standard open lot.  The lot is either an open lot or an unroofed space and the building is not securely enclosed or locked when unattended"
+        },
+        {
+          "key": "p1_0_garageanddealers_facilitytype_otherstorageareapercent_b_0",
+          "label": "Garage and dealers facility type other storage area percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_FacilityType_OtherStorageAreaPercent_B[0]",
+          "help": "The percentage of inventory stored in an area other than those listed"
+        },
+        {
+          "key": "p1_0_garageanddealers_facilitytype_buildingpercent_c_0",
+          "label": "Garage and dealers facility type building percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_FacilityType_BuildingPercent_C[0]",
+          "help": "The percentage of inventory stored within a building"
+        },
+        {
+          "key": "p1_0_garageanddealers_facilitytype_standardopenlotpercent_c_0",
+          "label": "Garage and dealers facility type standard open lot percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_FacilityType_StandardOpenLotPercent_C[0]",
+          "help": "The percentage of inventory stored in a standard open lot.  The lot is enclosed by walls or fences at least six feet in height, with openings securely locked when unattended"
+        },
+        {
+          "key": "p1_0_garageanddealers_facilitytype_nonstandardopenlotpercent_c_0",
+          "label": "Garage and dealers facility type non standard open lot percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_FacilityType_NonStandardOpenLotPercent_C[0]",
+          "help": "The percentage of inventory stored in a non-standard open lot.  The lot is either an open lot or an unroofed space and the building is not securely enclosed or locked when unattended"
+        },
+        {
+          "key": "p1_0_garageanddealers_facilitytype_otherstorageareapercent_c_0",
+          "label": "Garage and dealers facility type other storage area percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_FacilityType_OtherStorageAreaPercent_C[0]",
+          "help": "The percentage of inventory stored in an area other than those listed"
+        },
+        {
+          "key": "p1_0_garageanddealers_classoneemployees_regularoperatorcount_a_0",
+          "label": "Garage and dealers class one employees regular operator count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_ClassOneEmployees_RegularOperatorCount_A[0]",
+          "help": "The number of class I (employees) regular operators - Proprietors, partners and officers active in the garage operation, salespersons, general managers, service managers; any employee  whose principal duty involves the operation of covered autos or who is furnished a covered auto"
+        },
+        {
+          "key": "p1_0_garageanddealers_classoneemployees_otheroperatorcount_a_0",
+          "label": "Garage and dealers class one employees other operator count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_ClassOneEmployees_OtherOperatorCount_A[0]",
+          "help": "The number of class I (employees) operators other than regular operators"
+        },
+        {
+          "key": "p1_0_garageanddealers_classtwononemployees_underagetwentyfivecount_a_0",
+          "label": "Garage and dealers class two non employees under age twenty five count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_ClassTwoNonEmployees_UnderAgeTwentyFiveCount_A[0]",
+          "help": "The number of class II (non-employees) operators under the age of 25 - Any of the following persons who are regularly furnished with a covered auto: inactive-proprietors, partners or officers and their relatives and the relatives of any person described in class I"
+        },
+        {
+          "key": "p1_0_garageanddealers_classtwononemployees_otheroperatorcount_a_0",
+          "label": "Garage and dealers class two non employees other operator count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_ClassTwoNonEmployees_OtherOperatorCount_A[0]",
+          "help": "The number of class II (non-employees) operators other than those under the age of 25"
+        },
+        {
+          "key": "p1_0_garageanddealers_classoneemployees_regularoperatorcount_b_0",
+          "label": "Garage and dealers class one employees regular operator count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_ClassOneEmployees_RegularOperatorCount_B[0]",
+          "help": "The number of class I (employees) regular operators - Proprietors, partners and officers active in the garage operation, salespersons, general managers, service managers; any employee  whose principal duty involves the operation of covered autos or who is furnished a covered auto"
+        },
+        {
+          "key": "p1_0_garageanddealers_classoneemployees_otheroperatorcount_b_0",
+          "label": "Garage and dealers class one employees other operator count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_ClassOneEmployees_OtherOperatorCount_B[0]",
+          "help": "The number of class I (employees) operators other than regular operators"
+        },
+        {
+          "key": "p1_0_garageanddealers_classtwononemployees_underagetwentyfivecount_b_0",
+          "label": "Garage and dealers class two non employees under age twenty five count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_ClassTwoNonEmployees_UnderAgeTwentyFiveCount_B[0]",
+          "help": "The number of class II (non-employees) operators under the age of 25 - Any of the following persons who are regularly furnished with a covered auto: inactive-proprietors, partners or officers and their relatives and the relatives of any person described in class I"
+        },
+        {
+          "key": "p1_0_garageanddealers_classtwononemployees_otheroperatorcount_b_0",
+          "label": "Garage and dealers class two non employees other operator count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_ClassTwoNonEmployees_OtherOperatorCount_B[0]",
+          "help": "The number of class II (non-employees) operators other than those under the age of 25"
+        },
+        {
+          "key": "p1_0_garageanddealers_classoneemployees_regularoperatorcount_c_0",
+          "label": "Garage and dealers class one employees regular operator count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_ClassOneEmployees_RegularOperatorCount_C[0]",
+          "help": "The number of class I (employees) regular operators - Proprietors, partners and officers active in the garage operation, salespersons, general managers, service managers; any employee  whose principal duty involves the operation of covered autos or who is furnished a covered auto"
+        },
+        {
+          "key": "p1_0_garageanddealers_classoneemployees_otheroperatorcount_c_0",
+          "label": "Garage and dealers class one employees other operator count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_ClassOneEmployees_OtherOperatorCount_C[0]",
+          "help": "The number of class I (employees) operators other than regular operators"
+        },
+        {
+          "key": "p1_0_garageanddealers_classtwononemployees_underagetwentyfivecount_c_0",
+          "label": "Garage and dealers class two non employees under age twenty five count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_ClassTwoNonEmployees_UnderAgeTwentyFiveCount_C[0]",
+          "help": "The number of class II (non-employees) operators under the age of 25 - Any of the following persons who are regularly furnished with a covered auto: inactive-proprietors, partners or officers and their relatives and the relatives of any person described in class I"
+        },
+        {
+          "key": "p1_0_garageanddealers_classtwononemployees_otheroperatorcount_c_0",
+          "label": "Garage and dealers class two non employees other operator count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_ClassTwoNonEmployees_OtherOperatorCount_C[0]",
+          "help": "The number of class II (non-employees) operators other than those under the age of 25"
+        },
+        {
+          "key": "p1_0_garageanddealers_annualgallonspumpedcount_a_0",
+          "label": "Garage and dealers annual gallons pumped count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealers_AnnualGallonsPumpedCount_A[0]",
+          "help": "The number of gallons pumped per year"
+        }
+      ]
+    },
+    {
+      "id": "commercialstructure",
+      "label": "Commercial structure",
+      "fields": [
+        {
+          "key": "p1_0_commercialstructure_location_produceridentifier_a_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_ProducerIdentifier_A[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_produceridentifier_b_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_ProducerIdentifier_B[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_produceridentifier_c_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_ProducerIdentifier_C[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_produceridentifier_d_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_ProducerIdentifier_D[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_produceridentifier_e_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_ProducerIdentifier_E[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_produceridentifier_f_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_ProducerIdentifier_F[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_produceridentifier_g_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_ProducerIdentifier_G[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p1_0_commercialstructure_estimatedannualremunerationamount_a_0",
+          "label": "Commercial structure estimated annual remuneration amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_EstimatedAnnualRemunerationAmount_A[0]",
+          "help": "The estimated annual payroll for the location. Payroll means money or substitutes for money, such as the value of meals or lodging if provided. Accurate payroll estimates help avoid additional premium requirements being discovered during an audit. Do not include overtime premium"
+        },
+        {
+          "key": "p1_0_commercialstructure_employeecount_a_0",
+          "label": "Commercial structure employee count",
+          "type": "number",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_EmployeeCount_A[0]",
+          "help": "The total number of employee in this location"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_produceridentifier_h_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_ProducerIdentifier_H[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p1_0_commercialstructure_estimatedannualremunerationamount_b_0",
+          "label": "Commercial structure estimated annual remuneration amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_EstimatedAnnualRemunerationAmount_B[0]",
+          "help": "The estimated annual payroll for the location. Payroll means money or substitutes for money, such as the value of meals or lodging if provided. Accurate payroll estimates help avoid additional premium requirements being discovered during an audit. Do not include overtime premium"
+        },
+        {
+          "key": "p1_0_commercialstructure_employeecount_b_0",
+          "label": "Commercial structure employee count",
+          "type": "number",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_EmployeeCount_B[0]",
+          "help": "The total number of employee in this location"
+        },
+        {
+          "key": "p1_0_commercialstructure_location_produceridentifier_i_0",
+          "label": "Commercial structure location producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_Location_ProducerIdentifier_I[0]",
+          "help": "The location number for the premises"
+        },
+        {
+          "key": "p1_0_commercialstructure_estimatedannualremunerationamount_c_0",
+          "label": "Commercial structure estimated annual remuneration amount",
+          "type": "currency",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_EstimatedAnnualRemunerationAmount_C[0]",
+          "help": "The estimated annual payroll for the location. Payroll means money or substitutes for money, such as the value of meals or lodging if provided. Accurate payroll estimates help avoid additional premium requirements being discovered during an audit. Do not include overtime premium"
+        },
+        {
+          "key": "p1_0_commercialstructure_employeecount_c_0",
+          "label": "Commercial structure employee count",
+          "type": "number",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].CommercialStructure_EmployeeCount_C[0]",
+          "help": "The total number of employee in this location"
+        }
+      ]
+    },
+    {
+      "id": "garageanddealerscoverage",
+      "label": "Garage and dealers coverage",
+      "fields": [
+        {
+          "key": "p1_0_garageanddealerscoverage_comprehensiveoption_newindicator_a_0",
+          "label": "Garage and dealers coverage comprehensive option new indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersCoverage_ComprehensiveOption_NewIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates new vehicles are to be covered by comprehensive coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealerscoverage_comprehensiveoption_usedindicator_a_0",
+          "label": "Garage and dealers coverage comprehensive option used indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersCoverage_ComprehensiveOption_UsedIndicator_A[0]",
+          "help": "check the box (if applicable): Indicates used vehicles are to be covered by comprehensive coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealerscoverage_comprehensiveoption_ownedindicator_a_0",
+          "label": "Garage and dealers coverage comprehensive option owned indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersCoverage_ComprehensiveOption_OwnedIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the dealers interest in covered autos owned by the dealer are to be covered by comprehensive coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealerscoverage_comprehensiveoption_financedindicator_a_0",
+          "label": "Garage and dealers coverage comprehensive option financed indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersCoverage_ComprehensiveOption_FinancedIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the dealers interest only in financed covered autos are to be covered by comprehensive coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealerscoverage_comprehensiveoption_ownedandfinancedindicator_a_0",
+          "label": "Garage and dealers coverage comprehensive option owned and financed indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersCoverage_ComprehensiveOption_OwnedAndFinancedIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the dealers and financed interests in covered autos are to be covered by comprehensive coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealerscoverage_specifiedperilsoption_newindicator_a_0",
+          "label": "Garage and dealers coverage specified perils option new indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersCoverage_SpecifiedPerilsOption_NewIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates new vehicles are to be covered by specified perils coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealerscoverage_specifiedperilsoption_usedindicator_a_0",
+          "label": "Garage and dealers coverage specified perils option used indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersCoverage_SpecifiedPerilsOption_UsedIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates used vehicles are to be covered by specified perils coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealerscoverage_specifiedperilsoption_ownedindicator_a_0",
+          "label": "Garage and dealers coverage specified perils option owned indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersCoverage_SpecifiedPerilsOption_OwnedIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the dealers interest in covered autos owned by the dealer are to be covered by specified perils coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealerscoverage_specifiedperilsoption_financedindicator_a_0",
+          "label": "Garage and dealers coverage specified perils option financed indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersCoverage_SpecifiedPerilsOption_FinancedIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the dealers interest only in financed covered autos are to be covered by specified perils coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealerscoverage_specifiedperilsoption_ownedandfinancedindicator_a_0",
+          "label": "Garage and dealers coverage specified perils option owned and financed indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersCoverage_SpecifiedPerilsOption_OwnedAndFinancedIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the dealers and financed interests in covered autos are to be covered by specified perils coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealerscoverage_collisionoption_newindicator_a_0",
+          "label": "Garage and dealers coverage collision option new indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersCoverage_CollisionOption_NewIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates new vehicles are to be covered by collision coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealerscoverage_collisionoption_usedindicator_a_0",
+          "label": "Garage and dealers coverage collision option used indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersCoverage_CollisionOption_UsedIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates used vehicles are to be covered by collision coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealerscoverage_collisionoption_ownedindicator_a_0",
+          "label": "Garage and dealers coverage collision option owned indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersCoverage_CollisionOption_OwnedIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the dealers interest in covered autos owned by the dealer are to be covered by collision coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealerscoverage_collisionoption_financedindicator_a_0",
+          "label": "Garage and dealers coverage collision option financed indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersCoverage_CollisionOption_FinancedIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the dealers interest only in financed covered autos are to be covered by collision coverage",
+          "on_value": "1"
+        },
+        {
+          "key": "p1_0_garageanddealerscoverage_collisionoption_ownedandfinancedindicator_a_0",
+          "label": "Garage and dealers coverage collision option owned and financed indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersCoverage_CollisionOption_OwnedAndFinancedIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the dealers and financed interests in covered autos are to be covered by collision coverage",
+          "on_value": "1"
+        }
+      ]
+    },
+    {
+      "id": "garageanddealerslineofbusiness",
+      "label": "Garage and dealers line of business",
+      "fields": [
+        {
+          "key": "p1_0_garageanddealerslineofbusiness_attachment_commercialautodriverinformationscheduleindicator_a_0",
+          "label": "Garage and dealers line of business attachment commercial auto driver information schedule indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].GarageAndDealersLineOfBusiness_Attachment_CommercialAutoDriverInformationScheduleIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates that additional drivers appear on the attached ACORD 163 Commercial Auto Driver Information Schedule",
+          "on_value": "1"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kabcode_a_0",
+          "label": "Garage and dealers line of business question kabcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KABCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Does applicant rent, lease or loan vehicles to others?"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kaccode_a_0",
+          "label": "Garage and dealers line of business question kaccode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KACCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Does applicant pick-up or deliver customer's cars?"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kadcode_a_0",
+          "label": "Garage and dealers line of business question kadcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KADCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Does pick-up or delivery exceed 50 miles?"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kaecode_a_0",
+          "label": "Garage and dealers line of business question kaecode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KAECode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Is tire recapping or retreading performed?"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kafcode_a_0",
+          "label": "Garage and dealers line of business question kafcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KAFCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Does applicant own or sponsor a car for racing?"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kagcode_a_0",
+          "label": "Garage and dealers line of business question kagcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KAGCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Does applicant handle butane, propane or other gases?"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kahcode_a_0",
+          "label": "Garage and dealers line of business question kahcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KAHCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Are vehicles furnished for group or organizations?"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kaicode_a_0",
+          "label": "Garage and dealers line of business question kaicode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KAICode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Does applicant perform spray painting or welding?"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kajcode_a_0",
+          "label": "Garage and dealers line of business question kajcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KAJCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Does applicant drive-away or haul-away vehicles from factory distributing point or other dealers?"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kakcode_a_0",
+          "label": "Garage and dealers line of business question kakcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KAKCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Does applicant dismantle autos or have salvage operation?"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kalcode_a_0",
+          "label": "Garage and dealers line of business question kalcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KALCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Does applicant use tow trucks?"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kamcode_a_0",
+          "label": "Garage and dealers line of business question kamcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KAMCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Do employees regularly use own autos on company business?"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kancode_a_0",
+          "label": "Garage and dealers line of business question kancode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KANCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Does applicant park customer's vehicles on public streets or off premises?"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kaocode_a_0",
+          "label": "Garage and dealers line of business question kaocode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KAOCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Is a charge made for parking?"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kapcode_a_0",
+          "label": "Garage and dealers line of business question kapcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KAPCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Any private protection systems? (fences, dogs, alarms, guards)"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kaqcode_a_0",
+          "label": "Garage and dealers line of business question kaqcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KAQCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Is applicant involved in any &quot;non garage&quot; operations? (mini marts, liquor stores, etc)"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_karcode_a_0",
+          "label": "Garage and dealers line of business question karcode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KARCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Does applicant perform road emergency services?"
+        },
+        {
+          "key": "p2_0_garageanddealerslineofbusiness_question_kascode_a_0",
+          "label": "Garage and dealers line of business question kascode",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].GarageAndDealersLineOfBusiness_Question_KASCode_A[0]",
+          "help": "Enter Y for a Yes response. Input N for No response. Indicates the response to the question, Any drivers with convictions for moving traffic violations?"
+        },
+        {
+          "key": "p3_0_garageanddealerslineofbusiness_attachment_additionalinterestindicator_a_0",
+          "label": "Garage and dealers line of business attachment additional interest indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].GarageAndDealersLineOfBusiness_Attachment_AdditionalInterestIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates that further additional interests appear on the attached ACORD 45",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_garageanddealerslineofbusiness_remarktext_a_0",
+          "label": "Garage and dealers line of business remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].GarageAndDealersLineOfBusiness_RemarkText_A[0]",
+          "help": "The remarks associated with the Garage and Dealers line of business.  Enter any endorsements that apply. Be sure to include the form numbers and the required information for attaching the endorsement.  ACORD 101, Additional Remarks Schedule, may be attached  if more space is required"
+        }
+      ]
+    },
+    {
+      "id": "driver",
+      "label": "Driver",
+      "fields": [
+        {
+          "key": "p1_0_driver_produceridentifier_a_0",
+          "label": "Driver producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ProducerIdentifier_A[0]",
+          "help": "The number assigned to the driver by the producer"
+        },
+        {
+          "key": "p1_0_driver_givenname_a_0",
+          "label": "Driver given name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GivenName_A[0]",
+          "help": "The driver's first name (given name)"
+        },
+        {
+          "key": "p1_0_driver_othergivennameinitial_a_0",
+          "label": "Driver other given name initial",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_OtherGivenNameInitial_A[0]",
+          "help": "The driver's middle name or initial (other given name)"
+        },
+        {
+          "key": "p1_0_driver_surname_a_0",
+          "label": "Driver surname",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Surname_A[0]",
+          "help": "The driver's last name (surname)"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_cityname_a_0",
+          "label": "Driver mailing address city name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_CityName_A[0]",
+          "help": "The city of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_stateorprovincecode_a_0",
+          "label": "Driver mailing address state or province code",
+          "type": "state",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_StateOrProvinceCode_A[0]",
+          "help": "The state or province of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_postalcode_a_0",
+          "label": "Driver mailing address postal code",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_PostalCode_A[0]",
+          "help": "The postal code of the driver"
+        },
+        {
+          "key": "p1_0_driver_gendercode_a_0",
+          "label": "Driver gender code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GenderCode_A[0]",
+          "help": "The gender of the driver"
+        },
+        {
+          "key": "p1_0_driver_maritalstatuscode_a_0",
+          "label": "Driver marital status code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MaritalStatusCode_A[0]",
+          "help": "The marital status of the driver. Examples are: S - Single; M - Married; D - Divorced; P - Separated; W - Widowed, C - Domestic Partner (unmarried), V - Civil Union/Registered Domestic Partner, F- Fianc&#233;/Fianc&#233;e, U - Unknown, O - Other"
+        },
+        {
+          "key": "p1_0_driver_birthdate_a_0",
+          "label": "Driver birth date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_BirthDate_A[0]",
+          "help": "The birth date of the driver"
+        },
+        {
+          "key": "p1_0_driver_experienceyearcount_a_0",
+          "label": "Driver experience year count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ExperienceYearCount_A[0]",
+          "help": "The number of years of driving experience for the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedyear_a_0",
+          "label": "Driver licensed year",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedYear_A[0]",
+          "help": "The original year in which a driver's license was issued to this driver"
+        },
+        {
+          "key": "p1_0_driver_licensenumberidentifier_a_0",
+          "label": "Driver license number identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicenseNumberIdentifier_A[0]",
+          "help": "The driver's license number"
+        },
+        {
+          "key": "p1_0_driver_taxidentifier_a_0",
+          "label": "Driver tax identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_TaxIdentifier_A[0]",
+          "help": "The tax identifier (social security number) of the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedstateorprovincecode_a_0",
+          "label": "Driver licensed state or province code",
+          "type": "state",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedStateOrProvinceCode_A[0]",
+          "help": "The state in which the driver is licensed"
+        },
+        {
+          "key": "p1_0_driver_hireddate_a_0",
+          "label": "Driver hired date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_HiredDate_A[0]",
+          "help": "The date the driver was hired"
+        },
+        {
+          "key": "p1_0_driver_vehicle_produceridentifier_a_0",
+          "label": "Driver vehicle producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_ProducerIdentifier_A[0]",
+          "help": "The producer assigned vehicle number that this driver primarily uses"
+        },
+        {
+          "key": "p1_0_driver_vehicle_usepercent_a_0",
+          "label": "Driver vehicle use percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_UsePercent_A[0]",
+          "help": "Indicates the percentage of driving done by this driver in the primary vehicle that this driver uses"
+        },
+        {
+          "key": "p1_0_driver_produceridentifier_b_0",
+          "label": "Driver producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ProducerIdentifier_B[0]",
+          "help": "The number assigned to the driver by the producer"
+        },
+        {
+          "key": "p1_0_driver_givenname_b_0",
+          "label": "Driver given name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GivenName_B[0]",
+          "help": "The driver's first name (given name)"
+        },
+        {
+          "key": "p1_0_driver_othergivennameinitial_b_0",
+          "label": "Driver other given name initial",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_OtherGivenNameInitial_B[0]",
+          "help": "The driver's middle name or initial (other given name)"
+        },
+        {
+          "key": "p1_0_driver_surname_b_0",
+          "label": "Driver surname",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Surname_B[0]",
+          "help": "The driver's last name (surname)"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_cityname_b_0",
+          "label": "Driver mailing address city name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_CityName_B[0]",
+          "help": "The city of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_stateorprovincecode_b_0",
+          "label": "Driver mailing address state or province code",
+          "type": "state",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_StateOrProvinceCode_B[0]",
+          "help": "The state or province of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_postalcode_b_0",
+          "label": "Driver mailing address postal code",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_PostalCode_B[0]",
+          "help": "The postal code of the driver"
+        },
+        {
+          "key": "p1_0_driver_gendercode_b_0",
+          "label": "Driver gender code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GenderCode_B[0]",
+          "help": "The gender of the driver"
+        },
+        {
+          "key": "p1_0_driver_maritalstatuscode_b_0",
+          "label": "Driver marital status code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MaritalStatusCode_B[0]",
+          "help": "The marital status of the driver. Examples are: S - Single; M - Married; D - Divorced; P - Separated; W - Widowed, C - Domestic Partner (unmarried), V - Civil Union/Registered Domestic Partner, F- Fianc&#233;/Fianc&#233;e, U - Unknown, O - Other"
+        },
+        {
+          "key": "p1_0_driver_birthdate_b_0",
+          "label": "Driver birth date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_BirthDate_B[0]",
+          "help": "The birth date of the driver"
+        },
+        {
+          "key": "p1_0_driver_experienceyearcount_b_0",
+          "label": "Driver experience year count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ExperienceYearCount_B[0]",
+          "help": "The number of years of driving experience for the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedyear_b_0",
+          "label": "Driver licensed year",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedYear_B[0]",
+          "help": "The original year in which a driver's license was issued to this driver"
+        },
+        {
+          "key": "p1_0_driver_licensenumberidentifier_b_0",
+          "label": "Driver license number identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicenseNumberIdentifier_B[0]",
+          "help": "The driver's license number"
+        },
+        {
+          "key": "p1_0_driver_taxidentifier_b_0",
+          "label": "Driver tax identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_TaxIdentifier_B[0]",
+          "help": "The tax identifier (social security number) of the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedstateorprovincecode_b_0",
+          "label": "Driver licensed state or province code",
+          "type": "state",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedStateOrProvinceCode_B[0]",
+          "help": "The state in which the driver is licensed"
+        },
+        {
+          "key": "p1_0_driver_hireddate_b_0",
+          "label": "Driver hired date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_HiredDate_B[0]",
+          "help": "The date the driver was hired"
+        },
+        {
+          "key": "p1_0_driver_vehicle_produceridentifier_b_0",
+          "label": "Driver vehicle producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_ProducerIdentifier_B[0]",
+          "help": "The producer assigned vehicle number that this driver primarily uses"
+        },
+        {
+          "key": "p1_0_driver_vehicle_usepercent_b_0",
+          "label": "Driver vehicle use percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_UsePercent_B[0]",
+          "help": "Indicates the percentage of driving done by this driver in the primary vehicle that this driver uses"
+        },
+        {
+          "key": "p1_0_driver_produceridentifier_c_0",
+          "label": "Driver producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ProducerIdentifier_C[0]",
+          "help": "The number assigned to the driver by the producer"
+        },
+        {
+          "key": "p1_0_driver_givenname_c_0",
+          "label": "Driver given name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GivenName_C[0]",
+          "help": "The driver's first name (given name)"
+        },
+        {
+          "key": "p1_0_driver_othergivennameinitial_c_0",
+          "label": "Driver other given name initial",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_OtherGivenNameInitial_C[0]",
+          "help": "The driver's middle name or initial (other given name)"
+        },
+        {
+          "key": "p1_0_driver_surname_c_0",
+          "label": "Driver surname",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Surname_C[0]",
+          "help": "The driver's last name (surname)"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_cityname_c_0",
+          "label": "Driver mailing address city name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_CityName_C[0]",
+          "help": "The city of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_stateorprovincecode_c_0",
+          "label": "Driver mailing address state or province code",
+          "type": "state",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_StateOrProvinceCode_C[0]",
+          "help": "The state or province of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_postalcode_c_0",
+          "label": "Driver mailing address postal code",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_PostalCode_C[0]",
+          "help": "The postal code of the driver"
+        },
+        {
+          "key": "p1_0_driver_gendercode_c_0",
+          "label": "Driver gender code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GenderCode_C[0]",
+          "help": "The gender of the driver"
+        },
+        {
+          "key": "p1_0_driver_maritalstatuscode_c_0",
+          "label": "Driver marital status code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MaritalStatusCode_C[0]",
+          "help": "The marital status of the driver. Examples are: S - Single; M - Married; D - Divorced; P - Separated; W - Widowed, C - Domestic Partner (unmarried), V - Civil Union/Registered Domestic Partner, F- Fianc&#233;/Fianc&#233;e, U - Unknown, O - Other"
+        },
+        {
+          "key": "p1_0_driver_birthdate_c_0",
+          "label": "Driver birth date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_BirthDate_C[0]",
+          "help": "The birth date of the driver"
+        },
+        {
+          "key": "p1_0_driver_experienceyearcount_c_0",
+          "label": "Driver experience year count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ExperienceYearCount_C[0]",
+          "help": "The number of years of driving experience for the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedyear_c_0",
+          "label": "Driver licensed year",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedYear_C[0]",
+          "help": "The original year in which a driver's license was issued to this driver"
+        },
+        {
+          "key": "p1_0_driver_licensenumberidentifier_c_0",
+          "label": "Driver license number identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicenseNumberIdentifier_C[0]",
+          "help": "The driver's license number"
+        },
+        {
+          "key": "p1_0_driver_taxidentifier_c_0",
+          "label": "Driver tax identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_TaxIdentifier_C[0]",
+          "help": "The tax identifier (social security number) of the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedstateorprovincecode_c_0",
+          "label": "Driver licensed state or province code",
+          "type": "state",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedStateOrProvinceCode_C[0]",
+          "help": "The state in which the driver is licensed"
+        },
+        {
+          "key": "p1_0_driver_hireddate_c_0",
+          "label": "Driver hired date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_HiredDate_C[0]",
+          "help": "The date the driver was hired"
+        },
+        {
+          "key": "p1_0_driver_vehicle_produceridentifier_c_0",
+          "label": "Driver vehicle producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_ProducerIdentifier_C[0]",
+          "help": "The producer assigned vehicle number that this driver primarily uses"
+        },
+        {
+          "key": "p1_0_driver_vehicle_usepercent_c_0",
+          "label": "Driver vehicle use percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_UsePercent_C[0]",
+          "help": "Indicates the percentage of driving done by this driver in the primary vehicle that this driver uses"
+        },
+        {
+          "key": "p1_0_driver_produceridentifier_d_0",
+          "label": "Driver producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ProducerIdentifier_D[0]",
+          "help": "The number assigned to the driver by the producer"
+        },
+        {
+          "key": "p1_0_driver_givenname_d_0",
+          "label": "Driver given name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GivenName_D[0]",
+          "help": "The driver's first name (given name)"
+        },
+        {
+          "key": "p1_0_driver_othergivennameinitial_d_0",
+          "label": "Driver other given name initial",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_OtherGivenNameInitial_D[0]",
+          "help": "The driver's middle name or initial (other given name)"
+        },
+        {
+          "key": "p1_0_driver_surname_d_0",
+          "label": "Driver surname",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Surname_D[0]",
+          "help": "The driver's last name (surname)"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_cityname_d_0",
+          "label": "Driver mailing address city name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_CityName_D[0]",
+          "help": "The city of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_stateorprovincecode_d_0",
+          "label": "Driver mailing address state or province code",
+          "type": "state",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_StateOrProvinceCode_D[0]",
+          "help": "The state or province of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_postalcode_d_0",
+          "label": "Driver mailing address postal code",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_PostalCode_D[0]",
+          "help": "The postal code of the driver"
+        },
+        {
+          "key": "p1_0_driver_gendercode_d_0",
+          "label": "Driver gender code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GenderCode_D[0]",
+          "help": "The gender of the driver"
+        },
+        {
+          "key": "p1_0_driver_maritalstatuscode_d_0",
+          "label": "Driver marital status code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MaritalStatusCode_D[0]",
+          "help": "The marital status of the driver. Examples are: S - Single; M - Married; D - Divorced; P - Separated; W - Widowed, C - Domestic Partner (unmarried), V - Civil Union/Registered Domestic Partner, F- Fianc&#233;/Fianc&#233;e, U - Unknown, O - Other"
+        },
+        {
+          "key": "p1_0_driver_birthdate_d_0",
+          "label": "Driver birth date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_BirthDate_D[0]",
+          "help": "The birth date of the driver"
+        },
+        {
+          "key": "p1_0_driver_experienceyearcount_d_0",
+          "label": "Driver experience year count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ExperienceYearCount_D[0]",
+          "help": "The number of years of driving experience for the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedyear_d_0",
+          "label": "Driver licensed year",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedYear_D[0]",
+          "help": "The original year in which a driver's license was issued to this driver"
+        },
+        {
+          "key": "p1_0_driver_licensenumberidentifier_d_0",
+          "label": "Driver license number identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicenseNumberIdentifier_D[0]",
+          "help": "The driver's license number"
+        },
+        {
+          "key": "p1_0_driver_taxidentifier_d_0",
+          "label": "Driver tax identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_TaxIdentifier_D[0]",
+          "help": "The tax identifier (social security number) of the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedstateorprovincecode_d_0",
+          "label": "Driver licensed state or province code",
+          "type": "state",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedStateOrProvinceCode_D[0]",
+          "help": "The state in which the driver is licensed"
+        },
+        {
+          "key": "p1_0_driver_hireddate_d_0",
+          "label": "Driver hired date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_HiredDate_D[0]",
+          "help": "The date the driver was hired"
+        },
+        {
+          "key": "p1_0_driver_vehicle_produceridentifier_d_0",
+          "label": "Driver vehicle producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_ProducerIdentifier_D[0]",
+          "help": "The producer assigned vehicle number that this driver primarily uses"
+        },
+        {
+          "key": "p1_0_driver_vehicle_usepercent_d_0",
+          "label": "Driver vehicle use percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_UsePercent_D[0]",
+          "help": "Indicates the percentage of driving done by this driver in the primary vehicle that this driver uses"
+        },
+        {
+          "key": "p1_0_driver_produceridentifier_e_0",
+          "label": "Driver producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ProducerIdentifier_E[0]",
+          "help": "The number assigned to the driver by the producer"
+        },
+        {
+          "key": "p1_0_driver_givenname_e_0",
+          "label": "Driver given name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GivenName_E[0]",
+          "help": "The driver's first name (given name)"
+        },
+        {
+          "key": "p1_0_driver_othergivennameinitial_e_0",
+          "label": "Driver other given name initial",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_OtherGivenNameInitial_E[0]",
+          "help": "The driver's middle name or initial (other given name)"
+        },
+        {
+          "key": "p1_0_driver_surname_e_0",
+          "label": "Driver surname",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Surname_E[0]",
+          "help": "The driver's last name (surname)"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_cityname_e_0",
+          "label": "Driver mailing address city name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_CityName_E[0]",
+          "help": "The city of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_stateorprovincecode_e_0",
+          "label": "Driver mailing address state or province code",
+          "type": "state",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_StateOrProvinceCode_E[0]",
+          "help": "The state or province of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_postalcode_e_0",
+          "label": "Driver mailing address postal code",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_PostalCode_E[0]",
+          "help": "The postal code of the driver"
+        },
+        {
+          "key": "p1_0_driver_gendercode_e_0",
+          "label": "Driver gender code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GenderCode_E[0]",
+          "help": "The gender of the driver"
+        },
+        {
+          "key": "p1_0_driver_maritalstatuscode_e_0",
+          "label": "Driver marital status code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MaritalStatusCode_E[0]",
+          "help": "The marital status of the driver. Examples are: S - Single; M - Married; D - Divorced; P - Separated; W - Widowed, C - Domestic Partner (unmarried), V - Civil Union/Registered Domestic Partner, F- Fianc&#233;/Fianc&#233;e, U - Unknown, O - Other"
+        },
+        {
+          "key": "p1_0_driver_birthdate_e_0",
+          "label": "Driver birth date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_BirthDate_E[0]",
+          "help": "The birth date of the driver"
+        },
+        {
+          "key": "p1_0_driver_experienceyearcount_e_0",
+          "label": "Driver experience year count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ExperienceYearCount_E[0]",
+          "help": "The number of years of driving experience for the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedyear_e_0",
+          "label": "Driver licensed year",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedYear_E[0]",
+          "help": "The original year in which a driver's license was issued to this driver"
+        },
+        {
+          "key": "p1_0_driver_licensenumberidentifier_e_0",
+          "label": "Driver license number identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicenseNumberIdentifier_E[0]",
+          "help": "The driver's license number"
+        },
+        {
+          "key": "p1_0_driver_taxidentifier_e_0",
+          "label": "Driver tax identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_TaxIdentifier_E[0]",
+          "help": "The tax identifier (social security number) of the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedstateorprovincecode_e_0",
+          "label": "Driver licensed state or province code",
+          "type": "state",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedStateOrProvinceCode_E[0]",
+          "help": "The state in which the driver is licensed"
+        },
+        {
+          "key": "p1_0_driver_hireddate_e_0",
+          "label": "Driver hired date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_HiredDate_E[0]",
+          "help": "The date the driver was hired"
+        },
+        {
+          "key": "p1_0_driver_vehicle_produceridentifier_e_0",
+          "label": "Driver vehicle producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_ProducerIdentifier_E[0]",
+          "help": "The producer assigned vehicle number that this driver primarily uses"
+        },
+        {
+          "key": "p1_0_driver_vehicle_usepercent_e_0",
+          "label": "Driver vehicle use percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_UsePercent_E[0]",
+          "help": "Indicates the percentage of driving done by this driver in the primary vehicle that this driver uses"
+        },
+        {
+          "key": "p1_0_driver_produceridentifier_f_0",
+          "label": "Driver producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ProducerIdentifier_F[0]",
+          "help": "The number assigned to the driver by the producer"
+        },
+        {
+          "key": "p1_0_driver_givenname_f_0",
+          "label": "Driver given name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GivenName_F[0]",
+          "help": "The driver's first name (given name)"
+        },
+        {
+          "key": "p1_0_driver_othergivennameinitial_f_0",
+          "label": "Driver other given name initial",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_OtherGivenNameInitial_F[0]",
+          "help": "The driver's middle name or initial (other given name)"
+        },
+        {
+          "key": "p1_0_driver_surname_f_0",
+          "label": "Driver surname",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Surname_F[0]",
+          "help": "The driver's last name (surname)"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_cityname_f_0",
+          "label": "Driver mailing address city name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_CityName_F[0]",
+          "help": "The city of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_stateorprovincecode_f_0",
+          "label": "Driver mailing address state or province code",
+          "type": "state",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_StateOrProvinceCode_F[0]",
+          "help": "The state or province of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_postalcode_f_0",
+          "label": "Driver mailing address postal code",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_PostalCode_F[0]",
+          "help": "The postal code of the driver"
+        },
+        {
+          "key": "p1_0_driver_gendercode_f_0",
+          "label": "Driver gender code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GenderCode_F[0]",
+          "help": "The gender of the driver"
+        },
+        {
+          "key": "p1_0_driver_maritalstatuscode_f_0",
+          "label": "Driver marital status code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MaritalStatusCode_F[0]",
+          "help": "The marital status of the driver. Examples are: S - Single; M - Married; D - Divorced; P - Separated; W - Widowed, C - Domestic Partner (unmarried), V - Civil Union/Registered Domestic Partner, F- Fianc&#233;/Fianc&#233;e, U - Unknown, O - Other"
+        },
+        {
+          "key": "p1_0_driver_birthdate_f_0",
+          "label": "Driver birth date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_BirthDate_F[0]",
+          "help": "The birth date of the driver"
+        },
+        {
+          "key": "p1_0_driver_experienceyearcount_f_0",
+          "label": "Driver experience year count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ExperienceYearCount_F[0]",
+          "help": "The number of years of driving experience for the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedyear_f_0",
+          "label": "Driver licensed year",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedYear_F[0]",
+          "help": "The original year in which a driver's license was issued to this driver"
+        },
+        {
+          "key": "p1_0_driver_licensenumberidentifier_f_0",
+          "label": "Driver license number identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicenseNumberIdentifier_F[0]",
+          "help": "The driver's license number"
+        },
+        {
+          "key": "p1_0_driver_taxidentifier_f_0",
+          "label": "Driver tax identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_TaxIdentifier_F[0]",
+          "help": "The tax identifier (social security number) of the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedstateorprovincecode_f_0",
+          "label": "Driver licensed state or province code",
+          "type": "state",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedStateOrProvinceCode_F[0]",
+          "help": "The state in which the driver is licensed"
+        },
+        {
+          "key": "p1_0_driver_hireddate_f_0",
+          "label": "Driver hired date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_HiredDate_F[0]",
+          "help": "The date the driver was hired"
+        },
+        {
+          "key": "p1_0_driver_vehicle_produceridentifier_f_0",
+          "label": "Driver vehicle producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_ProducerIdentifier_F[0]",
+          "help": "The producer assigned vehicle number that this driver primarily uses"
+        },
+        {
+          "key": "p1_0_driver_vehicle_usepercent_f_0",
+          "label": "Driver vehicle use percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_UsePercent_F[0]",
+          "help": "Indicates the percentage of driving done by this driver in the primary vehicle that this driver uses"
+        },
+        {
+          "key": "p1_0_driver_produceridentifier_g_0",
+          "label": "Driver producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ProducerIdentifier_G[0]",
+          "help": "The number assigned to the driver by the producer"
+        },
+        {
+          "key": "p1_0_driver_givenname_g_0",
+          "label": "Driver given name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GivenName_G[0]",
+          "help": "The driver's first name (given name)"
+        },
+        {
+          "key": "p1_0_driver_othergivennameinitial_g_0",
+          "label": "Driver other given name initial",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_OtherGivenNameInitial_G[0]",
+          "help": "The driver's middle name or initial (other given name)"
+        },
+        {
+          "key": "p1_0_driver_surname_g_0",
+          "label": "Driver surname",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Surname_G[0]",
+          "help": "The driver's last name (surname)"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_cityname_g_0",
+          "label": "Driver mailing address city name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_CityName_G[0]",
+          "help": "The city of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_stateorprovincecode_g_0",
+          "label": "Driver mailing address state or province code",
+          "type": "state",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_StateOrProvinceCode_G[0]",
+          "help": "The state or province of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_postalcode_g_0",
+          "label": "Driver mailing address postal code",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_PostalCode_G[0]",
+          "help": "The postal code of the driver"
+        },
+        {
+          "key": "p1_0_driver_gendercode_g_0",
+          "label": "Driver gender code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GenderCode_G[0]",
+          "help": "The gender of the driver"
+        },
+        {
+          "key": "p1_0_driver_maritalstatuscode_g_0",
+          "label": "Driver marital status code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MaritalStatusCode_G[0]",
+          "help": "The marital status of the driver. Examples are: S - Single; M - Married; D - Divorced; P - Separated; W - Widowed, C - Domestic Partner (unmarried), V - Civil Union/Registered Domestic Partner, F- Fianc&#233;/Fianc&#233;e, U - Unknown, O - Other"
+        },
+        {
+          "key": "p1_0_driver_birthdate_g_0",
+          "label": "Driver birth date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_BirthDate_G[0]",
+          "help": "The birth date of the driver"
+        },
+        {
+          "key": "p1_0_driver_experienceyearcount_g_0",
+          "label": "Driver experience year count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ExperienceYearCount_G[0]",
+          "help": "The number of years of driving experience for the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedyear_g_0",
+          "label": "Driver licensed year",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedYear_G[0]",
+          "help": "The original year in which a driver's license was issued to this driver"
+        },
+        {
+          "key": "p1_0_driver_licensenumberidentifier_g_0",
+          "label": "Driver license number identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicenseNumberIdentifier_G[0]",
+          "help": "The driver's license number"
+        },
+        {
+          "key": "p1_0_driver_taxidentifier_g_0",
+          "label": "Driver tax identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_TaxIdentifier_G[0]",
+          "help": "The tax identifier (social security number) of the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedstateorprovincecode_g_0",
+          "label": "Driver licensed state or province code",
+          "type": "state",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedStateOrProvinceCode_G[0]",
+          "help": "The state in which the driver is licensed"
+        },
+        {
+          "key": "p1_0_driver_hireddate_g_0",
+          "label": "Driver hired date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_HiredDate_G[0]",
+          "help": "The date the driver was hired"
+        },
+        {
+          "key": "p1_0_driver_vehicle_produceridentifier_g_0",
+          "label": "Driver vehicle producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_ProducerIdentifier_G[0]",
+          "help": "The producer assigned vehicle number that this driver primarily uses"
+        },
+        {
+          "key": "p1_0_driver_vehicle_usepercent_g_0",
+          "label": "Driver vehicle use percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_UsePercent_G[0]",
+          "help": "Indicates the percentage of driving done by this driver in the primary vehicle that this driver uses"
+        },
+        {
+          "key": "p1_0_driver_produceridentifier_h_0",
+          "label": "Driver producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ProducerIdentifier_H[0]",
+          "help": "The number assigned to the driver by the producer"
+        },
+        {
+          "key": "p1_0_driver_givenname_h_0",
+          "label": "Driver given name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GivenName_H[0]",
+          "help": "The driver's first name (given name)"
+        },
+        {
+          "key": "p1_0_driver_othergivennameinitial_h_0",
+          "label": "Driver other given name initial",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_OtherGivenNameInitial_H[0]",
+          "help": "The driver's middle name or initial (other given name)"
+        },
+        {
+          "key": "p1_0_driver_surname_h_0",
+          "label": "Driver surname",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Surname_H[0]",
+          "help": "The driver's last name (surname)"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_cityname_h_0",
+          "label": "Driver mailing address city name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_CityName_H[0]",
+          "help": "The city of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_stateorprovincecode_h_0",
+          "label": "Driver mailing address state or province code",
+          "type": "state",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_StateOrProvinceCode_H[0]",
+          "help": "The state or province of the driver"
+        },
+        {
+          "key": "p1_0_driver_mailingaddress_postalcode_h_0",
+          "label": "Driver mailing address postal code",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MailingAddress_PostalCode_H[0]",
+          "help": "The postal code of the driver"
+        },
+        {
+          "key": "p1_0_driver_gendercode_h_0",
+          "label": "Driver gender code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_GenderCode_H[0]",
+          "help": "The gender of the driver"
+        },
+        {
+          "key": "p1_0_driver_maritalstatuscode_h_0",
+          "label": "Driver marital status code",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_MaritalStatusCode_H[0]",
+          "help": "The marital status of the driver. Examples are: S - Single; M - Married; D - Divorced; P - Separated; W - Widowed, C - Domestic Partner (unmarried), V - Civil Union/Registered Domestic Partner, F- Fianc&#233;/Fianc&#233;e, U - Unknown, O - Other"
+        },
+        {
+          "key": "p1_0_driver_birthdate_h_0",
+          "label": "Driver birth date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_BirthDate_H[0]",
+          "help": "The birth date of the driver"
+        },
+        {
+          "key": "p1_0_driver_experienceyearcount_h_0",
+          "label": "Driver experience year count",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_ExperienceYearCount_H[0]",
+          "help": "The number of years of driving experience for the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedyear_h_0",
+          "label": "Driver licensed year",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedYear_H[0]",
+          "help": "The original year in which a driver's license was issued to this driver"
+        },
+        {
+          "key": "p1_0_driver_licensenumberidentifier_h_0",
+          "label": "Driver license number identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicenseNumberIdentifier_H[0]",
+          "help": "The driver's license number"
+        },
+        {
+          "key": "p1_0_driver_taxidentifier_h_0",
+          "label": "Driver tax identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_TaxIdentifier_H[0]",
+          "help": "The tax identifier (social security number) of the driver"
+        },
+        {
+          "key": "p1_0_driver_licensedstateorprovincecode_h_0",
+          "label": "Driver licensed state or province code",
+          "type": "state",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_LicensedStateOrProvinceCode_H[0]",
+          "help": "The state in which the driver is licensed"
+        },
+        {
+          "key": "p1_0_driver_hireddate_h_0",
+          "label": "Driver hired date",
+          "type": "date",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_HiredDate_H[0]",
+          "help": "The date the driver was hired"
+        },
+        {
+          "key": "p1_0_driver_vehicle_produceridentifier_h_0",
+          "label": "Driver vehicle producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_ProducerIdentifier_H[0]",
+          "help": "The producer assigned vehicle number that this driver primarily uses"
+        },
+        {
+          "key": "p1_0_driver_vehicle_usepercent_h_0",
+          "label": "Driver vehicle use percent",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P1[0].Driver_Vehicle_UsePercent_H[0]",
+          "help": "Indicates the percentage of driving done by this driver in the primary vehicle that this driver uses"
+        }
+      ]
+    },
+    {
+      "id": "underwriting",
+      "label": "Underwriting",
+      "fields": [
+        {
+          "key": "p2_0_underwriting_question_remarktext_a_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_A[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, list the frequency, who receives the vehicles and if this is part of the normal business operations.  Indicate if insurance is provided"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_b_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_B[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, indicate how many cars per day, and how the employee commutes to the location"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_c_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_C[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, indicate the radius of this operation if it exceeds 50 miles, and how often"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_d_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_D[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, list the percentage of gross sales this operation represents.  Indicate if the applicant sends out for retreads, or if the applicant performs the operation"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_e_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_E[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, provide a description of the car.  Indicate how frequently the car is raced, who drives the car and how the car is transported"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_f_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_F[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, state what type of storage facilities are used, what gases are involved and if they are for sale to the general public"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_g_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_G[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, identify the group (school, hospital, church, or civic organization) to which the vehicle is loaned.  Indicate if there is a charge"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_h_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_H[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, indicate how frequently this type of operation is performed, and if the applicant has approved booths or ventilated spray areas.  Describe the type of welding or painting job handled and where in the building each job is located"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_i_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_I[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, describe circumstances causing drive-aways.  Indicate if this is a regular operation, how many cars are involved, and give the radius of operation"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_j_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_J[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, describe this type of operation completely.  If there is a salvage operation on premises, so indicate"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_k_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_K[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, indicate how many trucks are owned or used by the applicant and describe towing operations.  These trucks may be listed on ACORD 129, Vehicle Schedule and attached to the Garage Section"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_l_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_L[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, list who, what vehicle and for what operations"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_m_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_M[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, describe any type of off-premises parking of vehicles"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_n_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_N[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, indicate how much is charged, how many attendants are on duty, and the hours of operation.  Indicate if employees drive vehicles or if customers self-park"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_o_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_O[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, describe all such systems in detail"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_p_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_P[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, if a retail operation, mini-mart, liquor store, or other operation is run on the premises, list the operation and annual gross sales from this portion of the business.  Indicate if there is any insurance for this operation"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_q_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_Q[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, indicate if the applicant is on call for any highway or other emergencies, and if towing operations are available around the clock"
+        },
+        {
+          "key": "p2_0_underwriting_question_remarktext_r_0",
+          "label": "Underwriting question remark text",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P2[0].Underwriting_Question_RemarkText_R[0]",
+          "help": "An explanation of a response to a general information or underwriting question.  Normally, &quot;Yes&quot; responses require an explanation. As used here, give driver name and number, date, type and place for each conviction.  Enter the number of years reviewed, in accordance with the company's and state's requirements.  In Kansas, certain traffic violations are not required to be reported to insurers"
+        }
+      ]
+    },
+    {
+      "id": "additionalinterest",
+      "label": "Additional Interest",
+      "fields": [
+        {
+          "key": "p3_0_additionalinterest_interest_additionalinsuredindicator_a_0",
+          "label": "Additional interest interest additional insured indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_AdditionalInsuredIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the interest type is an additional insured",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_losspayeeindicator_a_0",
+          "label": "Additional interest interest loss payee indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_LossPayeeIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest type is a loss payee",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_lienholderindicator_a_0",
+          "label": "Additional interest interest lienholder indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_LienholderIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest type is a lien holder",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_employeeaslessorindicator_a_0",
+          "label": "Additional interest interest employee as lessor indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_EmployeeAsLessorIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest type is an employee as lessor",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherindicator_a_0",
+          "label": "Additional interest interest other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest is not any of the types listed on the form",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherdescription_a_0",
+          "label": "Additional interest interest other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherDescription_A[0]",
+          "help": "The description of the type of interest in the item"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherindicator_b_0",
+          "label": "Additional interest interest other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherIndicator_B[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest is not any of the types listed on the form",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherdescription_b_0",
+          "label": "Additional interest interest other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherDescription_B[0]",
+          "help": "The description of the type of interest in the item"
+        },
+        {
+          "key": "p3_0_additionalinterest_interestrank_a_0",
+          "label": "Additional interest interest rank",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_InterestRank_A[0]",
+          "help": "The ranking of 'this' additional interest when multiple additional interests are associated with the same item"
+        },
+        {
+          "key": "p3_0_additionalinterest_fullname_a_0",
+          "label": "Additional interest full name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_FullName_A[0]",
+          "help": "The additional interest's full name"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_lineone_a_0",
+          "label": "Additional interest mailing address line one",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_LineOne_A[0]",
+          "help": "The additional interest's mailing address line one"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_linetwo_a_0",
+          "label": "Additional interest mailing address line two",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_LineTwo_A[0]",
+          "help": "The additional interest's mailing address line two"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_cityname_a_0",
+          "label": "Additional interest mailing address city name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_CityName_A[0]",
+          "help": "The additional interest's mailing address city name"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_stateorprovincecode_a_0",
+          "label": "Additional interest mailing address state or province code",
+          "type": "state",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_StateOrProvinceCode_A[0]",
+          "help": "The additional interest's mailing address state or province code"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_postalcode_a_0",
+          "label": "Additional interest mailing address postal code",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_PostalCode_A[0]",
+          "help": "The additional interest's mailing address postal code"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_countrycode_a_0",
+          "label": "Additional interest mailing address country code",
+          "type": "number",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_CountryCode_A[0]",
+          "help": "The additional interest's country code"
+        },
+        {
+          "key": "p3_0_additionalinterest_accountnumberidentifier_a_0",
+          "label": "Additional interest account number identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_AccountNumberIdentifier_A[0]",
+          "help": "The loan number, account number or other controlling number that the additional interest may have assigned the insured"
+        },
+        {
+          "key": "p3_0_additionalinterest_certificaterequiredindicator_a_0",
+          "label": "Additional interest certificate required indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_CertificateRequiredIndicator_A[0]",
+          "help": "Check the box (if applicable): Indicates if the additional interest requires a Certificate of Insurance,",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_item_vehicleproduceridentifier_a_0",
+          "label": "Additional interest item vehicle producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Item_VehicleProducerIdentifier_A[0]",
+          "help": "The producer assigned number of the vehicle which has an additional interest"
+        },
+        {
+          "key": "p3_0_additionalinterest_item_scheduleditemproduceridentifier_a_0",
+          "label": "Additional interest item scheduled item producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Item_ScheduledItemProducerIdentifier_A[0]",
+          "help": "The producer assigned number of the scheduled item which has an additional interest"
+        },
+        {
+          "key": "p3_0_additionalinterest_item_otheritemdescription_a_0",
+          "label": "Additional interest item other item description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Item_OtherItemDescription_A[0]",
+          "help": "The description of the item which has an additional interest"
+        },
+        {
+          "key": "p3_0_additionalinterest_itemdescription_a_0",
+          "label": "Additional interest item description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_ItemDescription_A[0]",
+          "help": "The description of the item of interest if needed to further clarify.  For a vehicle, list the make, model and VIN number.  For a scheduled item, list the description, such as three carat diamond in six point setting"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_additionalinsuredindicator_b_0",
+          "label": "Additional interest interest additional insured indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_AdditionalInsuredIndicator_B[0]",
+          "help": "Check the box (if applicable): Indicates the interest type is an additional insured",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_losspayeeindicator_b_0",
+          "label": "Additional interest interest loss payee indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_LossPayeeIndicator_B[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest type is a loss payee",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_lienholderindicator_b_0",
+          "label": "Additional interest interest lienholder indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_LienholderIndicator_B[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest type is a lien holder",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_employeeaslessorindicator_b_0",
+          "label": "Additional interest interest employee as lessor indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_EmployeeAsLessorIndicator_B[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest type is an employee as lessor",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherindicator_c_0",
+          "label": "Additional interest interest other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherIndicator_C[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest is not any of the types listed on the form",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherdescription_c_0",
+          "label": "Additional interest interest other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherDescription_C[0]",
+          "help": "The description of the type of interest in the item"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherindicator_d_0",
+          "label": "Additional interest interest other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherIndicator_D[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest is not any of the types listed on the form",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherdescription_d_0",
+          "label": "Additional interest interest other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherDescription_D[0]",
+          "help": "The description of the type of interest in the item"
+        },
+        {
+          "key": "p3_0_additionalinterest_interestrank_b_0",
+          "label": "Additional interest interest rank",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_InterestRank_B[0]",
+          "help": "The ranking of 'this' additional interest when multiple additional interests are associated with the same item"
+        },
+        {
+          "key": "p3_0_additionalinterest_fullname_b_0",
+          "label": "Additional interest full name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_FullName_B[0]",
+          "help": "The additional interest's full name"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_lineone_b_0",
+          "label": "Additional interest mailing address line one",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_LineOne_B[0]",
+          "help": "The additional interest's mailing address line one"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_linetwo_b_0",
+          "label": "Additional interest mailing address line two",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_LineTwo_B[0]",
+          "help": "The additional interest's mailing address line two"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_cityname_b_0",
+          "label": "Additional interest mailing address city name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_CityName_B[0]",
+          "help": "The additional interest's mailing address city name"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_stateorprovincecode_b_0",
+          "label": "Additional interest mailing address state or province code",
+          "type": "state",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_StateOrProvinceCode_B[0]",
+          "help": "The additional interest's mailing address state or province code"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_postalcode_b_0",
+          "label": "Additional interest mailing address postal code",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_PostalCode_B[0]",
+          "help": "The additional interest's mailing address postal code"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_countrycode_b_0",
+          "label": "Additional interest mailing address country code",
+          "type": "number",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_CountryCode_B[0]",
+          "help": "The additional interest's country code"
+        },
+        {
+          "key": "p3_0_additionalinterest_accountnumberidentifier_b_0",
+          "label": "Additional interest account number identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_AccountNumberIdentifier_B[0]",
+          "help": "The loan number, account number or other controlling number that the additional interest may have assigned the insured"
+        },
+        {
+          "key": "p3_0_additionalinterest_certificaterequiredindicator_b_0",
+          "label": "Additional interest certificate required indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_CertificateRequiredIndicator_B[0]",
+          "help": "Check the box (if applicable): Indicates if the additional interest requires a Certificate of Insurance,",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_item_vehicleproduceridentifier_b_0",
+          "label": "Additional interest item vehicle producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Item_VehicleProducerIdentifier_B[0]",
+          "help": "The producer assigned number of the vehicle which has an additional interest"
+        },
+        {
+          "key": "p3_0_additionalinterest_item_scheduleditemproduceridentifier_b_0",
+          "label": "Additional interest item scheduled item producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Item_ScheduledItemProducerIdentifier_B[0]",
+          "help": "The producer assigned number of the scheduled item which has an additional interest"
+        },
+        {
+          "key": "p3_0_additionalinterest_item_otheritemdescription_b_0",
+          "label": "Additional interest item other item description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Item_OtherItemDescription_B[0]",
+          "help": "The description of the item which has an additional interest"
+        },
+        {
+          "key": "p3_0_additionalinterest_itemdescription_b_0",
+          "label": "Additional interest item description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_ItemDescription_B[0]",
+          "help": "The description of the item of interest if needed to further clarify.  For a vehicle, list the make, model and VIN number.  For a scheduled item, list the description, such as three carat diamond in six point setting"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_additionalinsuredindicator_c_0",
+          "label": "Additional interest interest additional insured indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_AdditionalInsuredIndicator_C[0]",
+          "help": "Check the box (if applicable): Indicates the interest type is an additional insured",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_losspayeeindicator_c_0",
+          "label": "Additional interest interest loss payee indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_LossPayeeIndicator_C[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest type is a loss payee",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_lienholderindicator_c_0",
+          "label": "Additional interest interest lienholder indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_LienholderIndicator_C[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest type is a lien holder",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_employeeaslessorindicator_c_0",
+          "label": "Additional interest interest employee as lessor indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_EmployeeAsLessorIndicator_C[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest type is an employee as lessor",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherindicator_e_0",
+          "label": "Additional interest interest other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherIndicator_E[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest is not any of the types listed on the form",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherdescription_e_0",
+          "label": "Additional interest interest other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherDescription_E[0]",
+          "help": "The description of the type of interest in the item"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherindicator_f_0",
+          "label": "Additional interest interest other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherIndicator_F[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest is not any of the types listed on the form",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherdescription_f_0",
+          "label": "Additional interest interest other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherDescription_F[0]",
+          "help": "The description of the type of interest in the item"
+        },
+        {
+          "key": "p3_0_additionalinterest_interestrank_f_0",
+          "label": "Additional interest interest rank",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_InterestRank_F[0]",
+          "help": "The ranking of 'this' additional interest when multiple additional interests are associated with the same item"
+        },
+        {
+          "key": "p3_0_additionalinterest_fullname_c_0",
+          "label": "Additional interest full name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_FullName_C[0]",
+          "help": "The additional interest's full name"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_lineone_c_0",
+          "label": "Additional interest mailing address line one",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_LineOne_C[0]",
+          "help": "The additional interest's mailing address line one"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_linetwo_c_0",
+          "label": "Additional interest mailing address line two",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_LineTwo_C[0]",
+          "help": "The additional interest's mailing address line two"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_cityname_c_0",
+          "label": "Additional interest mailing address city name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_CityName_C[0]",
+          "help": "The additional interest's mailing address city name"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_stateorprovincecode_c_0",
+          "label": "Additional interest mailing address state or province code",
+          "type": "state",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_StateOrProvinceCode_C[0]",
+          "help": "The additional interest's mailing address state or province code"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_postalcode_c_0",
+          "label": "Additional interest mailing address postal code",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_PostalCode_C[0]",
+          "help": "The additional interest's mailing address postal code"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_countrycode_c_0",
+          "label": "Additional interest mailing address country code",
+          "type": "number",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_CountryCode_C[0]",
+          "help": "The additional interest's country code"
+        },
+        {
+          "key": "p3_0_additionalinterest_accountnumberidentifier_c_0",
+          "label": "Additional interest account number identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_AccountNumberIdentifier_C[0]",
+          "help": "The loan number, account number or other controlling number that the additional interest may have assigned the insured"
+        },
+        {
+          "key": "p3_0_additionalinterest_certificaterequiredindicator_c_0",
+          "label": "Additional interest certificate required indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_CertificateRequiredIndicator_C[0]",
+          "help": "Check the box (if applicable): Indicates if the additional interest requires a Certificate of Insurance,",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_item_vehicleproduceridentifier_c_0",
+          "label": "Additional interest item vehicle producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Item_VehicleProducerIdentifier_C[0]",
+          "help": "The producer assigned number of the vehicle which has an additional interest"
+        },
+        {
+          "key": "p3_0_additionalinterest_item_scheduleditemproduceridentifier_c_0",
+          "label": "Additional interest item scheduled item producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Item_ScheduledItemProducerIdentifier_C[0]",
+          "help": "The producer assigned number of the scheduled item which has an additional interest"
+        },
+        {
+          "key": "p3_0_additionalinterest_item_otheritemdescription_c_0",
+          "label": "Additional interest item other item description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Item_OtherItemDescription_C[0]",
+          "help": "The description of the item which has an additional interest"
+        },
+        {
+          "key": "p3_0_additionalinterest_itemdescription_c_0",
+          "label": "Additional interest item description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_ItemDescription_C[0]",
+          "help": "The description of the item of interest if needed to further clarify.  For a vehicle, list the make, model and VIN number.  For a scheduled item, list the description, such as three carat diamond in six point setting"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_additionalinsuredindicator_d_0",
+          "label": "Additional interest interest additional insured indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_AdditionalInsuredIndicator_D[0]",
+          "help": "Check the box (if applicable): Indicates the interest type is an additional insured",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_losspayeeindicator_d_0",
+          "label": "Additional interest interest loss payee indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_LossPayeeIndicator_D[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest type is a loss payee",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_lienholderindicator_d_0",
+          "label": "Additional interest interest lienholder indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_LienholderIndicator_D[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest type is a lien holder",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_employeeaslessorindicator_d_0",
+          "label": "Additional interest interest employee as lessor indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_EmployeeAsLessorIndicator_D[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest type is an employee as lessor",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherindicator_g_0",
+          "label": "Additional interest interest other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherIndicator_G[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest is not any of the types listed on the form",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherdescription_g_0",
+          "label": "Additional interest interest other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherDescription_G[0]",
+          "help": "The description of the type of interest in the item"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherindicator_h_0",
+          "label": "Additional interest interest other indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherIndicator_H[0]",
+          "help": "Check the box (if applicable): Indicates the additional interest is not any of the types listed on the form",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_interest_otherdescription_h_0",
+          "label": "Additional interest interest other description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Interest_OtherDescription_H[0]",
+          "help": "The description of the type of interest in the item"
+        },
+        {
+          "key": "p3_0_additionalinterest_interestrank_d_0",
+          "label": "Additional interest interest rank",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_InterestRank_D[0]",
+          "help": "The ranking of 'this' additional interest when multiple additional interests are associated with the same item"
+        },
+        {
+          "key": "p3_0_additionalinterest_fullname_d_0",
+          "label": "Additional interest full name",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_FullName_D[0]",
+          "help": "The additional interest's full name"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_lineone_d_0",
+          "label": "Additional interest mailing address line one",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_LineOne_D[0]",
+          "help": "The additional interest's mailing address line one"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_linetwo_d_0",
+          "label": "Additional interest mailing address line two",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_LineTwo_D[0]",
+          "help": "The additional interest's mailing address line two"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_cityname_d_0",
+          "label": "Additional interest mailing address city name",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_CityName_D[0]",
+          "help": "The additional interest's mailing address city name"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_stateorprovincecode_d_0",
+          "label": "Additional interest mailing address state or province code",
+          "type": "state",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_StateOrProvinceCode_D[0]",
+          "help": "The additional interest's mailing address state or province code"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_postalcode_d_0",
+          "label": "Additional interest mailing address postal code",
+          "type": "text",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_PostalCode_D[0]",
+          "help": "The additional interest's mailing address postal code"
+        },
+        {
+          "key": "p3_0_additionalinterest_mailingaddress_countrycode_d_0",
+          "label": "Additional interest mailing address country code",
+          "type": "number",
+          "priority": "common",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_MailingAddress_CountryCode_D[0]",
+          "help": "The additional interest's country code"
+        },
+        {
+          "key": "p3_0_additionalinterest_accountnumberidentifier_d_0",
+          "label": "Additional interest account number identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_AccountNumberIdentifier_D[0]",
+          "help": "The loan number, account number or other controlling number that the additional interest may have assigned the insured"
+        },
+        {
+          "key": "p3_0_additionalinterest_certificaterequiredindicator_d_0",
+          "label": "Additional interest certificate required indicator",
+          "type": "checkbox",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_CertificateRequiredIndicator_D[0]",
+          "help": "Check the box (if applicable): Indicates if the additional interest requires a Certificate of Insurance,",
+          "on_value": "1"
+        },
+        {
+          "key": "p3_0_additionalinterest_item_vehicleproduceridentifier_d_0",
+          "label": "Additional interest item vehicle producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Item_VehicleProducerIdentifier_D[0]",
+          "help": "The producer assigned number of the vehicle which has an additional interest"
+        },
+        {
+          "key": "p3_0_additionalinterest_item_scheduleditemproduceridentifier_d_0",
+          "label": "Additional interest item scheduled item producer identifier",
+          "type": "text",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Item_ScheduledItemProducerIdentifier_D[0]",
+          "help": "The producer assigned number of the scheduled item which has an additional interest"
+        },
+        {
+          "key": "p3_0_additionalinterest_item_otheritemdescription_d_0",
+          "label": "Additional interest item other item description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_Item_OtherItemDescription_D[0]",
+          "help": "The description of the item which has an additional interest"
+        },
+        {
+          "key": "p3_0_additionalinterest_itemdescription_d_0",
+          "label": "Additional interest item description",
+          "type": "textarea",
+          "priority": "rare",
+          "required": false,
+          "pdf_field": "P3[0].AdditionalInterest_ItemDescription_D[0]",
+          "help": "The description of the item of interest if needed to further clarify.  For a vehicle, list the make, model and VIN number.  For a scheduled item, list the description, such as three carat diamond in six point setting"
+        }
+      ]
+    }
+  ]
+}

@@ -145,14 +145,16 @@ def _write_field(f: dict, answers: dict, put, res: FillResult) -> None:
             on = str(opt.get("label")) == str(selected) or str(opt.get("value")) == str(selected)
             if on and wrote_one:
                 on = False  # safety: never a second '1'
-            put(opt["pdf_field"], CHECKBOX_ON if on else CHECKBOX_OFF)
+            put(opt["pdf_field"], str(opt.get("on_value", CHECKBOX_ON)) if on else CHECKBOX_OFF)
             wrote_one = wrote_one or on
         res.filled_keys.append(key) if wrote_one else res.skipped_keys.append(key)
         return
 
     if ftype == "checkbox":
         if _truthy(answers.get(key)):
-            put(f["pdf_field"], CHECKBOX_ON)
+            # Honour a per-field export value (auto-draft schemas record the real
+            # 'on' state via on_value); default to the ACORD-25 verified "1".
+            put(f["pdf_field"], str(f.get("on_value", CHECKBOX_ON)))
             res.filled_keys.append(key)
         else:
             res.skipped_keys.append(key)

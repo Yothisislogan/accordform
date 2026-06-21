@@ -41,7 +41,8 @@ def validate_schema(schema: dict, *, source: str = "<schema>") -> dict:
         isinstance(meta.get("field_name_prefix"), str),
         p + "_meta.field_name_prefix must be a string (may be empty)",
     )
-    _require(bool(meta.get("title")), p + "_meta.title is required")
+    # title is optional: auto-generated drafts (tools/build_schema.py) omit it.
+    # The catalog derives a display title when absent (forms_catalog.derive_title).
 
     # insurers block is optional, but if present must be well-formed.
     insurers = schema.get("insurers")

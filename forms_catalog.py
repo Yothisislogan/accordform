@@ -35,10 +35,34 @@ def iter_schema_files(schemas_dir: Path | None = None):
     return sorted(d.glob("*.json"))
 
 
+# Display titles for the catalog. Auto-generated draft schemas omit _meta.title,
+# so the catalog supplies a friendly name keyed by ACORD number. A schema that
+# DOES carry _meta.title always wins over this map.
+FORM_TITLES = {
+    "25": "Certificate of Liability Insurance",
+    "28": "Evidence of Commercial Property Insurance",
+    "35": "Cancellation Request / Policy Release",
+    "125": "Commercial Insurance Application",
+    "126": "Commercial General Liability Section",
+    "127": "Business Auto Section",
+    "130": "Workers Compensation Application",
+    "140": "Property Section",
+    "141": "Crime Section",
+    "128": "Garage & Dealers Section",
+    "131": "Umbrella / Excess Liability Application",
+    "135_NC": "North Carolina Assigned-Risk Workers Comp",
+}
+
+
+def derive_title(meta: dict) -> str:
+    number = str(meta.get("acord_number", "")).strip()
+    return meta.get("title") or FORM_TITLES.get(number) or f"ACORD {number}"
+
+
 def _meta_to_catalog_row(schema: dict, schema_path: Path) -> dict:
     meta = schema["_meta"]
     number = str(meta["acord_number"])
-    title = meta["title"]
+    title = derive_title(meta)
     category = meta.get("category") or _default_category(number)
     # Build a searchable keyword blob from number, title, category, sections.
     section_labels = " ".join(s.get("label", "") for s in schema.get("sections", []))
@@ -63,6 +87,7 @@ _CATEGORY_HINTS = {
     "25": "Certificate", "28": "Certificate", "35": "Change",
     "125": "Commercial", "126": "Commercial", "127": "Commercial",
     "130": "Commercial", "140": "Commercial", "141": "Commercial",
+    "128": "Commercial", "131": "Commercial", "135_NC": "Workers Comp",
 }
 
 
@@ -155,8 +180,10 @@ def get_form_schema(db, form_id: int) -> dict | None:
         return None
     p = Path(form["schema_path"])
     schema = _cached_schema(str(p), p.stat().st_mtime if p.exists() else 0.0)
-    # Attach the DB form id so the SPA can post back to the right endpoints.
+    # Attach the DB form id so the SPA can post back to the right endpoints, and
+    # ensure a display title exists even for title-less auto-draft schemas.
     out = dict(schema)
+    out["_meta"] = {**schema["_meta"], "title": derive_title(schema["_meta"])}
     out["form_id"] = form["id"]
     out["category"] = form["category"]
     return out
