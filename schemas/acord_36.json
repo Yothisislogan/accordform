@@ -1,0 +1,86 @@
+{
+  "_meta": {
+    "acord_number": "36",
+    "edition": "2007/01",
+    "title": "Agent/Broker of Record Change",
+    "template_source": "Acord 36 - Agent_Broker of Record Change.pdf",
+    "field_name_prefix": "",
+    "total_pdf_fields": 64,
+    "checkbox_on_value": "1",
+    "checkbox_off_value": "Off",
+    "status": "DRAFT CORE FIELD MAP",
+    "category": "Change",
+    "keywords": "agent broker of record change bor agency producer insured policy lines of business"
+  },
+  "sections": [
+    {
+      "id": "current_agency_company",
+      "label": "Current Agency / Company",
+      "fields": [
+        {"key":"form_completiondate_a","label":"Date completed","type":"date","priority":"core","required":true,"pdf_field":"F[0].P1[0].Form_CompletionDate_A[0]"},
+        {"key":"producer_fullname_a","label":"Current agency","type":"text","priority":"core","required":true,"pdf_field":"F[0].P1[0].Producer_FullName_A[0]"},
+        {"key":"producer_mailingaddress_lineone_a","label":"Current agency address line 1","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_MailingAddress_LineOne_A[0]"},
+        {"key":"producer_mailingaddress_linetwo_a","label":"Current agency address line 2","type":"text","priority":"rare","required":false,"pdf_field":"F[0].P1[0].Producer_MailingAddress_LineTwo_A[0]"},
+        {"key":"producer_mailingaddress_cityname_a","label":"Current agency city","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_MailingAddress_CityName_A[0]"},
+        {"key":"producer_mailingaddress_stateorprovincecode_a","label":"Current agency state","type":"state","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_MailingAddress_StateOrProvinceCode_A[0]"},
+        {"key":"producer_mailingaddress_postalcode_a","label":"Current agency ZIP","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_MailingAddress_PostalCode_A[0]"},
+        {"key":"producer_contactperson_phonenumber_a","label":"Current agency phone","type":"phone","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_ContactPerson_PhoneNumber_A[0]"},
+        {"key":"producer_faxnumber_a","label":"Current agency fax","type":"phone","priority":"rare","required":false,"pdf_field":"F[0].P1[0].Producer_FaxNumber_A[0]"},
+        {"key":"producer_contactperson_emailaddress_a","label":"Current agency email","type":"email","priority":"common","required":false,"pdf_field":"F[0].P1[0].Producer_ContactPerson_EmailAddress_A[0]"},
+        {"key":"insurer_produceridentifier_a","label":"Current agency code","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Insurer_ProducerIdentifier_A[0]"},
+        {"key":"insurer_subproduceridentifier_a","label":"Current agency subcode","type":"text","priority":"rare","required":false,"pdf_field":"F[0].P1[0].Insurer_SubProducerIdentifier_A[0]"},
+        {"key":"insurer_fullname_a","label":"Insurance company name","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].Insurer_FullName_A[0]"}
+      ]
+    },
+    {
+      "id": "new_agency",
+      "label": "New Agency / Producer",
+      "fields": [
+        {"key":"producer_fullname_b","label":"New agency","type":"text","priority":"core","required":true,"pdf_field":"F[0].P1[0].Producer_FullName_B[0]"},
+        {"key":"producer_contactperson_fullname_b","label":"New producer / agent","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].Producer_ContactPerson_FullName_B[0]"},
+        {"key":"producer_fullname_c","label":"Named exclusive representative","type":"text","priority":"core","required":true,"pdf_field":"F[0].P1[0].Producer_FullName_C[0]"},
+        {"key":"insurer_produceridentifier_b","label":"New agency code #","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Insurer_ProducerIdentifier_B[0]"},
+        {"key":"producer_recordofchange_effectivedate_a","label":"BOR effective date","type":"date","priority":"core","required":true,"pdf_field":"F[0].P1[0].Producer_RecordOfChange_EffectiveDate_A[0]"}
+      ]
+    },
+    {
+      "id": "policy_rows",
+      "label": "Policies / Lines of Business",
+      "fields": [
+        {"key":"namedinsured_fullname_a","label":"Named insured on policy row 1","type":"text","priority":"core","required":true,"pdf_field":"F[0].P1[0].NamedInsured_FullName_A[0]"},
+        {"key":"policy_policynumberidentifier_a","label":"Policy number row 1","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].Policy_PolicyNumberIdentifier_A[0]"},
+        {"key":"policy_effectivedate_a","label":"Policy effective date row 1","type":"date","priority":"common","required":false,"pdf_field":"F[0].P1[0].Policy_EffectiveDate_A[0]"},
+        {"key":"policy_expirationdate_a","label":"Policy expiration date row 1","type":"date","priority":"common","required":false,"pdf_field":"F[0].P1[0].Policy_ExpirationDate_A[0]"},
+        {"key":"insurer_lineofbusiness_a","label":"Line of business row 1","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].Insurer_LineOfBusiness_A[0]"},
+        {"key":"namedinsured_fullname_b","label":"Named insured on policy row 2","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].NamedInsured_FullName_B[0]"},
+        {"key":"policy_policynumberidentifier_b","label":"Policy number row 2","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Policy_PolicyNumberIdentifier_B[0]"},
+        {"key":"policy_effectivedate_b","label":"Policy effective date row 2","type":"date","priority":"common","required":false,"pdf_field":"F[0].P1[0].Policy_EffectiveDate_B[0]"},
+        {"key":"policy_expirationdate_b","label":"Policy expiration date row 2","type":"date","priority":"common","required":false,"pdf_field":"F[0].P1[0].Policy_ExpirationDate_B[0]"},
+        {"key":"insurer_lineofbusiness_b","label":"Line of business row 2","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].Insurer_LineOfBusiness_B[0]"},
+        {"key":"namedinsured_fullname_c","label":"Named insured on policy row 3","type":"text","priority":"rare","required":false,"pdf_field":"F[0].P1[0].NamedInsured_FullName_C[0]"},
+        {"key":"policy_policynumberidentifier_c","label":"Policy number row 3","type":"text","priority":"rare","required":false,"pdf_field":"F[0].P1[0].Policy_PolicyNumberIdentifier_C[0]"},
+        {"key":"policy_effectivedate_c","label":"Policy effective date row 3","type":"date","priority":"rare","required":false,"pdf_field":"F[0].P1[0].Policy_EffectiveDate_C[0]"},
+        {"key":"policy_expirationdate_c","label":"Policy expiration date row 3","type":"date","priority":"rare","required":false,"pdf_field":"F[0].P1[0].Policy_ExpirationDate_C[0]"},
+        {"key":"insurer_lineofbusiness_c","label":"Line of business row 3","type":"text","priority":"rare","required":false,"pdf_field":"F[0].P1[0].Insurer_LineOfBusiness_C[0]"}
+      ]
+    },
+    {
+      "id": "insured_signature_address",
+      "label": "Insured Signature / Address",
+      "fields": [
+        {"key":"namedinsured_signature_a","label":"Insured signature","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].NamedInsured_Signature_A[0]"},
+        {"key":"namedinsured_signaturedate_a","label":"Signature date","type":"date","priority":"core","required":false,"pdf_field":"F[0].P1[0].NamedInsured_SignatureDate_A[0]"},
+        {"key":"namedinsured_title_a","label":"Title, if applicable","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].NamedInsured_Title_A[0]"},
+        {"key":"namedinsured_fullname_h","label":"Company name, if applicable","type":"text","priority":"common","required":false,"pdf_field":"F[0].P1[0].NamedInsured_FullName_H[0]"},
+        {"key":"namedinsured_mailingaddress_lineone_a","label":"Insured street address","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].NamedInsured_MailingAddress_LineOne_A[0]"},
+        {"key":"namedinsured_mailingaddress_linetwo_a","label":"Insured address line 2","type":"text","priority":"rare","required":false,"pdf_field":"F[0].P1[0].NamedInsured_MailingAddress_LineTwo_A[0]"},
+        {"key":"namedinsured_mailingaddress_cityname_a","label":"City of insured","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].NamedInsured_MailingAddress_CityName_A[0]"},
+        {"key":"namedinsured_mailingaddress_stateorprovincecode_a","label":"State of insured","type":"state","priority":"core","required":false,"pdf_field":"F[0].P1[0].NamedInsured_MailingAddress_StateOrProvinceCode_A[0]"},
+        {"key":"namedinsured_mailingaddress_postalcode_a","label":"ZIP code of insured","type":"text","priority":"core","required":false,"pdf_field":"F[0].P1[0].NamedInsured_MailingAddress_PostalCode_A[0]"}
+      ]
+    }
+  ],
+  "logic": {
+    "notes": "Draft core schema generated from Logan's uploaded fillable ACORD 36 PDF. The PDF contains 64 detected AcroForm entries. ACORD 36 is a one-page Agent/Broker of Record Change form. It maps current agency/company, new agency/producer, policy/line-of-business rows, BOR effective date, insured signature/title, and insured address. Future expansion can add rows 4-7 if needed."
+  }
+}
