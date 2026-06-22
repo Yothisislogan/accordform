@@ -42,6 +42,7 @@ FORM_TITLES = {
     "25": "Certificate of Liability Insurance",
     "28": "Evidence of Commercial Property Insurance",
     "35": "Cancellation Request / Policy Release",
+    "36": "Agent/Broker of Record Change",
     "125": "Commercial Insurance Application",
     "126": "Commercial General Liability Section",
     "127": "Business Auto Section",
@@ -84,7 +85,7 @@ def _meta_to_catalog_row(schema: dict, schema_path: Path) -> dict:
 
 
 _CATEGORY_HINTS = {
-    "25": "Certificate", "28": "Certificate", "35": "Change",
+    "25": "Certificate", "28": "Certificate", "35": "Change", "36": "Change",
     "125": "Commercial", "126": "Commercial", "127": "Commercial",
     "130": "Commercial", "140": "Commercial", "141": "Commercial",
     "128": "Commercial", "131": "Commercial", "135_NC": "Workers Comp",
