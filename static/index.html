@@ -44,7 +44,8 @@
                placeholder="Search by number, title, or keyword (e.g. 25, certificate, COI)" />
       </div>
       <ul id="results" class="results"></ul>
-      <p id="results-empty" class="muted center hidden">No forms match your search.</p>
+      <div id="category-chips" class="chips"></div>
+      <p id="results-empty" class="state-msg hidden">No forms match your search.</p>
     </main>
 
     <!-- Form fill -->
@@ -55,71 +56,41 @@
         <p id="form-sub" class="muted"></p>
       </div>
 
-      <div class="profile-bar" id="profile-bar">
-        <label>Agency profile
-          <select id="agency-select"><option value="">— none —</option></select>
-        </label>
-        <label>Client profile
-          <select id="client-select"><option value="">— none —</option></select>
-        </label>
-        <button id="save-profile-btn" class="btn btn-ghost btn-sm" type="button">Save as profile…</button>
-      </div>
+      <div class="form-layout">
+        <nav id="section-nav" class="section-nav" aria-label="Form sections"></nav>
+        <div class="form-main">
+          <div id="validation-summary" class="validation-summary hidden"
+               role="alert" aria-live="assertive"></div>
 
-      <form id="dynamic-form" autocomplete="off"></form>
+          <form id="dynamic-form" autocomplete="off"></form>
 
-      <div id="validation-summary" class="validation-summary hidden"></div>
+          <div class="action-bar">
+            <button id="preview-btn" class="btn btn-primary" type="button">Preview</button>
+            <button id="download-btn" class="btn btn-secondary" type="button">Download</button>
+            <button id="print-btn" class="btn btn-secondary" type="button">Print</button>
+            <button id="email-btn" class="btn btn-secondary" type="button" title="Download the PDF so you can attach it from your own email">Use my email</button>
+            <span id="req-counter" class="req-counter" aria-live="polite"></span>
+          </div>
 
-      <div class="action-bar">
-        <button id="preview-btn" class="btn btn-primary" type="button">Preview</button>
-        <button id="download-btn" class="btn btn-secondary" type="button">Download</button>
-        <button id="print-btn" class="btn btn-secondary" type="button">Print</button>
-        <button id="email-btn" class="btn btn-secondary" type="button" title="Download the PDF so you can attach it from your own email">Use my email</button>
-        <button id="server-email-btn" class="btn btn-secondary" type="button" title="Send from the server with the owner address always CC'd">Send via server…</button>
-      </div>
-
-      <!-- Preview pane -->
-      <div id="preview-pane" class="preview-pane hidden">
-        <h3>Preview</h3>
-        <iframe id="preview-frame" title="PDF preview"></iframe>
+          <!-- Preview pane -->
+          <div id="preview-pane" class="preview-pane hidden">
+            <h3>Preview</h3>
+            <div id="preview-status" class="preview-status hidden"></div>
+            <iframe id="preview-frame" title="PDF preview"></iframe>
+          </div>
+        </div>
       </div>
     </main>
   </div>
 
-  <!-- Server-email dialog (owner CC always enforced server-side) -->
-  <dialog id="email-dialog" class="dialog">
-    <form method="dialog" id="email-form">
-      <h3>Send via server</h3>
-      <label>Recipient(s) <span class="muted small">comma-separated</span>
-        <input id="email-to" type="text" placeholder="client@example.com" required />
-      </label>
-      <label>CC (always copied)
-        <input id="email-cc" type="text" readonly class="locked" />
-      </label>
-      <label>Message <span class="muted small">optional</span>
-        <textarea id="email-message" rows="3"></textarea>
-      </label>
-      <p id="email-error" class="error hidden"></p>
-      <div class="dialog-actions">
-        <button value="cancel" class="btn btn-ghost" type="submit">Cancel</button>
-        <button id="email-send" value="send" class="btn btn-primary" type="submit">Send</button>
-      </div>
-    </form>
-  </dialog>
-
-  <!-- Save-profile dialog -->
+  <!-- Save saved-info dialog (just a name; the block + scope are set in context) -->
   <dialog id="profile-dialog" class="dialog">
     <form method="dialog" id="profile-form">
-      <h3>Save profile</h3>
-      <label>Type
-        <select id="profile-type">
-          <option value="agency">Agency</option>
-          <option value="client">Client</option>
-        </select>
+      <h3 id="profile-dialog-title">Save info</h3>
+      <label>Save as
+        <input id="profile-name" type="text" placeholder="e.g. WIT Norfolk" required />
       </label>
-      <label>Name
-        <input id="profile-name" type="text" placeholder="WIT Norfolk" required />
-      </label>
-      <p class="muted small">Saves the fields from the matching sections so you can reuse them.</p>
+      <p class="muted small" id="profile-dialog-hint">Saves this block so anyone on the team can reuse it. Re-using the same name updates it.</p>
       <div class="dialog-actions">
         <button value="cancel" class="btn btn-ghost" type="submit">Cancel</button>
         <button value="save" class="btn btn-primary" type="submit">Save</button>
@@ -127,7 +98,7 @@
     </form>
   </dialog>
 
-  <div id="toast" class="toast hidden"></div>
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
   <script src="/static/app.js"></script>
 </body>
