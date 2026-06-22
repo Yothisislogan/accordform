@@ -8,6 +8,10 @@
     schema: null,
     formId: null,
     profiles: { agency: [], client: [] },
+    dirty: false,            // unsaved input in the current form
+    category: "",            // active category-chip filter
+    carryOver: null,         // shared header carried into a companion form
+    navObserver: null,       // IntersectionObserver for active section
   };
 
   const $ = (sel) => document.querySelector(sel);
@@ -76,7 +80,14 @@
       location.href = "/";
     });
     $("#search-box").addEventListener("input", debounce((e) => loadResults(e.target.value), 180));
-    $("#back-btn").addEventListener("click", showSearch);
+    $("#back-btn").addEventListener("click", () => { if (confirmDiscard()) showSearch(); });
+    // Mark the form dirty on any input, and keep the required-remaining counter live.
+    $("#dynamic-form").addEventListener("input", () => { state.dirty = true; updateReqCounter(); });
+    $("#dynamic-form").addEventListener("change", () => { state.dirty = true; updateReqCounter(); });
+    // Guard against losing typed data on reload/close.
+    window.addEventListener("beforeunload", (e) => {
+      if (state.dirty) { e.preventDefault(); e.returnValue = ""; }
+    });
     $("#preview-btn").addEventListener("click", onPreview);
     $("#download-btn").addEventListener("click", () => onAction("download"));
     $("#print-btn").addEventListener("click", () => onAction("print"));
@@ -89,12 +100,28 @@
   }
 
   async function loadResults(q) {
-    const { forms } = await apiJson("/api/forms?q=" + encodeURIComponent(q || ""));
-    const list = $("#results");
+    const list = $("#results"), empty = $("#results-empty");
+    empty.classList.add("hidden");
     list.innerHTML = "";
-    $("#results-empty").classList.toggle("hidden", forms.length > 0);
+    list.append(el("li", { class: "state-msg" }, "Loading forms…"));
+    let forms;
+    try {
+      ({ forms } = await apiJson("/api/forms?q=" + encodeURIComponent(q || "")));
+    } catch (e) {
+      list.innerHTML = "";
+      empty.textContent = "Couldn’t load forms: " + e.message;
+      empty.classList.remove("hidden");
+      return;
+    }
+    buildCategoryChips(forms);                          // chips reflect the q result set
+    if (state.category) forms = forms.filter((f) => f.category === state.category);
+    list.innerHTML = "";
+    empty.textContent = "No forms match your search.";
+    empty.classList.toggle("hidden", forms.length > 0);
     for (const f of forms) {
-      list.append(el("li", { class: "result-item", onclick: () => openForm(f.id) },
+      list.append(el("li", { class: "result-item", role: "button", tabindex: "0",
+        onclick: () => openForm(f.id),
+        onkeydown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openForm(f.id); } } },
         el("span", { class: "result-num" }, "ACORD " + f.acord_number),
         el("span", { class: "result-title" }, f.title),
         f.category ? el("span", { class: "badge" }, f.category) : null,
@@ -102,9 +129,34 @@
     }
   }
 
+  // Category chips under the search box; clicking filters the catalog.
+  function buildCategoryChips(forms) {
+    const wrap = $("#category-chips");
+    wrap.innerHTML = "";
+    const cats = [...new Set(forms.map((f) => f.category).filter(Boolean))].sort();
+    if (cats.length <= 1) { wrap.classList.add("hidden"); return; }
+    wrap.classList.remove("hidden");
+    const chip = (label, value) => {
+      const c = el("button", { type: "button", class: "chip" + (state.category === value ? " active" : "") }, label);
+      c.addEventListener("click", () => {
+        state.category = state.category === value ? "" : value;
+        loadResults($("#search-box").value);
+      });
+      return c;
+    };
+    wrap.append(chip("All", ""));
+    cats.forEach((cat) => wrap.append(chip(cat, cat)));
+  }
+
   function showSearch() {
     $("#form-view").classList.add("hidden");
     $("#search-view").classList.remove("hidden");
+    state.dirty = false;
+  }
+
+  function confirmDiscard() {
+    if (!state.dirty) return true;
+    return window.confirm("Discard the info you've entered on this form?");
   }
 
   async function openForm(formId) {
@@ -117,6 +169,11 @@
     $("#validation-summary").classList.add("hidden");
     renderForm();
     populateProfileSelects();
+    buildSectionNav();
+    // Apply any shared header carried from a 125 hub launch, then clear it.
+    if (state.carryOver) { applyCarryOver(state.carryOver); state.carryOver = null; }
+    state.dirty = false;
+    updateReqCounter();
     $("#search-view").classList.add("hidden");
     $("#form-view").classList.remove("hidden");
     window.scrollTo(0, 0);
@@ -143,23 +200,121 @@
   function renderSectionsAttached(block) {
     const body = el("div", { class: "section-body" });
     const table = el("table", { class: "insurer-table" });
-    table.append(el("tr", {}, el("th", {}, "Attach"), el("th", {}, "Section"), el("th", {}, "Premium")));
+    table.append(el("tr", {}, el("th", {}, "Attach"), el("th", {}, "Section"), el("th", {}, "")));
     for (const row of attachedRows(block)) {
+      const cb = el("input", { type: "checkbox", "data-attached-ind": row.indicator_pdf_field || "" });
+      // Companion-form launch: enabled once the section is checked. Opens the
+      // companion form carrying the shared header (agency + insured + carriers).
+      let launchCell = el("span", { class: "muted" }, "—");
+      if (row.attaches_form) {
+        const launch = el("button", { type: "button", class: "btn btn-secondary btn-sm attach-launch", disabled: "" },
+          `Start ACORD ${row.attaches_form} →`);
+        launch.addEventListener("click", () => startCompanion(row.attaches_form));
+        cb.addEventListener("change", () => { launch.disabled = !cb.checked; });
+        launchCell = launch;
+      }
+      const premium = row.premium_pdf_field
+        ? el("input", { type: "text", inputmode: "decimal", placeholder: "Premium $0",
+            "data-attached-prem": row.premium_pdf_field })
+        : null;
       table.append(el("tr", {},
-        el("td", {}, el("input", { type: "checkbox", "data-attached-ind": row.indicator_pdf_field || "" })),
-        el("td", {}, (row.label || row.indicator_pdf_field || "") +
-          (row.attaches_form ? ` (ACORD ${row.attaches_form})` : "")),
-        el("td", {}, row.premium_pdf_field
-          ? el("input", { type: "text", inputmode: "decimal", placeholder: "$0",
-              "data-attached-prem": row.premium_pdf_field })
-          : el("span", { class: "muted" }, "—")),
+        el("td", {}, cb),
+        el("td", {}, (row.label || row.indicator_pdf_field || ""), premium ? el("div", {}, premium) : null),
+        el("td", { class: "attach-launch" }, launchCell),
       ));
     }
     body.append(table);
-    return el("section", { class: "section", "data-section": "sections_attached" },
+    return el("section", { class: "section", id: "sec-sections_attached", "data-section": "sections_attached" },
       el("div", { class: "section-head" },
         el("h3", {}, (Array.isArray(block) ? null : block.label) || "Sections Attached")),
       body);
+  }
+
+  // Carry the shared header (agency + client blocks + insurers) into a companion
+  // form, then open it. Best-effort: applies values to any matching field key.
+  async function startCompanion(acordNumber) {
+    const answers = collectAnswers();
+    const carry = {};
+    for (const section of state.schema.sections) {
+      if (section.prefill_from) for (const f of section.fields)
+        if (f.key in answers) carry[f.key] = answers[f.key];
+    }
+    if (answers._insurers) carry._insurers = answers._insurers;
+    state.carryOver = carry;
+    try {
+      const id = await formIdForNumber(acordNumber);
+      if (!id) { toast(`ACORD ${acordNumber} isn't in the catalog yet`, "error"); state.carryOver = null; return; }
+      state.dirty = false;            // we already captured what we need
+      await openForm(id);
+      toast(`Opened ACORD ${acordNumber} with the shared header pre-filled`, "success");
+    } catch (e) { state.carryOver = null; toast(e.message, "error"); }
+  }
+
+  async function formIdForNumber(n) {
+    const { forms } = await apiJson("/api/forms?q=" + encodeURIComponent(n));
+    const hit = forms.find((f) => String(f.acord_number) === String(n));
+    return hit ? hit.id : null;
+  }
+
+  function applyCarryOver(carry) {
+    for (const [k, v] of Object.entries(carry)) {
+      if (k === "_insurers") {
+        for (const [letter, info] of Object.entries(v)) {
+          const nm = document.querySelector(`input[data-insurer-name="${letter}"]`);
+          const naic = document.querySelector(`input[data-insurer-naic="${letter}"]`);
+          if (nm && info.name) nm.value = info.name;
+          if (naic && info.naic) naic.value = info.naic;
+        }
+        continue;
+      }
+      const inp = document.querySelector(`[data-key="${cssEscape(k)}"]`);
+      if (inp && !inp.disabled) { if (inp.type === "checkbox") inp.checked = !!v; else inp.value = v; }
+    }
+    refreshConditionalVisibility();
+  }
+
+  // Sticky section nav (left rail desktop / chip-scroller mobile) built from the
+  // rendered sections; the active section highlights as you scroll.
+  function buildSectionNav() {
+    const nav = $("#section-nav");
+    nav.innerHTML = "";
+    const sections = [...document.querySelectorAll("#dynamic-form .section")];
+    if (sections.length <= 1) { nav.classList.add("hidden"); return; }
+    nav.classList.remove("hidden");
+    const ul = el("ul");
+    for (const sec of sections) {
+      const h3 = sec.querySelector(".section-head h3");
+      const a = el("a", { href: "#" + sec.id }, h3 ? h3.textContent : sec.dataset.section);
+      a.addEventListener("click", (e) => { e.preventDefault(); sec.scrollIntoView({ behavior: "smooth", block: "start" }); });
+      ul.append(el("li", {}, a));
+    }
+    nav.append(ul);
+    if (state.navObserver) state.navObserver.disconnect();
+    state.navObserver = new IntersectionObserver((entries) => {
+      for (const en of entries) {
+        if (!en.isIntersecting) continue;
+        nav.querySelectorAll("a").forEach((a) =>
+          a.classList.toggle("active", a.getAttribute("href") === "#" + en.target.id));
+      }
+    }, { rootMargin: "-72px 0px -60% 0px", threshold: 0 });
+    sections.forEach((sec) => state.navObserver.observe(sec));
+  }
+
+  // Live "N required fields remaining" counter (visible required fields only).
+  function updateReqCounter() {
+    const counter = $("#req-counter");
+    if (!state.schema) { counter.textContent = ""; return; }
+    const answers = collectAnswers();
+    let remaining = 0;
+    for (const section of state.schema.sections) {
+      for (const f of section.fields) {
+        if (!f.required || !fieldVisible(f.key)) continue;
+        const v = answers[f.key];
+        if (v === undefined || v === null || String(v).trim() === "") remaining++;
+      }
+    }
+    if (remaining === 0) { counter.textContent = "All required fields complete"; counter.className = "req-counter done"; }
+    else { counter.textContent = `${remaining} required field${remaining === 1 ? "" : "s"} remaining`; counter.className = "req-counter todo"; }
   }
 
   function renderInsurers(insurers) {
@@ -174,7 +329,7 @@
       ));
     }
     body.append(table);
-    return el("section", { class: "section" },
+    return el("section", { class: "section", id: "sec-insurers", "data-section": "insurers" },
       el("div", { class: "section-head" }, el("h3", {}, insurers.label || "Insurers Affording Coverage")), body);
   }
 
@@ -206,7 +361,7 @@
     for (const f of section.fields) (f.priority === "rare" ? rare : core).push(renderField(f));
     core.forEach((n) => body.append(n));
 
-    const sectionEl = el("section", { class: "section", "data-section": section.id }, head, body);
+    const sectionEl = el("section", { class: "section", id: "sec-" + section.id, "data-section": section.id }, head, body);
     if (section.optional_block) sectionEl.dataset.toggle = section.include_toggle.key;
 
     if (rare.length) {
@@ -228,9 +383,13 @@
     if (f.show_if) wrap.dataset.showIf = f.show_if;
 
     const label = el("label", { for: id }, f.label + (f.required ? " " : ""));
-    if (f.required) label.append(el("span", { class: "req" }, "*"));
+    if (f.required) label.append(el("span", { class: "req", title: "required" }, "*"));
     if (f.priority === "rare") label.append(el("span", { class: "pill" }, "  (rare)"));
     if (f.attaches_form) label.append(el("span", { class: "pill" }, `  opens ${f.attaches_form}`));
+    // Per-field help from the schema (FieldNameAlt tooltip) — insurance fields are cryptic.
+    const help = f.help || f.tooltip || f.alt;
+    if (help) label.append(el("span", { class: "hint", title: help, tabindex: "0",
+      role: "img", "aria-label": "Help: " + help }, "?"));
     wrap.append(label);
 
     let input;
@@ -387,15 +546,33 @@
     box.innerHTML = "";
     box.append(el("strong", {}, "Please fix the following:"));
     const ul = el("ul");
+    let firstField = null;
     fields.forEach((f) => {
-      ul.append(el("li", {}, `${f.label}: ${f.error}`));
       const fld = document.querySelector(`.field[data-field="${cssEscape(f.key)}"]`);
-      if (fld) { fld.classList.add("invalid"); const e = fld.querySelector(".field-err"); if (e) e.textContent = f.error; }
+      // Each summary item links to its field (click jumps + focuses it).
+      const link = el("a", { href: "#" }, `${f.label}: ${f.error}`);
+      link.addEventListener("click", (e) => { e.preventDefault(); focusField(f.key); });
+      ul.append(el("li", {}, link));
+      if (fld) {
+        fld.classList.add("invalid");
+        const e = fld.querySelector(".field-err"); if (e) e.textContent = f.error;
+        if (!firstField) firstField = f.key;
+      }
     });
     box.append(ul);
     box.classList.remove("hidden");
-    box.scrollIntoView({ behavior: "smooth", block: "center" });
+    // Land the user on the first bad field, not just the summary.
+    if (firstField) focusField(firstField);
+    else box.scrollIntoView({ behavior: "smooth", block: "center" });
     return false;
+  }
+
+  function focusField(key) {
+    const fld = document.querySelector(`.field[data-field="${cssEscape(key)}"]`);
+    if (!fld) return;
+    fld.scrollIntoView({ behavior: "smooth", block: "center" });
+    const input = fld.querySelector("input, select, textarea");
+    if (input) setTimeout(() => input.focus({ preventScroll: true }), 250);
   }
 
   // Integration contract (TEST-WIRE-UP §0): the front end resolves ALL schema
@@ -482,18 +659,37 @@
     }
   }
 
+  function setPreviewStatus(kind, msg) {
+    const pane = $("#preview-pane"), status = $("#preview-status"), frame = $("#preview-frame");
+    pane.classList.remove("hidden");
+    if (kind === "ready") { status.classList.add("hidden"); frame.classList.remove("hidden"); return; }
+    frame.classList.add("hidden");
+    status.className = "preview-status" + (kind === "error" ? " err" : "");
+    status.innerHTML = "";
+    if (kind === "loading") status.append(el("span", { class: "spinner" }), el("span", {}, msg || "Generating PDF…"));
+    else status.append(el("span", {}, msg || "Couldn’t generate the PDF."));
+    status.classList.remove("hidden");
+  }
+
   async function onPreview() {
     setBusy(true);
+    setPreviewStatus("loading");
+    $("#preview-pane").scrollIntoView({ behavior: "smooth" });
     try {
       const res = await api(`/api/forms/${state.formId}/preview`, { method: "POST", body: JSON.stringify(payload()) });
-      if (res.status === 422) { const d = await res.json(); showValidation(d.fields); return; }
-      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.error || res.statusText); }
+      if (res.status === 422) {
+        const d = await res.json(); $("#preview-pane").classList.add("hidden"); showValidation(d.fields); return;
+      }
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        setPreviewStatus("error", d.error || `Preview failed (${res.status})`);
+        return;
+      }
       showValidation([]);
       const blob = await res.blob();
       $("#preview-frame").src = URL.createObjectURL(blob);
-      $("#preview-pane").classList.remove("hidden");
-      $("#preview-pane").scrollIntoView({ behavior: "smooth" });
-    } catch (e) { toast(e.message, "error"); }
+      setPreviewStatus("ready");
+    } catch (e) { setPreviewStatus("error", e.message); }
     finally { setBusy(false); }
   }
 
@@ -508,7 +704,7 @@
       const url = URL.createObjectURL(blob);
       if (action === "download") {
         triggerDownload(blob, fileName());
-        toast("Downloaded", "success");
+        toast(`Downloaded ${fileName()}`, "success");
       } else if (action === "print") {
         const w = window.open(url);
         if (w) w.addEventListener("load", () => w.print());
