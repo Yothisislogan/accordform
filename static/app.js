@@ -81,10 +81,7 @@
     $("#download-btn").addEventListener("click", () => onAction("download"));
     $("#print-btn").addEventListener("click", () => onAction("print"));
     $("#email-btn").addEventListener("click", onUseOwnEmail);          // local download
-    $("#save-profile-btn").addEventListener("click", openProfileDialog);
-    $("#agency-select").addEventListener("change", () => applyProfile("agency"));
-    $("#client-select").addEventListener("change", () => applyProfile("client"));
-    wireProfileDialog();
+    wireProfileDialog();  // saved-info ("Use saved" / "+ Save") lives inline per block
   }
 
   function debounce(fn, ms) {
@@ -184,6 +181,20 @@
   function renderSection(section) {
     const head = el("div", { class: "section-head" }, el("h3", {}, section.label));
     const body = el("div", { class: "section-body" });
+
+    // Inline "saved info" for reusable blocks (agency/client): a Use-saved
+    // dropdown + a one-click "+ Save", right where the data lives. No jargon —
+    // the control sits on the block it fills. Shared across the team.
+    if (section.prefill_from) {
+      const type = section.prefill_from;
+      const sel = el("select", { class: "prefill-select", "data-prefill-type": type,
+        title: "Fill this block from saved info" });
+      sel.append(el("option", { value: "" }, "Use saved…"));
+      sel.addEventListener("change", () => applyProfileToSection(type, sel.value, section));
+      const saveBtn = el("button", { type: "button", class: "btn btn-ghost btn-sm" }, "+ Save");
+      saveBtn.addEventListener("click", () => openSaveProfile(type, section, sel));
+      head.append(el("span", { class: "prefill-controls" }, sel, saveBtn));
+    }
 
     if (section.optional_block) {
       const tog = section.include_toggle;
@@ -341,19 +352,21 @@
     } catch {}
   }
 
+  // Fill every inline "Use saved…" dropdown from the loaded profiles of its type.
   function populateProfileSelects() {
-    for (const t of ["agency", "client"]) {
-      const sel = $(`#${t}-select`);
+    document.querySelectorAll("select[data-prefill-type]").forEach((sel) => {
+      const t = sel.dataset.prefillType;
+      const cur = sel.value;
       sel.innerHTML = "";
-      sel.append(el("option", { value: "" }, "— none —"));
-      state.profiles[t].forEach((p) => sel.append(el("option", { value: p.id }, p.name)));
-    }
+      sel.append(el("option", { value: "" }, "Use saved…"));
+      (state.profiles[t] || []).forEach((p) => sel.append(el("option", { value: p.id }, p.name)));
+      sel.value = cur;
+    });
   }
 
-  function applyProfile(type) {
-    const id = $(`#${type}-select`).value;
+  function applyProfileToSection(type, id, section) {
     if (!id) return;
-    const prof = state.profiles[type].find((p) => String(p.id) === String(id));
+    const prof = (state.profiles[type] || []).find((p) => String(p.id) === String(id));
     if (!prof) return;
     for (const [k, v] of Object.entries(prof.data || {})) {
       const inp = document.querySelector(`[data-key="${cssEscape(k)}"]`);
@@ -362,7 +375,7 @@
       }
     }
     refreshConditionalVisibility();
-    toast(`Applied ${prof.name}`, "success");
+    toast(`Filled ${section.label} from “${prof.name}”`, "success");
   }
   const cssEscape = (s) => (window.CSS && CSS.escape ? CSS.escape(s) : s);
 
@@ -534,27 +547,50 @@
       .forEach((s) => ($(s).disabled = b));
   }
 
-  function openProfileDialog() { $("#profile-name").value = ""; $("#profile-dialog").showModal(); }
+  let _pendingSave = null;  // {type, section, sel} set when "+ Save" is clicked
+
+  function openSaveProfile(type, section, sel) {
+    _pendingSave = { type, section, sel };
+    const noun = type === "agency" ? "agency" : "client";
+    $("#profile-dialog-title").textContent = `Save this ${noun}`;
+    $("#profile-dialog-hint").textContent =
+      `Saves the ${section.label} block so anyone on the team can reuse it. Same name updates it.`;
+    $("#profile-name").value = "";
+    $("#profile-dialog").showModal();
+    $("#profile-name").focus();
+  }
 
   function wireProfileDialog() {
     $("#profile-form").addEventListener("submit", async (e) => {
       if (!e.submitter || e.submitter.value !== "save") return;
       e.preventDefault();
-      const type = $("#profile-type").value;
+      if (!_pendingSave) return;
+      const { type, section, sel } = _pendingSave;
       const name = $("#profile-name").value.trim();
       if (!name) return;
-      const keys = new Set();
-      for (const s of state.schema.sections) if (s.prefill_from === type) s.fields.forEach((f) => keys.add(f.key));
+
+      // Capture just this block's fields.
       const all = collectAnswers();
       const data = {};
-      for (const k of keys) if (k in all) data[k] = all[k];
+      for (const f of section.fields) if (f.key in all) data[f.key] = all[f.key];
+
+      // Re-using a name updates that saved entry (simple rename/overwrite).
+      const existing = (state.profiles[type] || []).find(
+        (p) => p.name.toLowerCase() === name.toLowerCase());
+      const bodyObj = { type, name, data };
+      if (existing) bodyObj.id = existing.id;
+
       try {
-        const prof = await apiJson("/api/profiles", { method: "POST", body: JSON.stringify({ type, name, data }) });
-        state.profiles[type].push(prof);
+        const prof = await apiJson("/api/profiles", { method: "POST", body: JSON.stringify(bodyObj) });
+        const arr = state.profiles[type] || (state.profiles[type] = []);
+        const idx = arr.findIndex((p) => String(p.id) === String(prof.id));
+        if (idx >= 0) arr[idx] = prof; else arr.push(prof);
         populateProfileSelects();
+        if (sel) sel.value = prof.id;        // reflect what was just saved
         $("#profile-dialog").close();
-        toast(`Saved profile ${prof.name}`, "success");
+        toast(`Saved “${prof.name}” — reuse it from Use saved…`, "success");
       } catch (err) { toast(err.message, "error"); }
+      finally { _pendingSave = null; }
     });
   }
 

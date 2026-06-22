@@ -120,6 +120,13 @@ body {
   border-bottom: 1px solid #eef2f6; background: #fafdff;
 }
 .section-head h3 { margin: 0; font-size: 1.05rem; }
+/* Inline "saved info" controls, pinned to the right of a block's header. */
+.prefill-controls { margin-left: auto; display: flex; align-items: center; gap: 0.4rem; }
+.prefill-select {
+  padding: 0.3rem 0.5rem; border: 1.5px solid #dbe7f0; border-radius: 8px;
+  font-size: 0.85rem; background: var(--white); max-width: 220px;
+}
+.prefill-select:focus { border-color: var(--wit-blue); outline: none; }
 .section-body { padding: 1.1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
 .field { display: flex; flex-direction: column; gap: 0.3rem; }
 .field.full { grid-column: 1 / -1; }

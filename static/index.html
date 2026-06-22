@@ -55,16 +55,6 @@
         <p id="form-sub" class="muted"></p>
       </div>
 
-      <div class="profile-bar" id="profile-bar">
-        <label>Agency profile
-          <select id="agency-select"><option value="">— none —</option></select>
-        </label>
-        <label>Client profile
-          <select id="client-select"><option value="">— none —</option></select>
-        </label>
-        <button id="save-profile-btn" class="btn btn-ghost btn-sm" type="button">Save as profile…</button>
-      </div>
-
       <form id="dynamic-form" autocomplete="off"></form>
 
       <div id="validation-summary" class="validation-summary hidden"></div>
@@ -84,20 +74,14 @@
     </main>
   </div>
 
-  <!-- Save-profile dialog -->
+  <!-- Save saved-info dialog (just a name; the block + scope are set in context) -->
   <dialog id="profile-dialog" class="dialog">
     <form method="dialog" id="profile-form">
-      <h3>Save profile</h3>
-      <label>Type
-        <select id="profile-type">
-          <option value="agency">Agency</option>
-          <option value="client">Client</option>
-        </select>
+      <h3 id="profile-dialog-title">Save info</h3>
+      <label>Save as
+        <input id="profile-name" type="text" placeholder="e.g. WIT Norfolk" required />
       </label>
-      <label>Name
-        <input id="profile-name" type="text" placeholder="WIT Norfolk" required />
-      </label>
-      <p class="muted small">Saves the fields from the matching sections so you can reuse them.</p>
+      <p class="muted small" id="profile-dialog-hint">Saves this block so anyone on the team can reuse it. Re-using the same name updates it.</p>
       <div class="dialog-actions">
         <button value="cancel" class="btn btn-ghost" type="submit">Cancel</button>
         <button value="save" class="btn btn-primary" type="submit">Save</button>
