@@ -81,12 +81,10 @@
     $("#download-btn").addEventListener("click", () => onAction("download"));
     $("#print-btn").addEventListener("click", () => onAction("print"));
     $("#email-btn").addEventListener("click", onUseOwnEmail);          // local download
-    $("#server-email-btn").addEventListener("click", openEmailDialog);  // owner-CC server send
     $("#save-profile-btn").addEventListener("click", openProfileDialog);
     $("#agency-select").addEventListener("change", () => applyProfile("agency"));
     $("#client-select").addEventListener("change", () => applyProfile("client"));
     wireProfileDialog();
-    wireEmailDialog();
   }
 
   function debounce(fn, ms) {
@@ -532,43 +530,9 @@
   function fileName() { return `ACORD_${state.schema._meta.acord_number}.pdf`; }
 
   function setBusy(b) {
-    ["#preview-btn", "#download-btn", "#print-btn", "#email-btn", "#server-email-btn"]
+    ["#preview-btn", "#download-btn", "#print-btn", "#email-btn"]
       .forEach((s) => ($(s).disabled = b));
   }
-
-  // ---- Server-email dialog (owner CC enforced server-side) ----
-  function openEmailDialog() {
-    $("#email-cc").value = (state.config.owner_cc_email || "") + " (locked)";
-    $("#email-to").value = "";
-    $("#email-message").value = "";
-    const err = $("#email-error"); err.classList.add("hidden");
-    if (!state.config.email_enabled) {
-      err.textContent = "Server email isn't configured yet (TODO from Logan). Use \"Use my email\" instead.";
-      err.classList.remove("hidden");
-    }
-    $("#email-dialog").showModal();
-  }
-
-  function wireEmailDialog() {
-    $("#email-form").addEventListener("submit", async (e) => {
-      if (!e.submitter || e.submitter.value !== "send") return;  // cancel just closes
-      e.preventDefault();
-      const recipients = $("#email-to").value.split(",").map((s) => s.trim()).filter(Boolean);
-      if (!recipients.length) { showEmailError("Add at least one recipient."); return; }
-      try {
-        const res = await api(`/api/forms/${state.formId}/email`, {
-          method: "POST",
-          body: JSON.stringify({ ...payload(), recipients, message: $("#email-message").value }),
-        });
-        const d = await res.json().catch(() => ({}));
-        if (res.status === 422) { $("#email-dialog").close(); showValidation(d.fields); return; }
-        if (!res.ok) { showEmailError(d.error || res.statusText); return; }
-        $("#email-dialog").close();
-        toast(`Emailed to ${d.to.join(", ")} (cc ${d.cc.join(", ") || "—"})`, "success");
-      } catch (err) { showEmailError(err.message); }
-    });
-  }
-  function showEmailError(msg) { const e = $("#email-error"); e.textContent = msg; e.classList.remove("hidden"); }
 
   function openProfileDialog() { $("#profile-name").value = ""; $("#profile-dialog").showModal(); }
 

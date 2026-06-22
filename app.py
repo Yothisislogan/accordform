@@ -188,55 +188,10 @@ def _register_routes(app: Flask) -> None:
     @app.route("/api/forms/<int:form_id>/email", methods=["POST"])
     @auth.api_login_required
     def api_email(form_id):
-        body = request.get_json(silent=True) or {}
-        recipients = [r for r in (body.get("recipients") or []) if r and r.strip()]
-        if not recipients:
-            return jsonify({"error": "at least one recipient is required"}), 400
-
-        ctx = _prepare_fill(form_id)
-        if not isinstance(ctx, dict):
-            return ctx
-        schema = ctx["schema"]
-
-        try:
-            out = _output_path(form_id, "email")
-            produce_pdf(schema, ctx["template"], out_path=out,
-                        pdf_data=_fill_data(ctx), flatten=True,
-                        pdftk_bin=cfg.PDFTK_BIN)
-        except PdfFillError as e:
-            return jsonify({"error": str(e)}), 500
-
-        title = schema["_meta"]["title"]
-        subject = body.get("subject") or f"Your {title} from We Insure Things"
-        message = body.get("message") or (
-            f"Attached is your {title}.\n\n— We Insure Things"
-        )
-        try:
-            # OWNER_CC is enforced inside send_form_email regardless of input.
-            sent = send_form_email(
-                to=recipients, subject=subject, body=message,
-                pdf_path=out,
-                pdf_filename=f"ACORD_{schema['_meta']['acord_number']}.pdf",
-                config=cfg,
-            )
-        except EmailError as e:
-            return jsonify({"error": str(e)}), 502
-
-        _record_usage(ctx, form_id)
-        log_submission(
-            db.get_db(), user_id=auth.current_user_id(), form_id=form_id,
-            action="email", answers=ctx["answers"],
-            recipient_emails=",".join(sent["to"]),
-            cc_emails=",".join(sent["cc"]), output_path=str(out),
-        )
-        app.logger.info("email sent form=%s to=%d cc=%d answers=%s",
-                        form_id, len(sent["to"]), len(sent["cc"]),
-                        mask_pii(ctx["answers"]))
-        return jsonify({"ok": True, "to": sent["to"], "cc": sent["cc"]})
-        # Server-side email is intentionally disabled. The Phase 1 flow is:
-        # generate a flattened PDF, download it, and let the user attach/send it
-        # from their own Gmail/Outlook/mail account. Keeping this endpoint as a
-        # download-compatible alias prevents stale UI/API clients from failing.
+        # Server-side email is intentionally disabled in Phase 1 (local-download
+        # model): generate a flattened PDF, download it, and let the user attach
+        # it from their own Gmail/Outlook account. This endpoint is a
+        # download-compatible alias so stale UI/API clients keep working.
         return _action(form_id, "download")
 
     # ---- Field usage (M7) / admin (Phase-2 hook) ----
