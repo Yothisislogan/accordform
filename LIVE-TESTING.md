@@ -26,6 +26,7 @@ Example source files:
 templates/acord/source/ACORD_25.pdf
 templates/acord/source/ACORD_28.pdf
 templates/acord/source/ACORD_35.pdf
+templates/acord/source/ACORD_36.pdf
 templates/acord/source/ACORD_125.pdf
 templates/acord/source/ACORD_126.pdf
 templates/acord/source/ACORD_127.pdf
@@ -45,6 +46,7 @@ Run `tools/prep_template.py` once for each source PDF. The clean output name mus
 python tools/prep_template.py templates/acord/source/ACORD_25.pdf -o templates/acord/ACORD_25_clean.pdf
 python tools/prep_template.py templates/acord/source/ACORD_28.pdf -o templates/acord/ACORD_28_clean.pdf
 python tools/prep_template.py templates/acord/source/ACORD_35.pdf -o templates/acord/ACORD_35_clean.pdf
+python tools/prep_template.py templates/acord/source/ACORD_36.pdf -o templates/acord/ACORD_36_clean.pdf
 python tools/prep_template.py templates/acord/source/ACORD_125.pdf -o templates/acord/ACORD_125_clean.pdf
 python tools/prep_template.py templates/acord/source/ACORD_126.pdf -o templates/acord/ACORD_126_clean.pdf
 python tools/prep_template.py templates/acord/source/ACORD_127.pdf -o templates/acord/ACORD_127_clean.pdf
@@ -128,6 +130,7 @@ ACORD 135 NC
 ACORD 141
 ACORD 28
 ACORD 35
+ACORD 36
 ```
 
 ## 8. Phase 1 pass/fail criteria
