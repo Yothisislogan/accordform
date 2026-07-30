@@ -22,6 +22,7 @@ from flask import (
 import auth
 import db
 from config import load_config
+from gemini_service import GeminiError, generate_proposal
 from forms_catalog import (
     get_form, get_form_schema, search_forms, seed_catalog,
 )
@@ -94,6 +95,10 @@ def _register_routes(app: Flask) -> None:
     def static_files(filename):
         return send_from_directory(STATIC_DIR, filename)
 
+    @app.route("/proposal")
+    def proposal_page():
+        return send_from_directory(STATIC_DIR, "proposal.html")
+
     @app.route("/healthz")
     def healthz():
         return jsonify({"status": "ok", "service": "wit-forms"})
@@ -101,13 +106,31 @@ def _register_routes(app: Flask) -> None:
     @app.route("/api/config")
     @auth.api_login_required
     def api_config():
-        # Non-secret client config. Email is local-download/user-owned email in Phase 1.
+        # Non-secret client config. Email is local-download/user-owned email in
+        # Phase 1. The Gemini API key is server-side only and never sent here.
         return jsonify({
             "owner_cc_email": cfg.OWNER_CC_EMAIL,
             "csrf_token": session.get("csrf"),
             "email_enabled": False,
             "email_mode": "local_download",
+            "proposal_enabled": cfg.gemini_configured(),
         })
+
+    # ---- Insurance proposal generator (Gemini) ----
+    @app.route("/api/proposal/generate", methods=["POST"])
+    @auth.api_login_required
+    def api_proposal_generate():
+        body = request.get_json(silent=True) or {}
+        fields = body.get("fields") or {}
+        try:
+            result = generate_proposal(fields, config=cfg)
+        except GeminiError as e:
+            # 503 when simply unconfigured, 502 when the upstream call failed.
+            code = 503 if not cfg.gemini_configured() else 502
+            return jsonify({"error": str(e)}), code
+        app.logger.info("proposal generated model=%s fields=%s",
+                        result["model"], sorted(fields.keys()))
+        return jsonify(result)
 
     # ---- Catalog + search (M3) ----
     @app.route("/api/forms")

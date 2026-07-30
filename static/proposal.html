@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Proposal Generator — WIT Forms</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="icon" href="/static/assets/favicon.svg" />
+  <style>
+    /* Page-specific layout; all color comes from the brand tokens in styles.css */
+    .prop-grid { display: grid; grid-template-columns: 380px 1fr; gap: 1.2rem; align-items: start; }
+    .prop-form .section-body { grid-template-columns: 1fr; }
+    .out-head { display: flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.1rem;
+                border-bottom: 1px solid var(--border); background: #fafdff;
+                border-left: 3px solid var(--accent); }
+    .out-head h3 { margin: 0; font-size: 1rem; }
+    .out-actions { margin-left: auto; display: flex; gap: 0.4rem; }
+    #code-view { margin: 0; padding: 1rem; max-height: 70vh; overflow: auto;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+                 font-size: 0.8rem; line-height: 1.5; white-space: pre-wrap;
+                 word-break: break-word; color: var(--text); background: var(--surface); }
+    #render-view { width: 100%; height: 70vh; border: 0; background: var(--surface); }
+    .out-placeholder { padding: 3rem 1rem; text-align: center; color: var(--text-muted); }
+    @media (max-width: 900px) { .prop-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="brand-mark sm" aria-hidden="true"></span>
+      <span class="brand-name">WIT Proposal Generator</span>
+    </div>
+    <div class="topbar-right">
+      <a class="btn btn-ghost btn-sm" href="/">&larr; Forms</a>
+      <span id="user-email" class="muted small"></span>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="notice" class="validation-summary hidden" role="alert" aria-live="assertive"></div>
+
+    <div class="prop-grid">
+      <!-- Inputs -->
+      <form id="prop-form" class="section prop-form" autocomplete="off">
+        <div class="section-head"><h3>Proposal details</h3></div>
+        <div class="section-body">
+          <div class="field">
+            <label for="client_name">Client / business name <span class="req">*</span></label>
+            <input id="client_name" name="client_name" type="text" required placeholder="Acme LLC" />
+          </div>
+          <div class="field">
+            <label for="business_type">Business type / operations</label>
+            <input id="business_type" name="business_type" type="text" placeholder="General contractor — residential remodels" />
+          </div>
+          <div class="field">
+            <label for="effective_date">Proposed effective date</label>
+            <input id="effective_date" name="effective_date" type="text" placeholder="MM/DD/YYYY" />
+          </div>
+          <div class="field">
+            <label for="carriers">Carrier(s)</label>
+            <input id="carriers" name="carriers" type="text" placeholder="Travelers, The Hartford" />
+          </div>
+          <div class="field">
+            <label for="coverages">Coverages, limits &amp; deductibles <span class="req">*</span></label>
+            <textarea id="coverages" name="coverages" rows="7" required
+              placeholder="General Liability — $1M each occurrence / $2M aggregate, $1,000 ded.&#10;Commercial Auto — $1M CSL&#10;Workers Comp — statutory, $1M E.L."></textarea>
+          </div>
+          <div class="field">
+            <label for="premium">Premium</label>
+            <input id="premium" name="premium" type="text" placeholder="$12,480 annual" />
+          </div>
+          <div class="field">
+            <label for="notes">Notes, exclusions &amp; conditions</label>
+            <textarea id="notes" name="notes" rows="4" placeholder="Subject to signed application. Excludes work above 3 stories."></textarea>
+          </div>
+          <div class="field">
+            <label for="prepared_by">Prepared by</label>
+            <input id="prepared_by" name="prepared_by" type="text" placeholder="Logan — We Insure Things" />
+          </div>
+        </div>
+        <div style="padding: 0 1.1rem 1.1rem;">
+          <button id="gen-btn" class="btn btn-primary" type="submit">Generate proposal</button>
+        </div>
+      </form>
+
+      <!-- Output: the HTML5 document, with one-click copy -->
+      <section class="section">
+        <div class="out-head">
+          <h3>HTML5 output</h3>
+          <div class="out-actions">
+            <button id="toggle-btn" class="btn btn-ghost btn-sm" type="button" hidden>Preview</button>
+            <button id="copy-btn" class="btn btn-primary btn-sm" type="button" disabled>Copy HTML</button>
+          </div>
+        </div>
+        <div id="out-placeholder" class="out-placeholder">
+          Fill in the details and generate — the HTML5 proposal appears here.
+        </div>
+        <pre id="code-view" class="hidden"><code></code></pre>
+        <iframe id="render-view" class="hidden" title="Proposal preview" sandbox=""></iframe>
+      </section>
+    </div>
+  </main>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script>
+  (() => {
+    "use strict";
+    const $ = (s) => document.querySelector(s);
+    let csrf = "", html = "", showingCode = true;
+
+    function toast(msg, kind = "") {
+      const t = $("#toast");
+      t.textContent = msg;
+      t.className = "toast " + kind;
+      setTimeout(() => t.classList.add("hidden"), 3200);
+    }
+    function notice(msg) {
+      const n = $("#notice");
+      if (!msg) { n.classList.add("hidden"); return; }
+      n.textContent = msg;
+      n.classList.remove("hidden");
+    }
+
+    // Bootstrap: session + CSRF token. The Gemini key stays on the server.
+    (async function boot() {
+      try {
+        const me = await fetch("/auth/me");
+        if (me.status === 401) {
+          notice("Sign in with your @weinsurethings.com account to generate proposals.");
+          $("#gen-btn").disabled = true;
+          return;
+        }
+        $("#user-email").textContent = (await me.json()).email || "";
+        const cfg = await (await fetch("/api/config")).json();
+        csrf = cfg.csrf_token || "";
+        if (!cfg.proposal_enabled) {
+          notice("Gemini isn’t configured yet — set GEMINI_API_KEY on the server.");
+        }
+      } catch (e) { notice("Couldn’t start: " + e.message); }
+    })();
+
+    $("#prop-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fields = {};
+      new FormData(e.target).forEach((v, k) => { if (String(v).trim()) fields[k] = String(v).trim(); });
+      if (!fields.client_name || !fields.coverages) {
+        notice("Client name and coverages are required."); return;
+      }
+      notice("");
+      setBusy(true);
+      try {
+        const res = await fetch("/api/proposal/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "X-CSRF-Token": csrf },
+          body: JSON.stringify({ fields }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) { notice(data.error || `Generation failed (${res.status})`); return; }
+        setOutput(data.html);
+        toast("Proposal generated", "success");
+      } catch (err) { notice(err.message); }
+      finally { setBusy(false); }
+    });
+
+    function setBusy(b) {
+      const btn = $("#gen-btn");
+      btn.disabled = b;
+      btn.textContent = b ? "Generating…" : "Generate proposal";
+    }
+
+    function setOutput(doc) {
+      html = doc || "";
+      $("#out-placeholder").classList.add("hidden");
+      $("#code-view").querySelector("code").textContent = html;  // textContent = no injection
+      $("#copy-btn").disabled = !html;
+      $("#toggle-btn").hidden = !html;
+      showingCode = true;
+      applyView();
+    }
+
+    function applyView() {
+      $("#code-view").classList.toggle("hidden", !showingCode);
+      $("#render-view").classList.toggle("hidden", showingCode);
+      $("#toggle-btn").textContent = showingCode ? "Preview" : "Show HTML";
+      // Preview is sandboxed (no scripts, no same-origin) — it's untrusted output.
+      if (!showingCode) $("#render-view").srcdoc = html;
+    }
+
+    $("#toggle-btn").addEventListener("click", () => { showingCode = !showingCode; applyView(); });
+
+    // One-click copy, with a fallback for non-secure contexts.
+    $("#copy-btn").addEventListener("click", async () => {
+      if (!html) return;
+      try {
+        await navigator.clipboard.writeText(html);
+        toast("HTML copied to clipboard", "success");
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = html;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        ta.remove();
+        toast(ok ? "HTML copied to clipboard" : "Copy failed — select the code and copy manually",
+              ok ? "success" : "error");
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

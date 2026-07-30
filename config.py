@@ -79,6 +79,13 @@ class Config:
 
     SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY", "")  # TODO(logan) if using SendGrid
 
+    # --- Gemini (insurance proposal generator) ---
+    # Server-side only — the key is never sent to the browser.
+    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")  # TODO(logan): supply
+    # Model IDs change over time; override without a code change if needed.
+    GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+    GEMINI_TIMEOUT = int(os.environ.get("GEMINI_TIMEOUT", "60"))
+
     # --- Tooling ---
     PDFTK_BIN = os.environ.get("PDFTK_BIN", "pdftk")
 
@@ -92,6 +99,10 @@ class Config:
         if cls.EMAIL_TRANSPORT == "sendgrid":
             return bool(cls.SENDGRID_API_KEY)
         return bool(cls.SMTP_HOST)
+
+    @classmethod
+    def gemini_configured(cls) -> bool:
+        return bool(cls.GEMINI_API_KEY)
 
 
 def load_config() -> type[Config]:

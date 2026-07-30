@@ -106,6 +106,39 @@ The catalog expects the clean copy at `templates/acord/ACORD_<number>_clean.pdf`
 
 ---
 
+## Proposal generator (Gemini) — `/proposal`
+
+A separate tool from the ACORD filler, sharing the same auth/CSRF/deploy: fill
+in client + coverage details, and Gemini returns a **client-ready HTML5
+proposal in WIT brand colors**, shown as code with a **one-click Copy**
+button (plus a sandboxed Preview toggle).
+
+Two guarantees are enforced in `gemini_service.py`, twice over — once in the
+system instruction, once on the response:
+
+1. **Always HTML5** — one complete self-contained document (inline CSS, no
+   external assets), no markdown fences, no commentary. `clean_html()` strips
+   anything the model wraps around it.
+2. **Always WIT-branded** — the palette is injected into the instruction,
+   including the contrast rule (bright `#00AEEF` for accents only; deep
+   `#007EAE` for headings/links/fills).
+
+It also refuses to invent insurance facts: anything not supplied comes back as
+`TBD`, and every proposal carries a "subject to carrier approval / policy
+language governs" disclaimer.
+
+```bash
+GEMINI_API_KEY=...            # server-side only, never sent to the browser
+GEMINI_MODEL=gemini-2.5-flash # override if the model ID changes
+```
+
+Endpoint: `POST /api/proposal/generate {fields:{...}}` → `{html, model}`.
+Unconfigured returns 503 with a readable message; upstream failures return 502.
+Request shape verified against the Gemini v1beta discovery document
+(`systemInstruction` + `contents` + `generationConfig`, `x-goog-api-key` header).
+
+---
+
 ## Tests
 
 ```bash
