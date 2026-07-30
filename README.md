@@ -106,6 +106,31 @@ The catalog expects the clean copy at `templates/acord/ACORD_<number>_clean.pdf`
 
 ---
 
+## Loss run request — `/loss-run`
+
+One button that produces a **WIT-letterhead PDF** asking a carrier for an
+insured's claims history. Not an ACORD form — there's no licensed template to
+fill, so `loss_run.py` composes the letter with reportlab and the user
+downloads the finished PDF.
+
+Fields: insurance company name*, policy number*, insured name*, insured address
+(street/city/state/ZIP), loss run period from*/to* (defaulted to the last five
+years), requested by, agency phone/email, and free-text notes. `*` = required,
+enforced on both sides; dates must be MM/DD/YYYY.
+
+The letter body is a **deterministic built-in template**, not model-generated —
+it's boilerplate with the operator's values dropped in, and policy numbers and
+date ranges must be reproduced exactly. It works with no API key and no network.
+It asks for open and closed claims with paid/reserved amounts and requests a
+no-loss letter if there were none, and states WIT is agent of record.
+
+Output has no AcroForm layer (text is drawn, not filled), so it is already
+flat — nothing for a recipient to edit. Every generation writes a `submissions`
+audit row with `action='loss_run'` and `form_id=0` (the sentinel for non-ACORD
+output).
+
+---
+
 ## Proposal generator (Gemini) — `/proposal`
 
 A separate tool from the ACORD filler, sharing the same auth/CSRF/deploy: fill

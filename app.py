@@ -22,6 +22,7 @@ from flask import (
 import auth
 import db
 from config import load_config
+import loss_run
 from gemini_service import GeminiError, generate_proposal
 from forms_catalog import (
     get_form, get_form_schema, search_forms, seed_catalog,
@@ -99,6 +100,10 @@ def _register_routes(app: Flask) -> None:
     def proposal_page():
         return send_from_directory(STATIC_DIR, "proposal.html")
 
+    @app.route("/loss-run")
+    def loss_run_page():
+        return send_from_directory(STATIC_DIR, "loss-run.html")
+
     @app.route("/healthz")
     def healthz():
         return jsonify({"status": "ok", "service": "wit-forms"})
@@ -131,6 +136,30 @@ def _register_routes(app: Flask) -> None:
         app.logger.info("proposal generated model=%s fields=%s",
                         result["model"], sorted(fields.keys()))
         return jsonify(result)
+
+    # ---- Loss run request (non-ACORD; generated letter, not a filled template) ----
+    @app.route("/api/loss-run/generate", methods=["POST"])
+    @auth.api_login_required
+    def api_loss_run():
+        fields = (request.get_json(silent=True) or {}).get("fields") or {}
+        errs = loss_run.validate(fields)
+        if errs:
+            return jsonify({"error": "validation failed", "fields": errs}), 422
+        try:
+            pdf_bytes = loss_run.build_pdf(fields)
+        except loss_run.LossRunError as e:
+            return jsonify({"error": str(e)}), 422
+
+        # Audit like any other produced document. form_id 0 == non-ACORD output.
+        out = _output_path(0, "loss_run")
+        out.write_bytes(pdf_bytes)
+        log_submission(
+            db.get_db(), user_id=auth.current_user_id(), form_id=0,
+            action="loss_run", answers=fields, output_path=str(out),
+        )
+        app.logger.info("loss run generated fields=%s", mask_pii(fields))
+        return send_file(out, mimetype="application/pdf", as_attachment=True,
+                         download_name=loss_run.suggested_filename(fields))
 
     # ---- Catalog + search (M3) ----
     @app.route("/api/forms")

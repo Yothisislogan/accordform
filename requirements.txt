@@ -7,6 +7,8 @@
 
 Flask==3.1.3                # web framework / app factory
 pypdf==6.13.3              # AcroForm fill (update_page_form_field_values)
+reportlab==5.0.0           # composes the loss run request PDF from scratch
+                           # (pure-python wheel — no compiler needed on the box)
 cryptography==49.0.0       # required by pypdf for encrypted-PDF handling
 
 # --- Auth (Google OAuth 2.0, domain-restricted) ---

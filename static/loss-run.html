@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Loss Run Request — WIT Forms</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="icon" href="/static/assets/favicon.svg" />
+  <style>
+    .lr-wrap { max-width: 720px; margin: 0 auto; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+    .row3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.9rem; }
+    .lr-actions { display: flex; gap: 0.8rem; align-items: center; padding: 0 1.1rem 1.1rem; }
+    @media (max-width: 620px) { .row2, .row3 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="brand-mark sm" aria-hidden="true"></span>
+      <span class="brand-name">Loss Run Request</span>
+    </div>
+    <div class="topbar-right">
+      <a class="btn btn-ghost btn-sm" href="/">&larr; Forms</a>
+      <span id="user-email" class="muted small"></span>
+    </div>
+  </header>
+
+  <main class="container lr-wrap">
+    <div id="notice" class="validation-summary hidden" role="alert" aria-live="assertive"></div>
+
+    <p class="muted">
+      Generates a WIT-letterhead PDF asking a carrier for the insured’s loss
+      runs. Not an ACORD form — this is our own request letter.
+    </p>
+
+    <form id="lr-form" class="section" autocomplete="off">
+      <div class="section-head"><h3>Request details</h3></div>
+      <div class="section-body" style="grid-template-columns: 1fr;">
+
+        <div class="field" data-field="carrier_name">
+          <label for="carrier_name">Insurance company name <span class="req">*</span></label>
+          <input id="carrier_name" name="carrier_name" type="text" required placeholder="Travelers Indemnity Co." />
+          <div class="field-err"></div>
+        </div>
+
+        <div class="field" data-field="policy_number">
+          <label for="policy_number">Policy number <span class="req">*</span></label>
+          <input id="policy_number" name="policy_number" type="text" required placeholder="GL-1234567" />
+          <div class="field-err"></div>
+        </div>
+
+        <div class="field" data-field="insured_name">
+          <label for="insured_name">Insured name <span class="req">*</span></label>
+          <input id="insured_name" name="insured_name" type="text" required placeholder="Acme LLC" />
+          <div class="field-err"></div>
+        </div>
+
+        <div class="field" data-field="insured_address">
+          <label for="insured_address">Insured address</label>
+          <input id="insured_address" name="insured_address" type="text" placeholder="400 Granby St" />
+          <div class="field-err"></div>
+        </div>
+
+        <div class="row3">
+          <div class="field" data-field="insured_city">
+            <label for="insured_city">City</label>
+            <input id="insured_city" name="insured_city" type="text" placeholder="Norfolk" />
+          </div>
+          <div class="field" data-field="insured_state">
+            <label for="insured_state">State</label>
+            <input id="insured_state" name="insured_state" type="text" maxlength="2" placeholder="VA" />
+          </div>
+          <div class="field" data-field="insured_zip">
+            <label for="insured_zip">ZIP</label>
+            <input id="insured_zip" name="insured_zip" type="text" placeholder="23510" />
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field" data-field="period_from">
+            <label for="period_from">Loss run period — from <span class="req">*</span></label>
+            <input id="period_from" name="period_from" type="text" required placeholder="MM/DD/YYYY" />
+            <div class="field-err"></div>
+          </div>
+          <div class="field" data-field="period_to">
+            <label for="period_to">Loss run period — to <span class="req">*</span></label>
+            <input id="period_to" name="period_to" type="text" required placeholder="MM/DD/YYYY" />
+            <div class="field-err"></div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field" data-field="requested_by">
+            <label for="requested_by">Requested by</label>
+            <input id="requested_by" name="requested_by" type="text" placeholder="Logan Smith" />
+          </div>
+          <div class="field" data-field="agency_phone">
+            <label for="agency_phone">Agency phone</label>
+            <input id="agency_phone" name="agency_phone" type="tel" placeholder="(757) 555-0100" />
+          </div>
+        </div>
+
+        <div class="field" data-field="agency_email">
+          <label for="agency_email">Agency email (where the loss runs should be sent)</label>
+          <input id="agency_email" name="agency_email" type="email" placeholder="service@weinsurethings.com" />
+        </div>
+
+        <div class="field full" data-field="notes">
+          <label for="notes">Additional information</label>
+          <textarea id="notes" name="notes" rows="3" placeholder="Prior policy numbers, other locations, urgency…"></textarea>
+        </div>
+      </div>
+
+      <div class="lr-actions">
+        <button id="gen-btn" class="btn btn-primary" type="submit">Generate PDF</button>
+        <span id="status" class="muted small"></span>
+      </div>
+    </form>
+  </main>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script>
+  (() => {
+    "use strict";
+    const $ = (s) => document.querySelector(s);
+    let csrf = "";
+
+    const toast = (msg, kind = "") => {
+      const t = $("#toast");
+      t.textContent = msg;
+      t.className = "toast " + kind;
+      setTimeout(() => t.classList.add("hidden"), 3200);
+    };
+    const notice = (msg) => {
+      const n = $("#notice");
+      if (!msg) { n.classList.add("hidden"); return; }
+      n.textContent = msg;
+      n.classList.remove("hidden");
+      n.scrollIntoView({ behavior: "smooth", block: "center" });
+    };
+
+    const fmt = (d) => `${String(d.getMonth() + 1).padStart(2, "0")}/${String(d.getDate()).padStart(2, "0")}/${d.getFullYear()}`;
+
+    (async function boot() {
+      // Sensible default window: carriers typically want the last 5 years.
+      const today = new Date();
+      const back = new Date(today.getFullYear() - 5, today.getMonth(), today.getDate());
+      $("#period_from").value = fmt(back);
+      $("#period_to").value = fmt(today);
+      try {
+        const me = await fetch("/auth/me");
+        if (me.status === 401) {
+          notice("Sign in with your @weinsurethings.com account to generate a request.");
+          $("#gen-btn").disabled = true;
+          return;
+        }
+        $("#user-email").textContent = (await me.json()).email || "";
+        csrf = (await (await fetch("/api/config")).json()).csrf_token || "";
+      } catch (e) { notice("Couldn’t start: " + e.message); }
+    })();
+
+    function clearErrors() {
+      document.querySelectorAll(".field.invalid").forEach((f) => f.classList.remove("invalid"));
+      document.querySelectorAll(".field-err").forEach((e) => (e.textContent = ""));
+    }
+
+    function showErrors(fields) {
+      clearErrors();
+      let first = null;
+      (fields || []).forEach((f) => {
+        const el = document.querySelector(`.field[data-field="${f.key}"]`);
+        if (!el) return;
+        el.classList.add("invalid");
+        const slot = el.querySelector(".field-err");
+        if (slot) slot.textContent = f.error;
+        if (!first) first = el;
+      });
+      notice("Please fix the highlighted fields.");
+      if (first) {
+        first.scrollIntoView({ behavior: "smooth", block: "center" });
+        const input = first.querySelector("input, textarea");
+        if (input) setTimeout(() => input.focus({ preventScroll: true }), 250);
+      }
+    }
+
+    $("#lr-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearErrors();
+      notice("");
+      const fields = {};
+      new FormData(e.target).forEach((v, k) => { if (String(v).trim()) fields[k] = String(v).trim(); });
+
+      const btn = $("#gen-btn");
+      btn.disabled = true;
+      btn.textContent = "Generating…";
+      $("#status").textContent = "";
+      try {
+        const res = await fetch("/api/loss-run/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "X-CSRF-Token": csrf },
+          body: JSON.stringify({ fields }),
+        });
+        if (res.status === 422) { showErrors((await res.json()).fields); return; }
+        if (!res.ok) {
+          const d = await res.json().catch(() => ({}));
+          notice(d.error || `Couldn’t generate the PDF (${res.status})`);
+          return;
+        }
+        const blob = await res.blob();
+        const name = (res.headers.get("Content-Disposition") || "").match(/filename="?([^"]+)"?/)?.[1]
+                     || "Loss_Run_Request.pdf";
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = name;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 30000);
+        $("#status").textContent = `Downloaded ${name}`;
+        toast(`Downloaded ${name}`, "success");
+      } catch (err) { notice(err.message); }
+      finally { btn.disabled = false; btn.textContent = "Generate PDF"; }
+    });
+  })();
+  </script>
+</body>
+</html>
