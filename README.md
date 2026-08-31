@@ -131,6 +131,47 @@ output).
 
 ---
 
+## Hedge broker platform — `/hedge`
+
+Push WIT Forms output straight into a **Hedge** submission and follow it through
+to quotes, without leaving the app. Hedge is Taven Tech's broker platform.
+
+**Why direct HTTP:** the endpoint surface and OAuth mechanics are ported from
+the MIT-licensed [`taventech/hedge-cli`](https://github.com/taventech/hedge-cli)
+source — so no Node runtime is needed on the box and it fits the existing Flask
+app. `hedge_service.py` documents every endpoint it uses.
+
+**Auth:** OAuth 2.1 — RFC 8414 discovery, RFC 7591 dynamic client registration,
+RFC 8628 device grant (the browser only ever sees the user code and URL; the
+`device_code` stays server-side in a file so it survives across gunicorn
+workers). The refresh token lives in `DATA_DIR` at `0600` and is never sent to
+the client. Signing in binds the whole agency's session, so it is **admin-only**.
+
+**The workflow** (`/hedge`): create a submission → attach documents → finalize
+to market it → read quotes back. The valuable step is document attachment: pick
+a filled ACORD and it is **filled, flattened and uploaded in one call** — no
+download/re-upload round trip. Loss run requests can be attached the same way.
+
+**Mapping stays data-driven.** `mappings/hedge_submission.json` lists *candidate*
+source keys per Hedge target (first non-empty wins), so one map serves ACORD 125,
+25 and others whose auto-generated key names differ — adding a form means editing
+JSON, never an if-branch. Two Hedge quirks are enforced up front rather than
+discovered as a 422: `mailing_address` is all-or-nothing (line1+city+state+zip),
+and `primary_state` is only sent when there is no complete address. `POST
+/api/hedge/preview-body` shows the CSR exactly what would be sent, and overrides
+from the review screen are merged **before** normalising so filling in a missing
+ZIP actually completes the address.
+
+```bash
+HEDGE_ENV=staging   # start here; switch to prod when you're ready
+```
+
+> Not yet exercised against the live API — `*.hedgespecialty.com` is unreachable
+> from the build environment, so every test uses mocked HTTP. Sign in on
+> **staging** first and walk one submission end to end before using prod.
+
+---
+
 ## Proposal generator (Gemini) — `/proposal`
 
 A separate tool from the ACORD filler, sharing the same auth/CSRF/deploy: fill

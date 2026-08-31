@@ -1,0 +1,54 @@
+{
+  "_meta": {
+    "description": "Maps WIT Forms answer keys to the Hedge submission body. Each target lists CANDIDATE source keys — the first non-empty one wins — so one map serves several ACORD forms whose auto-generated keys differ (125 vs 25, etc.). Adding a form means adding candidates here, never an if-branch in code.",
+    "body_shape_source": "taventech/hedge-cli src/commands/submissions.ts",
+    "rules": [
+      "mailing_address must be complete (line1, city, state, zip) or it is omitted entirely — a partial address is a guaranteed 422.",
+      "primary_state is only sent when there is no complete mailing address, to avoid a conflicting-state 422."
+    ]
+  },
+  "fields": {
+    "applicant.insured_name": {
+      "from": ["namedinsured_fullname_a0", "insured_name", "applicant_name", "firstnamedinsured_fullname_a0"]
+    },
+    "applicant.mailing_address.line1": {
+      "from": ["namedinsured_mailingaddress_lineone_a0", "insured_addr1", "insured_address"]
+    },
+    "applicant.mailing_address.line2": {
+      "from": ["namedinsured_mailingaddress_linetwo_a0", "insured_addr2"]
+    },
+    "applicant.mailing_address.city": {
+      "from": ["namedinsured_mailingaddress_cityname_a0", "insured_city"]
+    },
+    "applicant.mailing_address.state": {
+      "from": ["namedinsured_mailingaddress_stateorprovincecode_a0", "insured_state"],
+      "transform": "state"
+    },
+    "applicant.mailing_address.zip": {
+      "from": ["namedinsured_mailingaddress_postalcode_a0", "insured_zip"]
+    },
+    "applicant.fein_or_ssn": {
+      "from": ["namedinsured_taxidentifier_a0"]
+    },
+    "applicant.business_phone": {
+      "from": ["namedinsured_primary_phonenumber_a0"]
+    },
+    "applicant.website": {
+      "from": ["namedinsured_primary_websiteaddress_a0"]
+    },
+    "applicant.naics": {
+      "from": ["namedinsured_naicscode_a0"],
+      "transform": "digits"
+    },
+    "applicant.entity_type": {
+      "from": ["entity_type"]
+    },
+    "narrative": {
+      "from": ["commercialpolicy_operationsdescription_b0", "description", "businessinformation_businesstype_otherdescription_a0"]
+    },
+    "effective_date": {
+      "from": ["policy_effectivedate_a0", "policy_status_effectivedate_a0", "gl_eff"],
+      "transform": "date_iso"
+    }
+  }
+}

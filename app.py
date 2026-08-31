@@ -22,6 +22,10 @@ from flask import (
 import auth
 import db
 from config import load_config
+from io import BytesIO
+
+import hedge_mapping
+import hedge_service
 import loss_run
 from gemini_service import GeminiError, generate_proposal
 from forms_catalog import (
@@ -104,6 +108,10 @@ def _register_routes(app: Flask) -> None:
     def loss_run_page():
         return send_from_directory(STATIC_DIR, "loss-run.html")
 
+    @app.route("/hedge")
+    def hedge_page():
+        return send_from_directory(STATIC_DIR, "hedge.html")
+
     @app.route("/healthz")
     def healthz():
         return jsonify({"status": "ok", "service": "wit-forms"})
@@ -160,6 +168,193 @@ def _register_routes(app: Flask) -> None:
         app.logger.info("loss run generated fields=%s", mask_pii(fields))
         return send_file(out, mimetype="application/pdf", as_attachment=True,
                          download_name=loss_run.suggested_filename(fields))
+
+    # ---- Hedge broker platform (submit -> market -> quote) ----
+    def _hedge(fn, *a, **kw):
+        """Run a Hedge call, turning failures into readable JSON responses."""
+        try:
+            return jsonify(fn(*a, **kw))
+        except hedge_service.HedgeAuthRequired as e:
+            return jsonify({"error": str(e), "signed_in": False}), 401
+        except hedge_service.HedgeError as e:
+            return jsonify({"error": str(e)}), e.status or 502
+
+    @app.route("/api/hedge/status")
+    @auth.api_login_required
+    def hedge_status():
+        signed_in = hedge_service.is_signed_in(cfg)
+        out = {"signed_in": signed_in, "env": cfg.HEDGE_ENV,
+               "portal": hedge_service.env(cfg)["portal"]}
+        if signed_in:
+            try:
+                out["broker"] = hedge_service.whoami(cfg)
+            except hedge_service.HedgeError as e:
+                out["signed_in"] = False
+                out["error"] = str(e)
+        return jsonify(out)
+
+    # Signing in binds the whole agency's Hedge session — admin only.
+    @app.route("/api/hedge/login/start", methods=["POST"])
+    @auth.admin_required
+    def hedge_login_start():
+        return _hedge(hedge_service.start_device_login, cfg)
+
+    @app.route("/api/hedge/login/poll", methods=["POST"])
+    @auth.admin_required
+    def hedge_login_poll():
+        return _hedge(hedge_service.poll_device_login, cfg)
+
+    @app.route("/api/hedge/logout", methods=["POST"])
+    @auth.admin_required
+    def hedge_logout():
+        hedge_service.clear_token(cfg)
+        return jsonify({"ok": True, "signed_in": False})
+
+    @app.route("/api/hedge/appetite")
+    @auth.api_login_required
+    def hedge_appetite():
+        return _hedge(hedge_service.appetite, request.args.to_dict(), cfg)
+
+    @app.route("/api/hedge/submissions")
+    @auth.api_login_required
+    def hedge_submissions():
+        return _hedge(hedge_service.list_submissions, request.args.to_dict(), cfg)
+
+    @app.route("/api/hedge/submissions/<sid>")
+    @auth.api_login_required
+    def hedge_submission(sid):
+        return _hedge(hedge_service.get_submission, sid, cfg)
+
+    @app.route("/api/hedge/preview-body", methods=["POST"])
+    @auth.api_login_required
+    def hedge_preview_body():
+        """Show the CSR exactly what would be sent, before anything is sent."""
+        body = request.get_json(silent=True) or {}
+        payload = hedge_mapping.build_submission_body(
+            body.get("answers") or {}, overrides=body.get("overrides") or {})
+        return jsonify({
+            "body": payload,
+            "missing": hedge_mapping.missing_required(payload),
+            "address_status": hedge_mapping.address_status(payload),
+        })
+
+    @app.route("/api/hedge/submissions", methods=["POST"])
+    @auth.api_login_required
+    def hedge_create_submission():
+        body = request.get_json(silent=True) or {}
+        payload = body.get("body")
+        if payload is None:
+            # Build it from form answers via the data-driven mapping.
+            payload = hedge_mapping.build_submission_body(
+                body.get("answers") or {}, overrides=body.get("overrides") or {})
+        missing = hedge_mapping.missing_required(payload)
+        if missing:
+            return jsonify({"error": "Hedge needs these before submitting: "
+                                     + ", ".join(missing), "missing": missing}), 422
+        resp = _hedge(hedge_service.create_submission, payload, cfg)
+        if isinstance(resp, tuple):
+            return resp
+        app.logger.info("hedge submission created answers=%s",
+                        mask_pii(body.get("answers") or {}))
+        return resp
+
+    @app.route("/api/hedge/submissions/<sid>/documents", methods=["POST"])
+    @auth.api_login_required
+    def hedge_upload(sid):
+        """Attach a PDF. Either an uploaded file, or — the useful path — a form
+        from this app: fill the ACORD/loss run here and push it straight up."""
+        label = request.form.get("name") or (request.get_json(silent=True) or {}).get("name")
+
+        if "file" in request.files:
+            f = request.files["file"]
+            return _hedge(hedge_service.upload_document, sid, f.read(),
+                          f.filename or "document.pdf", label=label, config=cfg)
+
+        body = request.get_json(silent=True) or {}
+        form_id = body.get("form_id")
+        if form_id:
+            ctx = _prepare_fill(int(form_id))
+            if not isinstance(ctx, dict):
+                return ctx
+            schema = ctx["schema"]
+            out = _output_path(int(form_id), "hedge")
+            try:
+                produce_pdf(schema, ctx["template"], out_path=out,
+                            pdf_data=_fill_data(ctx), flatten=True,
+                            pdftk_bin=cfg.PDFTK_BIN)
+            except PdfFillError as e:
+                return jsonify({"error": str(e)}), 500
+            number = schema["_meta"]["acord_number"]
+            resp = _hedge(hedge_service.upload_document, sid, out.read_bytes(),
+                          f"ACORD_{number}.pdf", label=label or f"ACORD {number}",
+                          config=cfg)
+            if isinstance(resp, tuple):
+                return resp
+            _record_usage(ctx, int(form_id))
+            log_submission(db.get_db(), user_id=auth.current_user_id(),
+                           form_id=int(form_id), action="hedge_upload",
+                           answers=ctx["answers"], output_path=str(out))
+            return resp
+
+        if body.get("loss_run"):
+            fields = body["loss_run"]
+            errs = loss_run.validate(fields)
+            if errs:
+                return jsonify({"error": "validation failed", "fields": errs}), 422
+            pdf_bytes = loss_run.build_pdf(fields)
+            return _hedge(hedge_service.upload_document, sid, pdf_bytes,
+                          loss_run.suggested_filename(fields),
+                          label=label or "Loss run request", config=cfg)
+
+        return jsonify({"error": "provide a file, a form_id, or loss_run fields"}), 400
+
+    @app.route("/api/hedge/submissions/<sid>/requirements")
+    @auth.api_login_required
+    def hedge_requirements(sid):
+        return _hedge(hedge_service.requirements, sid, cfg)
+
+    @app.route("/api/hedge/submissions/<sid>/finalize", methods=["POST"])
+    @auth.api_login_required
+    def hedge_finalize(sid):
+        return _hedge(hedge_service.finalize, sid, cfg)
+
+    @app.route("/api/hedge/submissions/<sid>/quotes")
+    @auth.api_login_required
+    def hedge_quotes(sid):
+        return _hedge(hedge_service.quote_sessions, sid, cfg)
+
+    @app.route("/api/hedge/submissions/<sid>/quotes/<session_id>/answers", methods=["POST"])
+    @auth.api_login_required
+    def hedge_answer(sid, session_id):
+        payload = (request.get_json(silent=True) or {}).get("answers") or {}
+        return _hedge(hedge_service.answer_quote, sid, session_id, payload, cfg)
+
+    @app.route("/api/hedge/submissions/<sid>/quotes/<session_id>/close", methods=["POST"])
+    @auth.api_login_required
+    def hedge_close_quote(sid, session_id):
+        return _hedge(hedge_service.close_quote, sid, session_id, cfg)
+
+    @app.route("/api/hedge/submissions/<sid>/documents", methods=["GET"])
+    @auth.api_login_required
+    def hedge_finalized_docs(sid):
+        return _hedge(hedge_service.finalized_documents, sid, cfg)
+
+    @app.route("/api/hedge/documents/<document_id>/pdf")
+    @auth.api_login_required
+    def hedge_download_doc(document_id):
+        try:
+            content, name = hedge_service.download_finalized(document_id, cfg)
+        except hedge_service.HedgeAuthRequired as e:
+            return jsonify({"error": str(e), "signed_in": False}), 401
+        except hedge_service.HedgeError as e:
+            return jsonify({"error": str(e)}), e.status or 502
+        return send_file(BytesIO(content), mimetype="application/pdf",
+                         as_attachment=True, download_name=name)
+
+    @app.route("/api/hedge/policies")
+    @auth.api_login_required
+    def hedge_policies():
+        return _hedge(hedge_service.list_policies, cfg)
 
     # ---- Catalog + search (M3) ----
     @app.route("/api/forms")

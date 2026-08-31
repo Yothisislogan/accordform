@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hedge — WIT Forms</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="icon" href="/static/assets/favicon.svg" />
+  <style>
+    .steps { display: grid; gap: 1rem; }
+    .step-num { display: inline-grid; place-items: center; width: 22px; height: 22px;
+                border-radius: 50%; background: var(--accent); color: var(--wit-ink);
+                font-size: 0.75rem; font-weight: 800; margin-right: 0.4rem; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+    .inline { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+    pre.payload { margin: 0; padding: 0.9rem; background: var(--bg); border-radius: 8px;
+                  font-size: 0.78rem; line-height: 1.5; max-height: 280px; overflow: auto;
+                  white-space: pre-wrap; word-break: break-word; }
+    .code-badge { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 1.4rem;
+                  font-weight: 800; letter-spacing: 2px; color: var(--primary); }
+    .subs { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.4rem; }
+    .subs li { background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+               padding: 0.6rem 0.8rem; display: flex; gap: 0.8rem; align-items: center; cursor: pointer; }
+    .subs li:hover { border-color: var(--accent); }
+    .pill-status { margin-left: auto; font-size: 0.75rem; font-weight: 700;
+                   background: var(--bg); border-radius: 999px; padding: 0.15rem 0.6rem; }
+    @media (max-width: 620px) { .row2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="brand-mark sm" aria-hidden="true"></span>
+      <span class="brand-name">Hedge submissions</span>
+    </div>
+    <div class="topbar-right">
+      <a class="btn btn-ghost btn-sm" href="/">&larr; Forms</a>
+      <span id="hedge-env" class="badge"></span>
+      <span id="user-email" class="muted small"></span>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="notice" class="validation-summary hidden" role="alert" aria-live="assertive"></div>
+
+    <!-- Step 0: session -->
+    <section class="section">
+      <div class="section-head"><h3>Hedge session</h3>
+        <span id="signed-state" class="prefill-controls muted small"></span>
+      </div>
+      <div class="section-body" style="grid-template-columns:1fr;">
+        <div id="signin-block" class="inline">
+          <button id="signin-btn" class="btn btn-primary btn-sm" type="button">Sign in to Hedge</button>
+          <span class="muted small">Device sign-in — approve in your browser. Admin only; the whole agency shares this session.</span>
+        </div>
+        <div id="device-block" class="hidden">
+          <p>Go to <a id="device-link" href="#" target="_blank" rel="noopener noreferrer"></a> and enter:</p>
+          <p class="code-badge" id="device-code"></p>
+          <p class="muted small" id="device-status">Waiting for approval…</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="steps">
+      <!-- Step 1: create -->
+      <section class="section">
+        <div class="section-head"><h3><span class="step-num">1</span>Create a submission</h3></div>
+        <div class="section-body" style="grid-template-columns:1fr;">
+          <div class="field">
+            <label for="form-select">Pull applicant details from a filled form</label>
+            <select id="form-select"><option value="">— none (enter manually) —</option></select>
+            <div class="field-err"></div>
+          </div>
+          <p class="muted small">
+            Open a form in Forms, fill it, then come back — or type the details below.
+            Nothing is sent until you press Create.
+          </p>
+          <div class="row2">
+            <div class="field">
+              <label for="ov_insured">Insured name <span class="req">*</span></label>
+              <input id="ov_insured" type="text" placeholder="Acme Contracting LLC" />
+            </div>
+            <div class="field">
+              <label for="ov_effective">Effective date</label>
+              <input id="ov_effective" type="text" placeholder="MM/DD/YYYY" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="ov_narrative">Narrative / operations <span class="req">*</span></label>
+            <textarea id="ov_narrative" rows="2" placeholder="Residential remodeling contractor"></textarea>
+          </div>
+          <div class="row2">
+            <div class="field"><label for="ov_line1">Address</label><input id="ov_line1" type="text" /></div>
+            <div class="field"><label for="ov_city">City</label><input id="ov_city" type="text" /></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label for="ov_state">State</label><input id="ov_state" type="text" maxlength="2" /></div>
+            <div class="field"><label for="ov_zip">ZIP</label><input id="ov_zip" type="text" /></div>
+          </div>
+          <div class="inline">
+            <button id="preview-body-btn" class="btn btn-secondary btn-sm" type="button">Review what will be sent</button>
+            <button id="create-btn" class="btn btn-primary btn-sm" type="button">Create submission</button>
+            <span id="addr-note" class="muted small"></span>
+          </div>
+          <pre id="payload" class="payload hidden"></pre>
+        </div>
+      </section>
+
+      <!-- Step 2: documents -->
+      <section class="section">
+        <div class="section-head"><h3><span class="step-num">2</span>Attach documents</h3></div>
+        <div class="section-body" style="grid-template-columns:1fr;">
+          <div class="field">
+            <label for="sub-id">Submission ID</label>
+            <input id="sub-id" type="text" placeholder="filled in after step 1, or paste one" />
+          </div>
+          <div class="inline">
+            <select id="doc-form-select" class="prefill-select"><option value="">— pick a filled form —</option></select>
+            <button id="upload-form-btn" class="btn btn-secondary btn-sm" type="button">Fill &amp; upload that ACORD</button>
+          </div>
+          <div class="inline">
+            <input id="file-input" type="file" accept="application/pdf" />
+            <button id="upload-file-btn" class="btn btn-secondary btn-sm" type="button">Upload PDF</button>
+          </div>
+          <p class="muted small">The ACORD is filled and flattened here, then pushed straight onto the submission — no download/re-upload round trip.</p>
+        </div>
+      </section>
+
+      <!-- Step 3: market -->
+      <section class="section">
+        <div class="section-head"><h3><span class="step-num">3</span>Market it</h3></div>
+        <div class="section-body" style="grid-template-columns:1fr;">
+          <div class="inline">
+            <button id="req-btn" class="btn btn-secondary btn-sm" type="button">Check requirements</button>
+            <button id="finalize-btn" class="btn btn-primary btn-sm" type="button">Finalize &amp; market</button>
+          </div>
+          <p class="muted small">Carrier matching usually completes within about 5 minutes of finalizing.</p>
+          <pre id="req-out" class="payload hidden"></pre>
+        </div>
+      </section>
+
+      <!-- Step 4: quotes -->
+      <section class="section">
+        <div class="section-head"><h3><span class="step-num">4</span>Quotes &amp; documents</h3></div>
+        <div class="section-body" style="grid-template-columns:1fr;">
+          <div class="inline">
+            <button id="quotes-btn" class="btn btn-secondary btn-sm" type="button">Refresh quotes</button>
+            <button id="docs-btn" class="btn btn-secondary btn-sm" type="button">List documents</button>
+          </div>
+          <pre id="quotes-out" class="payload hidden"></pre>
+        </div>
+      </section>
+
+      <!-- Recent -->
+      <section class="section">
+        <div class="section-head"><h3>Recent submissions</h3>
+          <span class="prefill-controls"><button id="refresh-subs" class="btn btn-ghost btn-sm" type="button">Refresh</button></span>
+        </div>
+        <div class="section-body" style="grid-template-columns:1fr;">
+          <ul id="subs" class="subs"></ul>
+          <p id="subs-empty" class="muted small">Sign in to see your submissions.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script>
+  (() => {
+    "use strict";
+    const $ = (s) => document.querySelector(s);
+    let csrf = "", pollTimer = null, formAnswers = {};
+
+    const toast = (m, k = "") => { const t = $("#toast"); t.textContent = m; t.className = "toast " + k;
+                                   setTimeout(() => t.classList.add("hidden"), 3600); };
+    const notice = (m) => { const n = $("#notice");
+      if (!m) { n.classList.add("hidden"); return; }
+      n.textContent = m; n.classList.remove("hidden"); n.scrollIntoView({behavior:"smooth",block:"center"}); };
+    const show = (el, data) => { el.textContent = JSON.stringify(data, null, 2); el.classList.remove("hidden"); };
+
+    async function api(path, opts = {}) {
+      const headers = { ...(opts.headers || {}) };
+      if (opts.body && !(opts.body instanceof FormData)) headers["Content-Type"] = "application/json";
+      if ((opts.method || "GET") !== "GET") headers["X-CSRF-Token"] = csrf;
+      const res = await fetch(path, { ...opts, headers });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `${res.status}`);
+      return data;
+    }
+
+    (async function boot() {
+      try {
+        const me = await fetch("/auth/me");
+        if (me.status === 401) { notice("Sign in with your @weinsurethings.com account."); return; }
+        $("#user-email").textContent = (await me.json()).email || "";
+        csrf = (await (await fetch("/api/config")).json()).csrf_token || "";
+        await refreshStatus();
+        await loadForms();
+      } catch (e) { notice("Couldn’t start: " + e.message); }
+    })();
+
+    async function refreshStatus() {
+      try {
+        const s = await api("/api/hedge/status");
+        $("#hedge-env").textContent = s.env;
+        if (s.signed_in) {
+          const who = s.broker && (s.broker.email || s.broker.name || s.broker.broker_name);
+          $("#signed-state").textContent = "Signed in" + (who ? " — " + who : "");
+          $("#signin-block").classList.add("hidden");
+          loadSubs();
+        } else {
+          $("#signed-state").textContent = "Not signed in";
+          $("#signin-block").classList.remove("hidden");
+        }
+      } catch (e) { $("#signed-state").textContent = "Not signed in"; }
+    }
+
+    // --- device sign-in ---
+    $("#signin-btn").addEventListener("click", async () => {
+      try {
+        const d = await api("/api/hedge/login/start", { method: "POST" });
+        const link = d.verification_uri_complete || d.verification_uri;
+        $("#device-link").textContent = d.verification_uri;
+        $("#device-link").href = link;
+        $("#device-code").textContent = d.user_code;
+        $("#device-block").classList.remove("hidden");
+        window.open(link, "_blank", "noopener");
+        startPolling(Math.max(2, d.interval || 5));
+      } catch (e) { notice(e.message); }
+    });
+
+    function startPolling(seconds) {
+      clearInterval(pollTimer);
+      pollTimer = setInterval(async () => {
+        try {
+          const r = await api("/api/hedge/login/poll", { method: "POST" });
+          if (r.status === "complete") {
+            clearInterval(pollTimer);
+            $("#device-block").classList.add("hidden");
+            toast("Signed in to Hedge", "success");
+            refreshStatus();
+          } else if (r.status === "slow_down") {
+            startPolling((r.interval || seconds) + 1);
+          }
+        } catch (e) { clearInterval(pollTimer); $("#device-status").textContent = e.message; }
+      }, seconds * 1000);
+    }
+
+    // --- forms for prefill / upload ---
+    async function loadForms() {
+      try {
+        const { forms } = await api("/api/forms");
+        for (const sel of [$("#form-select"), $("#doc-form-select")]) {
+          forms.forEach((f) => {
+            const o = document.createElement("option");
+            o.value = f.id; o.textContent = `ACORD ${f.acord_number} — ${f.title}`;
+            sel.appendChild(o);
+          });
+        }
+      } catch {}
+    }
+
+    function overrides() {
+      const map = {
+        "applicant.insured_name": $("#ov_insured").value,
+        "narrative": $("#ov_narrative").value,
+        "effective_date": $("#ov_effective").value,
+        "applicant.mailing_address.line1": $("#ov_line1").value,
+        "applicant.mailing_address.city": $("#ov_city").value,
+        "applicant.mailing_address.state": $("#ov_state").value,
+        "applicant.mailing_address.zip": $("#ov_zip").value,
+      };
+      const out = {};
+      for (const [k, v] of Object.entries(map)) if (String(v || "").trim()) out[k] = v.trim();
+      return out;
+    }
+
+    $("#preview-body-btn").addEventListener("click", async () => {
+      notice("");
+      try {
+        const d = await api("/api/hedge/preview-body", { method: "POST",
+          body: JSON.stringify({ answers: formAnswers, overrides: overrides() }) });
+        show($("#payload"), d.body);
+        $("#addr-note").textContent = d.address_status === "complete"
+          ? "Address complete."
+          : d.address_status === "dropped"
+            ? "Address incomplete — it will be omitted (state kept). Fill line/city/state/ZIP to include it."
+            : "No address supplied.";
+        if (d.missing.length) notice("Hedge still needs: " + d.missing.join(", "));
+      } catch (e) { notice(e.message); }
+    });
+
+    $("#create-btn").addEventListener("click", async () => {
+      notice("");
+      try {
+        const d = await api("/api/hedge/submissions", { method: "POST",
+          body: JSON.stringify({ answers: formAnswers, overrides: overrides() }) });
+        const id = d.submission_id || d.id;
+        if (id) $("#sub-id").value = id;
+        show($("#payload"), d);
+        toast("Submission created" + (id ? " — " + id : ""), "success");
+        loadSubs();
+      } catch (e) { notice(e.message); }
+    });
+
+    // --- documents ---
+    const subId = () => $("#sub-id").value.trim();
+    function needSub() { if (!subId()) { notice("Enter a submission ID first."); return false; } return true; }
+
+    $("#upload-form-btn").addEventListener("click", async () => {
+      if (!needSub()) return;
+      const fid = $("#doc-form-select").value;
+      if (!fid) { notice("Pick a form to fill and upload."); return; }
+      notice("");
+      try {
+        const d = await api(`/api/hedge/submissions/${subId()}/documents`, {
+          method: "POST", body: JSON.stringify({ form_id: Number(fid), answers: formAnswers }) });
+        toast("ACORD uploaded to Hedge", "success");
+        show($("#payload"), d);
+      } catch (e) { notice(e.message); }
+    });
+
+    $("#upload-file-btn").addEventListener("click", async () => {
+      if (!needSub()) return;
+      const f = $("#file-input").files[0];
+      if (!f) { notice("Choose a PDF first."); return; }
+      const fd = new FormData(); fd.append("file", f);
+      try {
+        const d = await api(`/api/hedge/submissions/${subId()}/documents`, { method: "POST", body: fd });
+        toast("Uploaded " + f.name, "success");
+        show($("#payload"), d);
+      } catch (e) { notice(e.message); }
+    });
+
+    // --- market + quotes ---
+    const wire = (sel, fn) => $(sel).addEventListener("click", async () => {
+      if (!needSub()) return;
+      notice("");
+      try { show($(sel === "#quotes-btn" || sel === "#docs-btn" ? "#quotes-out" : "#req-out"), await fn()); }
+      catch (e) { notice(e.message); }
+    });
+    wire("#req-btn", () => api(`/api/hedge/submissions/${subId()}/requirements`));
+    wire("#finalize-btn", () => api(`/api/hedge/submissions/${subId()}/finalize`, { method: "POST" }));
+    wire("#quotes-btn", () => api(`/api/hedge/submissions/${subId()}/quotes`));
+    wire("#docs-btn", () => api(`/api/hedge/submissions/${subId()}/documents`));
+
+    // --- recent submissions ---
+    async function loadSubs() {
+      try {
+        const rows = await api("/api/hedge/submissions");
+        const list = Array.isArray(rows) ? rows : (rows.items || []);
+        const ul = $("#subs"); ul.innerHTML = "";
+        $("#subs-empty").classList.toggle("hidden", list.length > 0);
+        if (!list.length) $("#subs-empty").textContent = "No submissions yet.";
+        list.slice(0, 15).forEach((s) => {
+          const li = document.createElement("li");
+          const id = s.submission_id || s.id || "";
+          li.innerHTML = `<strong>${s.insured_name || "(no insured)"}</strong>
+                          <span class="muted small">${id}</span>
+                          <span class="pill-status">${s.status_label || s.status || ""}</span>`;
+          li.addEventListener("click", () => { $("#sub-id").value = id; toast("Selected " + id); });
+          ul.appendChild(li);
+        });
+      } catch (e) { $("#subs-empty").textContent = e.message; }
+    }
+    $("#refresh-subs").addEventListener("click", loadSubs);
+  })();
+  </script>
+</body>
+</html>

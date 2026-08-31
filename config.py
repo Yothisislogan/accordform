@@ -86,6 +86,13 @@ class Config:
     GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
     GEMINI_TIMEOUT = int(os.environ.get("GEMINI_TIMEOUT", "60"))
 
+    # --- Hedge (Taven Tech broker platform) ---
+    # OAuth 2.1 device flow; no static API key. Tokens live server-side in
+    # DATA_DIR (0600) and are never sent to the browser.
+    HEDGE_ENV = os.environ.get("HEDGE_ENV", "staging").lower()  # 'staging' | 'prod'
+    HEDGE_SCOPES = os.environ.get("HEDGE_SCOPES", "broker_mcp broker_submit")
+    HEDGE_TIMEOUT = int(os.environ.get("HEDGE_TIMEOUT", "60"))
+
     # --- Tooling ---
     PDFTK_BIN = os.environ.get("PDFTK_BIN", "pdftk")
 
