@@ -174,9 +174,89 @@
     if (state.carryOver) { applyCarryOver(state.carryOver); state.carryOver = null; }
     state.dirty = false;
     updateReqCounter();
+    setupAppetitePreflight();
     $("#search-view").classList.add("hidden");
     $("#form-view").classList.remove("hidden");
     window.scrollTo(0, 0);
+  }
+
+  // ---- Hedge appetite pre-flight (schema-flag driven: _meta.hedge_appetite) ----
+  // Before a CSR fills all 500 fields of a commercial app, ask Hedge which
+  // markets actually have appetite for this class of business.
+  function setupAppetitePreflight() {
+    document.getElementById("appetite-btn")?.remove();
+    document.getElementById("appetite-panel")?.remove();
+    if (!state.schema?._meta?.hedge_appetite) return;
+
+    const bar = document.querySelector(".action-bar");
+    const btn = el("button", { id: "appetite-btn", type: "button", class: "btn btn-secondary",
+      title: "Ask Hedge which markets have appetite for this class of business" },
+      "Check Hedge appetite");
+    btn.addEventListener("click", runAppetitePreflight);
+    bar.insertBefore(btn, $("#req-counter"));
+
+    const panel = el("div", { id: "appetite-panel", class: "section hidden" });
+    bar.parentNode.insertBefore(panel, bar.nextSibling);
+  }
+
+  async function runAppetitePreflight() {
+    const btn = $("#appetite-btn"), panel = $("#appetite-panel");
+    btn.disabled = true;
+    btn.textContent = "Checking appetite…";
+    try {
+      const res = await api("/api/hedge/appetite/preflight", {
+        method: "POST", body: JSON.stringify({ answers: collectAnswers() }),
+      });
+      const d = await res.json().catch(() => ({}));
+      panel.classList.remove("hidden");
+      panel.innerHTML = "";
+      if (res.status === 401) {
+        panel.append(appetiteMsg("Not signed in to Hedge — an admin can sign in at ",
+          el("a", { href: "/hedge" }, "the Hedge page"), "."));
+        return;
+      }
+      if (!res.ok) { panel.append(appetiteMsg(d.error || `Appetite check failed (${res.status})`)); return; }
+      renderAppetiteResults(panel, d);
+    } catch (e) {
+      panel.classList.remove("hidden");
+      panel.innerHTML = "";
+      panel.append(appetiteMsg(e.message));
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Check Hedge appetite";
+    }
+  }
+
+  const appetiteMsg = (...kids) =>
+    el("div", { class: "section-body", style: "grid-template-columns:1fr" },
+      el("p", { class: "muted", style: "margin:0" }, ...kids));
+
+  function renderAppetiteResults(panel, d) {
+    const results = Array.isArray(d.results) ? d.results : [];
+    const head = el("div", { class: "section-head" },
+      el("h3", {}, `Hedge appetite — ${results.length} market${results.length === 1 ? "" : "s"}`),
+      el("span", { class: "prefill-controls muted small" },
+        `“${d.params?.q ?? ""}”` + (d.params?.state ? ` · ${d.params.state}` : "")));
+    panel.append(head);
+    if (!results.length) {
+      panel.append(appetiteMsg("No markets matched this class. Refine the description of operations, or submit anyway — Hedge re-matches after finalize."));
+      return;
+    }
+    const body = el("div", { class: "section-body", style: "grid-template-columns:1fr" });
+    const table = el("table", { class: "insurer-table" });
+    table.append(el("tr", {}, el("th", {}, "Market"), el("th", {}, "Lines"),
+                 el("th", {}, "Programs"), el("th", {}, "Turnaround")));
+    for (const m of results) {
+      const lines = (m.lines || []).map((l) => l.slug ?? l).join(", ");
+      const hours = m.turnaround?.median_hours;
+      table.append(el("tr", {},
+        el("td", {}, el("strong", {}, m.name || "")),
+        el("td", {}, lines),
+        el("td", {}, (m.matched_program_names || []).join("; ")),
+        el("td", {}, hours != null ? `${Math.round(hours)}h median` : "")));
+    }
+    body.append(table);
+    panel.append(body);
   }
 
   function renderForm() {

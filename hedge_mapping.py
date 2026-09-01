@@ -149,6 +149,29 @@ def missing_required(body: dict) -> list[str]:
     return missing
 
 
+def appetite_params(answers: dict, *, overrides: dict | None = None) -> dict:
+    """Derive the /broker/appetite query from form answers.
+
+    The endpoint takes q (free-text class description), state, and an optional
+    lob slug. Reuses the submission mapping, so the narrative/state candidates
+    live in one place: adding a form still means editing the JSON map only.
+    Returns {} when there is no usable class description.
+    """
+    body = build_submission_body(answers, overrides=overrides)
+    q = str(body.get("narrative") or "").strip()
+    if not q:
+        return {}
+    params = {"q": q[:200]}       # a class description, not the whole application
+    addr = (body.get("applicant") or {}).get("mailing_address") or {}
+    state = addr.get("state") or body.get("primary_state")
+    if state:
+        params["state"] = state
+    lobs = body.get("lines_of_business") or []
+    if lobs:
+        params["lob"] = lobs[0]
+    return params
+
+
 def address_status(body: dict) -> str:
     """'complete' | 'dropped' | 'absent' — so the UI can explain itself."""
     addr = (body.get("applicant") or {}).get("mailing_address")

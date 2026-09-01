@@ -98,6 +98,8 @@
             <div class="field"><label for="ov_zip">ZIP</label><input id="ov_zip" type="text" /></div>
           </div>
           <div class="inline">
+            <button id="appetite-btn" class="btn btn-secondary btn-sm" type="button"
+                    title="Which markets have appetite for this class of business">Check appetite</button>
             <button id="preview-body-btn" class="btn btn-secondary btn-sm" type="button">Review what will be sent</button>
             <button id="create-btn" class="btn btn-primary btn-sm" type="button">Create submission</button>
             <span id="addr-note" class="muted small"></span>
@@ -275,6 +277,23 @@
       for (const [k, v] of Object.entries(map)) if (String(v || "").trim()) out[k] = v.trim();
       return out;
     }
+
+    $("#appetite-btn").addEventListener("click", async () => {
+      notice("");
+      const btn = $("#appetite-btn");
+      btn.disabled = true; btn.textContent = "Checking…";
+      try {
+        const d = await api("/api/hedge/appetite/preflight", { method: "POST",
+          body: JSON.stringify({ answers: formAnswers, overrides: overrides() }) });
+        const n = (d.results || []).length;
+        show($("#payload"), d.results);
+        toast(n ? `${n} market${n === 1 ? " has" : "s have"} appetite` : "No matching markets",
+              n ? "success" : "");
+        $("#addr-note").textContent = `Appetite for “${d.params.q}”` +
+          (d.params.state ? ` in ${d.params.state}` : "");
+      } catch (e) { notice(e.message); }
+      finally { btn.disabled = false; btn.textContent = "Check appetite"; }
+    });
 
     $("#preview-body-btn").addEventListener("click", async () => {
       notice("");

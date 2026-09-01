@@ -215,6 +215,24 @@ def _register_routes(app: Flask) -> None:
     def hedge_appetite():
         return _hedge(hedge_service.appetite, request.args.to_dict(), cfg)
 
+    @app.route("/api/hedge/appetite/preflight", methods=["POST"])
+    @auth.api_login_required
+    def hedge_appetite_preflight():
+        """Pre-flight from form answers: derive the class/state via the mapping
+        and ask which markets have appetite BEFORE a submission is created."""
+        body = request.get_json(silent=True) or {}
+        params = hedge_mapping.appetite_params(
+            body.get("answers") or {}, overrides=body.get("overrides") or {})
+        if not params:
+            return jsonify({"error": "Add a description of operations first — "
+                                     "appetite is matched on the class of business."}), 422
+        resp = _hedge(hedge_service.appetite, params, cfg)
+        if isinstance(resp, tuple):
+            return resp
+        data = resp.get_json()
+        return jsonify({"params": params,
+                        "results": (data or {}).get("results", data or [])})
+
     @app.route("/api/hedge/submissions")
     @auth.api_login_required
     def hedge_submissions():

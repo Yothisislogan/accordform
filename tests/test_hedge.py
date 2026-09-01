@@ -413,3 +413,60 @@ def test_no_token_ever_reaches_the_client(app):
     payload = c.get("/api/hedge/status").get_data(as_text=True)
     for leak in ("access_token", "refresh_token", "device_code"):
         assert leak not in payload
+
+
+# --------------------------------------------------------------------------
+# Appetite pre-flight
+# --------------------------------------------------------------------------
+def test_appetite_params_derive_from_answers():
+    from hedge_mapping import appetite_params
+
+    p = appetite_params(ACORD_125)
+    assert p["q"] == "Residential remodeling"
+    assert p["state"] == "VA"          # from the mailing address
+    assert "lob" not in p
+
+    # State also comes from primary_state when the address is incomplete.
+    partial = dict(ACORD_125)
+    del partial["namedinsured_mailingaddress_postalcode_a0"]
+    assert appetite_params(partial)["state"] == "VA"
+
+    # No narrative -> no usable query.
+    assert appetite_params({"insured_name": "Acme"}) == {}
+
+    # Overrides can supply the narrative; long ones are capped at 200 chars.
+    p = appetite_params({}, overrides={"narrative": "x" * 500,
+                                       "applicant.insured_name": "A"})
+    assert len(p["q"]) == 200
+
+
+def test_appetite_endpoint_passes_query_params(hedge):
+    _signed_in(hedge)
+    hedge._fake.handlers = {"/broker/appetite": FakeResp(200, {"results": []})}
+    hedge.appetite({"q": "roofing contractor", "state": "VA"})
+    method, url, kw = hedge._calls[-1]
+    assert url.endswith("/broker/appetite")
+    assert kw["params"] == {"q": "roofing contractor", "state": "VA"}
+
+
+def test_preflight_route_requires_narrative(app):
+    c, h = _client(app)
+    r = c.post("/api/hedge/appetite/preflight",
+               json={"answers": {"insured_name": "Acme"}}, headers=h)
+    assert r.status_code == 422
+    assert "description of operations" in r.get_json()["error"]
+
+
+def test_preflight_route_signed_out_is_401_not_500(app):
+    c, h = _client(app)
+    r = c.post("/api/hedge/appetite/preflight",
+               json={"answers": ACORD_125}, headers=h)
+    assert r.status_code == 401
+    assert r.get_json()["signed_in"] is False
+
+
+def test_acord_125_schema_carries_the_appetite_flag():
+    """The pre-flight button is schema-driven (hard rule #7), not an if-branch."""
+    import json
+    meta = json.loads((ROOT / "schemas" / "acord_125.json").read_text())["_meta"]
+    assert meta.get("hedge_appetite") is True
