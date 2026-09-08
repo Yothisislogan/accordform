@@ -184,6 +184,7 @@ def _register_routes(app: Flask) -> None:
     def hedge_status():
         signed_in = hedge_service.is_signed_in(cfg)
         out = {"signed_in": signed_in, "env": cfg.HEDGE_ENV,
+               "auth_mode": hedge_service.auth_mode(cfg),
                "portal": hedge_service.env(cfg)["portal"]}
         if signed_in:
             try:
@@ -269,6 +270,12 @@ def _register_routes(app: Flask) -> None:
         if missing:
             return jsonify({"error": "Hedge needs these before submitting: "
                                      + ", ".join(missing), "missing": missing}), 422
+        # Brokerage API-client credentials require attributing the producing
+        # broker. Default to the WIT user who is creating the submission; an
+        # explicit producer_email in the payload/overrides wins.
+        if (hedge_service.auth_mode(cfg) == "api_key"
+                and not payload.get("producer_email")):
+            payload["producer_email"] = session.get("email")
         resp = _hedge(hedge_service.create_submission, payload, cfg)
         if isinstance(resp, tuple):
             return resp

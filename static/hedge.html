@@ -208,7 +208,9 @@
         $("#hedge-env").textContent = s.env;
         if (s.signed_in) {
           const who = s.broker && (s.broker.email || s.broker.name || s.broker.broker_name);
-          $("#signed-state").textContent = "Signed in" + (who ? " — " + who : "");
+          $("#signed-state").textContent =
+            (s.auth_mode === "api_key" ? "API key configured" : "Signed in") +
+            (who ? " — " + who : "");
           $("#signin-block").classList.add("hidden");
           loadSubs();
         } else {

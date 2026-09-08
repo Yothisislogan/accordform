@@ -470,3 +470,112 @@ def test_acord_125_schema_carries_the_appetite_flag():
     import json
     meta = json.loads((ROOT / "schemas" / "acord_125.json").read_text())["_meta"]
     assert meta.get("hedge_appetite") is True
+
+
+# --------------------------------------------------------------------------
+# Static API-key mode (brokerage API-client credential)
+# --------------------------------------------------------------------------
+def _key_mode(hedge, monkeypatch, key="hk-test-123", header=None):
+    import config
+    monkeypatch.setattr(config.Config, "HEDGE_API_KEY", key)
+    if header:
+        monkeypatch.setattr(config.Config, "HEDGE_API_KEY_HEADER", header)
+
+
+def test_api_key_mode_detected(hedge, monkeypatch):
+    assert hedge.auth_mode() == "oauth"
+    _key_mode(hedge, monkeypatch)
+    assert hedge.auth_mode() == "api_key"
+    assert hedge.is_signed_in()          # no token file needed
+
+
+def test_api_key_sent_on_all_three_transports(hedge, monkeypatch):
+    _key_mode(hedge, monkeypatch)
+    hedge._fake.handlers = {"/broker": FakeResp(200, {}, content=b"{}")}
+
+    hedge.whoami()                                        # JSON request
+    hedge.upload_document("s1", b"%PDF-1.4", "a.pdf")     # multipart
+    hedge.download("/broker/finalized-documents/d1/pdf")  # binary
+
+    for method, url, kw in hedge._calls:
+        headers = kw.get("headers") or {}
+        assert headers.get("X-Api-Key") == "hk-test-123", (method, url, headers)
+        assert "Authorization" not in headers             # key REPLACES bearer
+    # And no OAuth endpoints were ever touched.
+    assert not any("/oauth" in u or "well-known" in u for _, u, _kw in hedge._calls)
+
+
+def test_api_key_custom_header_name(hedge, monkeypatch):
+    _key_mode(hedge, monkeypatch, header="X-Org-Key")
+    hedge._fake.handlers = {"/broker/me": FakeResp(200, {}, content=b"{}")}
+    hedge.whoami()
+    assert hedge._calls[-1][2]["headers"]["X-Org-Key"] == "hk-test-123"
+
+
+def test_device_login_short_circuits_in_key_mode(hedge, monkeypatch):
+    _key_mode(hedge, monkeypatch)
+    with pytest.raises(hedge.HedgeError, match="no sign-in is needed"):
+        hedge.start_device_login()
+    assert hedge._calls == []            # nothing hit the network
+
+
+def test_key_wins_over_stale_token_file(hedge, monkeypatch):
+    hedge.save_token({"access_token": "stale", "refresh_token": "stale",
+                      "expires_at": 0, "token_endpoint": "t", "client_id": "c"})
+    _key_mode(hedge, monkeypatch)
+    hedge._fake.handlers = {"/broker/me": FakeResp(200, {}, content=b"{}")}
+    hedge.whoami()                       # would raise/refresh in oauth mode
+    assert hedge._calls[-1][2]["headers"]["X-Api-Key"] == "hk-test-123"
+
+
+def test_create_submission_route_attributes_producer_in_key_mode(app, monkeypatch):
+    import config
+    import hedge_service
+    monkeypatch.setattr(config.Config, "HEDGE_API_KEY", "hk-test-123")
+    sent = {}
+
+    def fake_create(body, cfg):
+        sent.update(body)
+        return {"submission_id": "sub-1"}
+    monkeypatch.setattr(hedge_service, "create_submission", fake_create)
+
+    c, h = _client(app)
+    r = c.post("/api/hedge/submissions", json={"answers": ACORD_125}, headers=h)
+    assert r.status_code == 200
+    # The signed-in WIT user is attributed as the producing broker.
+    assert sent["producer_email"] == "logan@weinsurethings.com"
+
+    # An explicit producer_email in the overrides wins.
+    sent.clear()
+    r = c.post("/api/hedge/submissions",
+               json={"answers": ACORD_125,
+                     "overrides": {"producer_email": "other@weinsurethings.com"}},
+               headers=h)
+    assert sent["producer_email"] == "other@weinsurethings.com"
+
+
+def test_no_producer_injection_in_oauth_mode(app, monkeypatch):
+    import hedge_service
+    sent = {}
+
+    def fake_create(body, cfg):
+        sent.update(body)
+        return {"submission_id": "sub-1"}
+    monkeypatch.setattr(hedge_service, "create_submission", fake_create)
+
+    c, h = _client(app)
+    c.post("/api/hedge/submissions", json={"answers": ACORD_125}, headers=h)
+    assert "producer_email" not in sent
+
+
+def test_status_reports_auth_mode(app, monkeypatch):
+    import config
+    import hedge_service
+    monkeypatch.setattr(config.Config, "HEDGE_API_KEY", "hk-test-123")
+    monkeypatch.setattr(hedge_service, "whoami", lambda cfg: {"name": "WIT"})
+    c, h = _client(app)
+    body = c.get("/api/hedge/status").get_json()
+    assert body["auth_mode"] == "api_key"
+    assert body["signed_in"] is True
+    # The key itself never appears in any response.
+    assert "hk-test-123" not in json.dumps(body)

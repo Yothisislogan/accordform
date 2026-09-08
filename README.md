@@ -49,10 +49,9 @@ field-usage analytics, and the audit snapshot. The SPA sends both; a flat-map-
 only POST also works (the contract's acceptance test). See
 `pdf_fill.build_full_field_name` / `flat_map_to_pdf_data`.
 
-**Final actions:** Preview, Download, Print, **Use my email** (local download —
-attach from your own client, no server send) and **Send via server…**
-(server-side email with the owner address always CC'd). Both are kept; every
-download/print/email writes an audit row.
+**Final actions:** Preview, Download, Print, and **Use my email** (local
+download — attach from your own client; server-side email is intentionally
+disabled in Phase 1). Every download/print writes an audit row.
 
 ### The verified PDF pipeline (do not redesign)
 
@@ -141,11 +140,22 @@ the MIT-licensed [`taventech/hedge-cli`](https://github.com/taventech/hedge-cli)
 source — so no Node runtime is needed on the box and it fits the existing Flask
 app. `hedge_service.py` documents every endpoint it uses.
 
-**Auth:** OAuth 2.1 — RFC 8414 discovery, RFC 7591 dynamic client registration,
-RFC 8628 device grant (the browser only ever sees the user code and URL; the
-`device_code` stays server-side in a file so it survives across gunicorn
-workers). The refresh token lives in `DATA_DIR` at `0600` and is never sent to
-the client. Signing in binds the whole agency's session, so it is **admin-only**.
+**Auth — two modes:**
+
+* **API key** (brokerage API-client credential): set `HEDGE_API_KEY` and it is
+  sent as `X-Api-Key` (header name overridable via `HEDGE_API_KEY_HEADER`) on
+  every call; OAuth sign-in is skipped entirely. With API-client credentials
+  Hedge requires attributing the producing broker, so each submission carries
+  `producer_email` = the signed-in WIT user (overridable per submission). The
+  header-name contract comes from the hedge-cli shared client; if the first
+  live call returns 401, confirm the header name with Hedge or fall back to
+  device sign-in below.
+* **OAuth 2.1 device sign-in** (when no key is set): RFC 8414 discovery,
+  RFC 7591 dynamic client registration, RFC 8628 device grant (the browser only
+  ever sees the user code and URL; the `device_code` stays server-side in a
+  file so it survives across gunicorn workers). The refresh token lives in
+  `DATA_DIR` at `0600` and is never sent to the client. Signing in binds the
+  whole agency's session, so it is **admin-only**.
 
 **The workflow** (`/hedge`): create a submission → attach documents → finalize
 to market it → read quotes back. The valuable step is document attachment: pick

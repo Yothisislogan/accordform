@@ -178,6 +178,8 @@ def start_device_login(config: type[Config] = Config) -> dict:
     The device_code is kept server-side (a file, so it survives across gunicorn
     workers); the browser only ever sees the user-facing code and URL.
     """
+    if auth_mode(config) == "api_key":
+        raise HedgeError("An API key is configured — no sign-in is needed.")
     meta = discover(config)
     client_id = register_client(meta, config)
     endpoint = meta.get("device_authorization_endpoint")
@@ -279,7 +281,25 @@ def bearer(config: type[Config] = Config) -> str:
     return _persist(body, tok["client_id"], tok["token_endpoint"], config)["access_token"]
 
 
+def auth_mode(config: type[Config] = Config) -> str:
+    """'api_key' when a static brokerage credential is configured, else 'oauth'.
+
+    The key wins when both exist: it is the deliberate, server-configured
+    credential, while a stray token file may be stale.
+    """
+    return "api_key" if (getattr(config, "HEDGE_API_KEY", "") or "").strip() else "oauth"
+
+
+def _auth_headers(config: type[Config] = Config) -> dict:
+    """The credential header for a call — X-Api-Key or a (refreshed) Bearer."""
+    if auth_mode(config) == "api_key":
+        return {config.HEDGE_API_KEY_HEADER: config.HEDGE_API_KEY.strip()}
+    return {"Authorization": f"Bearer {bearer(config)}"}
+
+
 def is_signed_in(config: type[Config] = Config) -> bool:
+    if auth_mode(config) == "api_key":
+        return True
     tok = load_token(config)
     return bool(tok and (tok.get("refresh_token") or
                          tok.get("expires_at", 0) > int(time.time())))
@@ -331,15 +351,13 @@ def request(method: str, path: str, *, params: dict | None = None,
             json_body: dict | None = None, config: type[Config] = Config):
     """Authenticated JSON call against the Hedge broker API."""
     url = env(config)["api_base"] + path
-    # Resolve the token OUTSIDE the try: an expired session is an auth problem,
-    # and must surface as HedgeAuthRequired rather than "could not reach Hedge".
-    token = bearer(config)
+    # Resolve credentials OUTSIDE the try: an expired session is an auth
+    # problem, and must surface as HedgeAuthRequired, not "could not reach".
+    headers = {**_auth_headers(config), "Accept": "application/json"}
     try:
         resp = requests.request(
             method, url, params=params, json=json_body,
-            headers={"Authorization": f"Bearer {token}",
-                     "Accept": "application/json"},
-            timeout=config.HEDGE_TIMEOUT)
+            headers=headers, timeout=config.HEDGE_TIMEOUT)
     except requests.RequestException as e:
         raise HedgeError(f"Could not reach Hedge: {e}") from e
     _raise_for_status(resp, f"Hedge error {resp.status_code}")
@@ -360,10 +378,9 @@ def upload_document(submission_id: str, pdf_bytes: bytes, filename: str,
     url = f"{env(config)['api_base']}/broker/submissions/{submission_id}/documents"
     files = {"file": (filename, pdf_bytes, "application/pdf")}
     data = {"name": label} if label else None
-    token = bearer(config)          # auth errors before network errors
+    headers = _auth_headers(config)  # auth errors before network errors
     try:
-        resp = requests.post(url, files=files, data=data,
-                             headers={"Authorization": f"Bearer {token}"},
+        resp = requests.post(url, files=files, data=data, headers=headers,
                              timeout=config.HEDGE_TIMEOUT)
     except requests.RequestException as e:
         raise HedgeError(f"Could not upload to Hedge: {e}") from e
@@ -377,9 +394,9 @@ def upload_document(submission_id: str, pdf_bytes: bytes, filename: str,
 def download(path: str, config: type[Config] = Config) -> tuple[bytes, str]:
     """GET a binary document. Returns (bytes, filename)."""
     url = env(config)["api_base"] + path
-    token = bearer(config)          # auth errors before network errors
+    headers = _auth_headers(config)  # auth errors before network errors
     try:
-        resp = requests.get(url, headers={"Authorization": f"Bearer {token}"},
+        resp = requests.get(url, headers=headers,
                             timeout=config.HEDGE_TIMEOUT)
     except requests.RequestException as e:
         raise HedgeError(f"Could not reach Hedge: {e}") from e
