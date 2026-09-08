@@ -1,0 +1,34 @@
+{
+  "_meta": {
+    "confirmed": false,
+    "instructions": [
+      "This file declares WHERE things live inside Hedge's public feeds — it is",
+      "the only place feed field names are written down. It ships UNCONFIRMED",
+      "because the build environment cannot reach hedgespecialty.com.",
+      "Ops pass: run `python tools/fetch_hedge_feeds.py`, open the captured",
+      "files in hedge/fixtures/, copy the real field names in here, and flip",
+      "confirmed to true. Until then the UI renders feeds verbatim-raw with a",
+      "text filter (still correct, just less tailored) and the adapter returns",
+      "None instead of guessing.",
+      "entries_path: dotted path to the list of entries ('' if the document",
+      "root is already the list). *_key: field name inside one entry."
+    ]
+  },
+  "appetite.json": {
+    "entries_path": null,
+    "class_key": null,
+    "state_key": null,
+    "verdict_key": null,
+    "conditions_key": null,
+    "uncertainty_key": null
+  },
+  "commercial-insurance-submission-checklist.json": {
+    "entries_path": null,
+    "item_key": null
+  },
+  "submission-requirements.json": {
+    "entries_path": null,
+    "class_key": null,
+    "items_key": null
+  }
+}

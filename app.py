@@ -63,6 +63,12 @@ def create_app(config=None) -> Flask:
 
     _register_security(app)
     _register_routes(app)
+
+    # Background remote-state poller (Phase 2). Only worth a thread when live
+    # writes are enabled; the loop itself also no-ops while signed out.
+    if getattr(cfg, "HEDGE_LIVE", False):
+        from hedge import api_client as _hedge_pipeline
+        _hedge_pipeline.start_poller(app, config=cfg)
     return app
 
 
@@ -111,6 +117,10 @@ def _register_routes(app: Flask) -> None:
     @app.route("/hedge")
     def hedge_page():
         return send_from_directory(STATIC_DIR, "hedge.html")
+
+    @app.route("/appetite")
+    def appetite_page():
+        return send_from_directory(STATIC_DIR, "appetite.html")
 
     @app.route("/healthz")
     def healthz():
@@ -168,6 +178,190 @@ def _register_routes(app: Flask) -> None:
         app.logger.info("loss run generated fields=%s", mask_pii(fields))
         return send_file(out, mimetype="application/pdf", as_attachment=True,
                          download_name=loss_run.suggested_filename(fields))
+
+    # ---- Hedge Phase 1: public feeds (no Hedge account required) ----
+    @app.route("/api/hedge/public/feed/<name>")
+    @auth.api_login_required
+    def hedge_public_feed(name):
+        from hedge import public_client
+        try:
+            res = public_client.get_feed(name, cfg,
+                                         force=request.args.get("force") == "1")
+        except ValueError as e:
+            return jsonify({"error": str(e)}), 404
+        return jsonify(dict(res))
+
+    @app.route("/api/hedge/public/appetite")
+    @auth.api_login_required
+    def hedge_public_appetite():
+        """Published appetite, VERBATIM. Directional only — never account
+        approval; 'review case by case' is never softened to yes."""
+        from hedge import feed_adapter, public_client
+        klass = request.args.get("class", "")
+        state = request.args.get("state", "")
+        feed = public_client.get_feed("appetite.json", cfg)
+        entries = (feed_adapter.appetite_entries(feed["data"], klass=klass,
+                                                 state=state)
+                   if feed["data"] is not None else None)
+        return jsonify({
+            "disclaimer": ("Directional — published appetite only. Confirmed "
+                           "only after Hedge review; never account approval."),
+            "source": feed["source"], "warning": feed["warning"],
+            "map_confirmed": entries is not None,
+            "entries": entries,                       # verbatim rows, or null
+            "raw": feed["data"] if entries is None else None,
+            "classes": feed_adapter.appetite_classes(feed["data"])
+                       if feed["data"] is not None else None,
+        })
+
+    @app.route("/api/hedge/public/checklist")
+    @auth.api_login_required
+    def hedge_public_checklist():
+        """Submission-prep checklist cross-referenced against what WIT Forms
+        already generated for this client (the concrete gap list)."""
+        from hedge import artifacts, feed_adapter, public_client
+        client_ref = request.args.get("client", "")
+        feed = public_client.get_feed(
+            "commercial-insurance-submission-checklist.json", cfg)
+        items = (feed_adapter.checklist_items(feed["data"])
+                 if feed["data"] is not None else None)
+        have = artifacts.artifacts_for_client(db.get_db(), client_ref)
+        out = {
+            "source": feed["source"], "warning": feed["warning"],
+            "map_confirmed": items is not None,
+            "raw": feed["data"] if items is None else None,
+            "artifacts": have,
+        }
+        if items is not None:
+            out["gap"] = feed_adapter.gap_list(items, set(have["acords"]),
+                                               have["loss_runs"])
+        return jsonify(out)
+
+    # ---- Hedge Phase 2: submission pipeline (behind HEDGE_LIVE) ----
+    from hedge import api_client as hedge_pipeline
+
+    def _pipe(fn, *a, **kw):
+        try:
+            return jsonify(fn(*a, **kw))
+        except hedge_pipeline.PipelineError as e:
+            return jsonify({"error": str(e)}), e.status
+        except hedge_service.HedgeAuthRequired as e:
+            return jsonify({"error": str(e), "signed_in": False}), 401
+        except hedge_service.HedgeError as e:
+            return jsonify({"error": f"Hedge returned: {e}"}), e.status or 502
+
+    @app.route("/api/hedge/pipeline")
+    @auth.api_login_required
+    def hedge_pipe_list():
+        return jsonify({"submissions": hedge_pipeline.list_local(db.get_db())})
+
+    @app.route("/api/hedge/pipeline", methods=["POST"])
+    @auth.api_login_required
+    def hedge_pipe_create():
+        body = request.get_json(silent=True) or {}
+        payload = body.get("body")
+        if payload is None:
+            payload = hedge_mapping.build_submission_body(
+                body.get("answers") or {}, overrides=body.get("overrides") or {})
+        missing = hedge_mapping.missing_required(payload)
+        if missing:
+            return jsonify({"error": "Hedge needs these before submitting: "
+                                     + ", ".join(missing), "missing": missing}), 422
+        if (hedge_service.auth_mode(cfg) == "api_key"
+                and not payload.get("producer_email")):
+            payload["producer_email"] = session.get("email")
+        return _pipe(hedge_pipeline.create_draft, db.get_db(),
+                     client_ref=body.get("client_ref")
+                     or (payload.get("applicant") or {}).get("insured_name", ""),
+                     payload=payload,
+                     class_desc=str(payload.get("narrative", ""))[:200],
+                     state_code=(payload.get("applicant") or {})
+                                .get("mailing_address", {}).get("state")
+                                or payload.get("primary_state", ""),
+                     lines=payload.get("lines_of_business") or [],
+                     effective_date=payload.get("effective_date", ""),
+                     actor=session.get("email", ""))
+
+    @app.route("/api/hedge/pipeline/<int:lid>")
+    @auth.api_login_required
+    def hedge_pipe_get(lid):
+        def build():
+            row = hedge_pipeline.public_row(hedge_pipeline.get_local(db.get_db(), lid))
+            row["docs"] = hedge_pipeline.docs_for(db.get_db(), lid)
+            row["events"] = hedge_pipeline.events_for(db.get_db(), lid)
+            return row
+        return _pipe(build)
+
+    @app.route("/api/hedge/pipeline/<int:lid>/send", methods=["POST"])
+    @auth.api_login_required
+    def hedge_pipe_send(lid):
+        return _pipe(hedge_pipeline.send_create, db.get_db(), lid,
+                     actor=session.get("email", ""), config=cfg)
+
+    @app.route("/api/hedge/pipeline/<int:lid>/docs", methods=["POST"])
+    @auth.api_login_required
+    def hedge_pipe_docs(lid):
+        body = request.get_json(silent=True) or {}
+        if "file" in request.files:
+            f = request.files["file"]
+            return _pipe(hedge_pipeline.upload_doc, db.get_db(), lid,
+                         source="upload", filename=f.filename or "document.pdf",
+                         pdf_bytes=f.read(), actor=session.get("email", ""),
+                         config=cfg)
+        form_id = body.get("form_id")
+        if form_id:
+            ctx = _prepare_fill(int(form_id))
+            if not isinstance(ctx, dict):
+                return ctx
+            out = _output_path(int(form_id), "hedge")
+            try:
+                produce_pdf(ctx["schema"], ctx["template"], out_path=out,
+                            pdf_data=_fill_data(ctx), flatten=True,
+                            pdftk_bin=cfg.PDFTK_BIN)
+            except PdfFillError as e:
+                return jsonify({"error": str(e)}), 500
+            number = ctx["schema"]["_meta"]["acord_number"]
+            return _pipe(hedge_pipeline.upload_doc, db.get_db(), lid,
+                         source=f"acord_{number}",
+                         filename=f"ACORD_{number}.pdf",
+                         pdf_bytes=out.read_bytes(),
+                         actor=session.get("email", ""), config=cfg)
+        if body.get("loss_run"):
+            errs = loss_run.validate(body["loss_run"])
+            if errs:
+                return jsonify({"error": "validation failed", "fields": errs}), 422
+            return _pipe(hedge_pipeline.upload_doc, db.get_db(), lid,
+                         source="loss_run",
+                         filename=loss_run.suggested_filename(body["loss_run"]),
+                         pdf_bytes=loss_run.build_pdf(body["loss_run"]),
+                         actor=session.get("email", ""), config=cfg)
+        return jsonify({"error": "provide a file, a form_id, or loss_run fields"}), 400
+
+    @app.route("/api/hedge/pipeline/<int:lid>/requirements")
+    @auth.api_login_required
+    def hedge_pipe_requirements(lid):
+        return _pipe(hedge_pipeline.fetch_requirements, db.get_db(), lid, cfg)
+
+    @app.route("/api/hedge/pipeline/<int:lid>/review", methods=["POST"])
+    @auth.api_login_required
+    def hedge_pipe_review(lid):
+        return _pipe(hedge_pipeline.mark_reviewed, db.get_db(), lid,
+                     actor=session.get("email", ""))
+
+    @app.route("/api/hedge/pipeline/<int:lid>/finalize", methods=["POST"])
+    @auth.api_login_required
+    def hedge_pipe_finalize(lid):
+        body = request.get_json(silent=True) or {}
+        # Explicit approval is the contract: {"approved": true} or nothing happens.
+        return _pipe(hedge_pipeline.finalize, db.get_db(), lid,
+                     approved=body.get("approved") is True,
+                     actor=session.get("email", ""), config=cfg)
+
+    @app.route("/api/hedge/pipeline/<int:lid>/poll", methods=["POST"])
+    @auth.api_login_required
+    def hedge_pipe_poll(lid):
+        return _pipe(hedge_pipeline.poll_one, db.get_db(), lid,
+                     actor=session.get("email", ""), config=cfg)
 
     # ---- Hedge broker platform (submit -> market -> quote) ----
     def _hedge(fn, *a, **kw):

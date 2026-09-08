@@ -23,7 +23,19 @@
                padding: 0.6rem 0.8rem; display: flex; gap: 0.8rem; align-items: center; cursor: pointer; }
     .subs li:hover { border-color: var(--accent); }
     .pill-status { margin-left: auto; font-size: 0.75rem; font-weight: 700;
-                   background: var(--bg); border-radius: 999px; padding: 0.15rem 0.6rem; }
+                   background: var(--bg); border-radius: 999px; padding: 0.15rem 0.6rem;
+                   white-space: nowrap; }
+    .pill-local { font-size: 0.72rem; font-weight: 700; color: var(--muted);
+                  border: 1px solid var(--border); border-radius: 999px;
+                  padding: 0.12rem 0.55rem; white-space: nowrap; }
+    .review-box { border: 1px solid var(--border); border-radius: 8px;
+                  padding: 0.9rem; display: grid; gap: 0.7rem; }
+    .review-box h4 { margin: 0; font-size: 0.85rem; }
+    .doc-list { margin: 0; padding-left: 1.1rem; font-size: 0.85rem; display: grid; gap: 0.25rem; }
+    .approve-row { display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap;
+                   border-top: 1px solid var(--border); padding-top: 0.8rem; }
+    .approve-row label { display: flex; gap: 0.45rem; align-items: center;
+                         font-size: 0.85rem; font-weight: 600; }
     @media (max-width: 620px) { .row2 { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -35,6 +47,7 @@
     </div>
     <div class="topbar-right">
       <a class="btn btn-ghost btn-sm" href="/">&larr; Forms</a>
+      <a class="btn btn-ghost btn-sm" href="/appetite">Appetite</a>
       <span id="hedge-env" class="badge"></span>
       <span id="user-email" class="muted small"></span>
     </div>
@@ -62,18 +75,14 @@
     </section>
 
     <div class="steps">
-      <!-- Step 1: create -->
+      <!-- Step 1: draft + send -->
       <section class="section">
         <div class="section-head"><h3><span class="step-num">1</span>Create a submission</h3></div>
         <div class="section-body" style="grid-template-columns:1fr;">
-          <div class="field">
-            <label for="form-select">Pull applicant details from a filled form</label>
-            <select id="form-select"><option value="">— none (enter manually) —</option></select>
-            <div class="field-err"></div>
-          </div>
           <p class="muted small">
-            Open a form in Forms, fill it, then come back — or type the details below.
-            Nothing is sent until you press Create.
+            The draft is saved locally first — nothing reaches Hedge until you press
+            <strong>Send to Hedge</strong>. A retried send reuses the same idempotency
+            key, so it can never create a duplicate.
           </p>
           <div class="row2">
             <div class="field">
@@ -101,7 +110,8 @@
             <button id="appetite-btn" class="btn btn-secondary btn-sm" type="button"
                     title="Which markets have appetite for this class of business">Check appetite</button>
             <button id="preview-body-btn" class="btn btn-secondary btn-sm" type="button">Review what will be sent</button>
-            <button id="create-btn" class="btn btn-primary btn-sm" type="button">Create submission</button>
+            <button id="draft-btn" class="btn btn-primary btn-sm" type="button">Save draft</button>
+            <button id="send-btn" class="btn btn-primary btn-sm" type="button" disabled>Send to Hedge</button>
             <span id="addr-note" class="muted small"></span>
           </div>
           <pre id="payload" class="payload hidden"></pre>
@@ -110,12 +120,10 @@
 
       <!-- Step 2: documents -->
       <section class="section">
-        <div class="section-head"><h3><span class="step-num">2</span>Attach documents</h3></div>
+        <div class="section-head"><h3><span class="step-num">2</span>Attach documents</h3>
+          <span id="active-sub" class="prefill-controls muted small"></span>
+        </div>
         <div class="section-body" style="grid-template-columns:1fr;">
-          <div class="field">
-            <label for="sub-id">Submission ID</label>
-            <input id="sub-id" type="text" placeholder="filled in after step 1, or paste one" />
-          </div>
           <div class="inline">
             <select id="doc-form-select" class="prefill-select"><option value="">— pick a filled form —</option></select>
             <button id="upload-form-btn" class="btn btn-secondary btn-sm" type="button">Fill &amp; upload that ACORD</button>
@@ -124,20 +132,35 @@
             <input id="file-input" type="file" accept="application/pdf" />
             <button id="upload-file-btn" class="btn btn-secondary btn-sm" type="button">Upload PDF</button>
           </div>
-          <p class="muted small">The ACORD is filled and flattened here, then pushed straight onto the submission — no download/re-upload round trip.</p>
+          <p class="muted small">The ACORD is filled and flattened here, then pushed straight onto the submission — no download/re-upload round trip. Every upload is hashed and logged.</p>
         </div>
       </section>
 
-      <!-- Step 3: market -->
+      <!-- Step 3: requirements + review + finalize -->
       <section class="section">
-        <div class="section-head"><h3><span class="step-num">3</span>Market it</h3></div>
+        <div class="section-head"><h3><span class="step-num">3</span>Review &amp; release to market</h3></div>
         <div class="section-body" style="grid-template-columns:1fr;">
           <div class="inline">
             <button id="req-btn" class="btn btn-secondary btn-sm" type="button">Check requirements</button>
-            <button id="finalize-btn" class="btn btn-primary btn-sm" type="button">Finalize &amp; market</button>
+            <button id="review-btn" class="btn btn-secondary btn-sm" type="button">Open review</button>
           </div>
-          <p class="muted small">Carrier matching usually completes within about 5 minutes of finalizing.</p>
           <pre id="req-out" class="payload hidden"></pre>
+
+          <div id="review-box" class="review-box hidden">
+            <h4>What Hedge has for this submission</h4>
+            <div><h4>Application payload (as sent)</h4><pre id="rv-payload" class="payload"></pre></div>
+            <div><h4>Documents attached</h4><ul id="rv-docs" class="doc-list"></ul></div>
+            <div><h4>Outstanding requirements</h4><pre id="rv-reqs" class="payload"></pre></div>
+            <div class="approve-row">
+              <label><input id="approve-check" type="checkbox" />
+                I reviewed the payload and documents above and approve releasing this
+                submission to market.</label>
+              <button id="finalize-btn" class="btn btn-primary btn-sm" type="button" disabled>
+                Finalize &amp; release to market</button>
+            </div>
+            <p class="muted small">Finalizing is recorded with your name and timestamp.
+              Carrier matching usually completes within about 5 minutes.</p>
+          </div>
         </div>
       </section>
 
@@ -146,6 +169,7 @@
         <div class="section-head"><h3><span class="step-num">4</span>Quotes &amp; documents</h3></div>
         <div class="section-body" style="grid-template-columns:1fr;">
           <div class="inline">
+            <button id="poll-btn" class="btn btn-secondary btn-sm" type="button">Refresh status</button>
             <button id="quotes-btn" class="btn btn-secondary btn-sm" type="button">Refresh quotes</button>
             <button id="docs-btn" class="btn btn-secondary btn-sm" type="button">List documents</button>
           </div>
@@ -160,7 +184,7 @@
         </div>
         <div class="section-body" style="grid-template-columns:1fr;">
           <ul id="subs" class="subs"></ul>
-          <p id="subs-empty" class="muted small">Sign in to see your submissions.</p>
+          <p id="subs-empty" class="muted small">No submissions yet.</p>
         </div>
       </section>
     </div>
@@ -173,6 +197,8 @@
     "use strict";
     const $ = (s) => document.querySelector(s);
     let csrf = "", pollTimer = null, formAnswers = {};
+    let activeId = null;       // local pipeline id
+    let activeRow = null;      // last-loaded pipeline row
 
     const toast = (m, k = "") => { const t = $("#toast"); t.textContent = m; t.className = "toast " + k;
                                    setTimeout(() => t.classList.add("hidden"), 3600); };
@@ -199,6 +225,7 @@
         csrf = (await (await fetch("/api/config")).json()).csrf_token || "";
         await refreshStatus();
         await loadForms();
+        await loadSubs();
       } catch (e) { notice("Couldn’t start: " + e.message); }
     })();
 
@@ -212,7 +239,6 @@
             (s.auth_mode === "api_key" ? "API key configured" : "Signed in") +
             (who ? " — " + who : "");
           $("#signin-block").classList.add("hidden");
-          loadSubs();
         } else {
           $("#signed-state").textContent = "Not signed in";
           $("#signin-block").classList.remove("hidden");
@@ -251,17 +277,15 @@
       }, seconds * 1000);
     }
 
-    // --- forms for prefill / upload ---
+    // --- forms for upload ---
     async function loadForms() {
       try {
         const { forms } = await api("/api/forms");
-        for (const sel of [$("#form-select"), $("#doc-form-select")]) {
-          forms.forEach((f) => {
-            const o = document.createElement("option");
-            o.value = f.id; o.textContent = `ACORD ${f.acord_number} — ${f.title}`;
-            sel.appendChild(o);
-          });
-        }
+        forms.forEach((f) => {
+          const o = document.createElement("option");
+          o.value = f.id; o.textContent = `ACORD ${f.acord_number} — ${f.title}`;
+          $("#doc-form-select").appendChild(o);
+        });
       } catch {}
     }
 
@@ -278,6 +302,23 @@
       const out = {};
       for (const [k, v] of Object.entries(map)) if (String(v || "").trim()) out[k] = v.trim();
       return out;
+    }
+
+    // --- active submission plumbing ---
+    async function setActive(id) {
+      activeId = id;
+      if (id == null) { activeRow = null; $("#active-sub").textContent = ""; return; }
+      try {
+        activeRow = await api(`/api/hedge/pipeline/${id}`);
+        $("#active-sub").textContent =
+          `#${id} — ${activeRow.client_ref || "(no insured)"} · ${activeRow.local_state}` +
+          (activeRow.remote_status_label ? ` · Hedge: ${activeRow.remote_status_label}` : "");
+        $("#send-btn").disabled = activeRow.local_state !== "draft";
+      } catch (e) { notice(e.message); }
+    }
+    function needActive() {
+      if (activeId == null) { notice("Save a draft (or pick a recent submission) first."); return false; }
+      return true;
     }
 
     $("#appetite-btn").addEventListener("click", async () => {
@@ -312,75 +353,167 @@
       } catch (e) { notice(e.message); }
     });
 
-    $("#create-btn").addEventListener("click", async () => {
+    $("#draft-btn").addEventListener("click", async () => {
       notice("");
       try {
-        const d = await api("/api/hedge/submissions", { method: "POST",
+        const d = await api("/api/hedge/pipeline", { method: "POST",
           body: JSON.stringify({ answers: formAnswers, overrides: overrides() }) });
-        const id = d.submission_id || d.id;
-        if (id) $("#sub-id").value = id;
+        await setActive(d.id);
+        show($("#payload"), d.confirmation && d.confirmation.draft_payload || d);
+        toast(`Draft #${d.id} saved locally — nothing sent yet`, "success");
+        loadSubs();
+      } catch (e) { notice(e.message); }
+    });
+
+    $("#send-btn").addEventListener("click", async () => {
+      if (!needActive()) return;
+      notice("");
+      try {
+        const d = await api(`/api/hedge/pipeline/${activeId}/send`, { method: "POST" });
+        await setActive(activeId);
         show($("#payload"), d);
-        toast("Submission created" + (id ? " — " + id : ""), "success");
+        toast("Submission created at Hedge — " + (d.hedge_id || ""), "success");
         loadSubs();
       } catch (e) { notice(e.message); }
     });
 
     // --- documents ---
-    const subId = () => $("#sub-id").value.trim();
-    function needSub() { if (!subId()) { notice("Enter a submission ID first."); return false; } return true; }
-
     $("#upload-form-btn").addEventListener("click", async () => {
-      if (!needSub()) return;
+      if (!needActive()) return;
       const fid = $("#doc-form-select").value;
       if (!fid) { notice("Pick a form to fill and upload."); return; }
       notice("");
       try {
-        const d = await api(`/api/hedge/submissions/${subId()}/documents`, {
+        const d = await api(`/api/hedge/pipeline/${activeId}/docs`, {
           method: "POST", body: JSON.stringify({ form_id: Number(fid), answers: formAnswers }) });
         toast("ACORD uploaded to Hedge", "success");
         show($("#payload"), d);
+        setActive(activeId);
       } catch (e) { notice(e.message); }
     });
 
     $("#upload-file-btn").addEventListener("click", async () => {
-      if (!needSub()) return;
+      if (!needActive()) return;
       const f = $("#file-input").files[0];
       if (!f) { notice("Choose a PDF first."); return; }
       const fd = new FormData(); fd.append("file", f);
       try {
-        const d = await api(`/api/hedge/submissions/${subId()}/documents`, { method: "POST", body: fd });
+        const d = await api(`/api/hedge/pipeline/${activeId}/docs`, { method: "POST", body: fd });
         toast("Uploaded " + f.name, "success");
         show($("#payload"), d);
+        setActive(activeId);
       } catch (e) { notice(e.message); }
     });
 
-    // --- market + quotes ---
-    const wire = (sel, fn) => $(sel).addEventListener("click", async () => {
-      if (!needSub()) return;
+    // --- requirements + review + finalize ---
+    let lastReqs = null;
+    $("#req-btn").addEventListener("click", async () => {
+      if (!needActive()) return;
       notice("");
-      try { show($(sel === "#quotes-btn" || sel === "#docs-btn" ? "#quotes-out" : "#req-out"), await fn()); }
+      try {
+        lastReqs = await api(`/api/hedge/pipeline/${activeId}/requirements`);
+        show($("#req-out"), lastReqs);
+        setActive(activeId);
+      } catch (e) { notice(e.message); }
+    });
+
+    $("#review-btn").addEventListener("click", async () => {
+      if (!needActive()) return;
+      notice("");
+      try {
+        const row = await api(`/api/hedge/pipeline/${activeId}`);
+        activeRow = row;
+        $("#rv-payload").textContent = JSON.stringify(
+          (row.confirmation || {}).draft_payload || {}, null, 2);
+        const ul = $("#rv-docs"); ul.innerHTML = "";
+        const docs = row.docs || [];
+        if (!docs.length) {
+          const li = document.createElement("li");
+          li.textContent = "(none attached)";
+          ul.appendChild(li);
+        }
+        docs.forEach((doc) => {
+          const li = document.createElement("li");
+          li.textContent = `${doc.filename} (${doc.source}) · sha256 ${String(doc.payload_hash || "").slice(0, 12)}…`;
+          ul.appendChild(li);
+        });
+        try {
+          if (!lastReqs) lastReqs = await api(`/api/hedge/pipeline/${activeId}/requirements`);
+          $("#rv-reqs").textContent = JSON.stringify(lastReqs, null, 2);
+        } catch (e) { $("#rv-reqs").textContent = "(couldn’t load: " + e.message + ")"; }
+        $("#approve-check").checked = false;
+        $("#finalize-btn").disabled = true;
+        $("#review-box").classList.remove("hidden");
+        if (row.local_state === "needs_requirements") {
+          await api(`/api/hedge/pipeline/${activeId}/review`, { method: "POST" });
+          setActive(activeId);
+        }
+      } catch (e) { notice(e.message); }
+    });
+
+    $("#approve-check").addEventListener("change", () => {
+      $("#finalize-btn").disabled = !$("#approve-check").checked;
+    });
+
+    $("#finalize-btn").addEventListener("click", async () => {
+      if (!needActive()) return;
+      if (!$("#approve-check").checked) return;
+      notice("");
+      const btn = $("#finalize-btn"); btn.disabled = true;
+      try {
+        const d = await api(`/api/hedge/pipeline/${activeId}/finalize`, {
+          method: "POST", body: JSON.stringify({ approved: true }) });
+        toast("Released to market", "success");
+        show($("#req-out"), d);
+        $("#review-box").classList.add("hidden");
+        setActive(activeId);
+        loadSubs();
+      } catch (e) { notice(e.message); btn.disabled = !$("#approve-check").checked; }
+    });
+
+    // --- status, quotes, docs (quotes ride on the Hedge id) ---
+    $("#poll-btn").addEventListener("click", async () => {
+      if (!needActive()) return;
+      notice("");
+      try {
+        const d = await api(`/api/hedge/pipeline/${activeId}/poll`, { method: "POST" });
+        show($("#quotes-out"), d);
+        setActive(activeId);
+        loadSubs();
+      } catch (e) { notice(e.message); }
+    });
+
+    const hedgeId = () => activeRow && activeRow.hedge_id;
+    const wireRemote = (sel, path) => $(sel).addEventListener("click", async () => {
+      if (!needActive()) return;
+      if (!hedgeId()) { notice("This draft hasn’t been sent to Hedge yet."); return; }
+      notice("");
+      try { show($("#quotes-out"), await api(`/api/hedge/submissions/${hedgeId()}${path}`)); }
       catch (e) { notice(e.message); }
     });
-    wire("#req-btn", () => api(`/api/hedge/submissions/${subId()}/requirements`));
-    wire("#finalize-btn", () => api(`/api/hedge/submissions/${subId()}/finalize`, { method: "POST" }));
-    wire("#quotes-btn", () => api(`/api/hedge/submissions/${subId()}/quotes`));
-    wire("#docs-btn", () => api(`/api/hedge/submissions/${subId()}/documents`));
+    wireRemote("#quotes-btn", "/quotes");
+    wireRemote("#docs-btn", "/documents");
 
-    // --- recent submissions ---
+    // --- recent submissions (local pipeline rows) ---
     async function loadSubs() {
       try {
-        const rows = await api("/api/hedge/submissions");
-        const list = Array.isArray(rows) ? rows : (rows.items || []);
+        const { submissions } = await api("/api/hedge/pipeline");
         const ul = $("#subs"); ul.innerHTML = "";
-        $("#subs-empty").classList.toggle("hidden", list.length > 0);
-        if (!list.length) $("#subs-empty").textContent = "No submissions yet.";
-        list.slice(0, 15).forEach((s) => {
+        $("#subs-empty").classList.toggle("hidden", submissions.length > 0);
+        submissions.slice(0, 15).forEach((s) => {
           const li = document.createElement("li");
-          const id = s.submission_id || s.id || "";
-          li.innerHTML = `<strong>${s.insured_name || "(no insured)"}</strong>
-                          <span class="muted small">${id}</span>
-                          <span class="pill-status">${s.status_label || s.status || ""}</span>`;
-          li.addEventListener("click", () => { $("#sub-id").value = id; toast("Selected " + id); });
+          const strong = document.createElement("strong");
+          strong.textContent = s.client_ref || "(no insured)";
+          const idSpan = document.createElement("span");
+          idSpan.className = "muted small";
+          idSpan.textContent = `#${s.id}` + (s.hedge_id ? ` · ${s.hedge_id}` : "");
+          const local = document.createElement("span");
+          local.className = "pill-local"; local.textContent = s.local_state;
+          const pill = document.createElement("span");
+          pill.className = "pill-status";
+          pill.textContent = s.remote_status_label || s.remote_state || "not sent";
+          li.append(strong, idSpan, local, pill);
+          li.addEventListener("click", () => { setActive(s.id); toast("Selected #" + s.id); });
           ul.appendChild(li);
         });
       } catch (e) { $("#subs-empty").textContent = e.message; }

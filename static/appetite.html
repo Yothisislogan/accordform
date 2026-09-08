@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Appetite &amp; checklist — WIT Forms</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="icon" href="/static/assets/favicon.svg" />
+  <style>
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+    .inline { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+    .directional { display: inline-block; font-size: 0.72rem; font-weight: 700;
+                   letter-spacing: 0.02em; text-transform: uppercase;
+                   background: var(--bg); border: 1px solid var(--border);
+                   border-radius: 999px; padding: 0.2rem 0.7rem; color: var(--muted); }
+    .feed-note { font-size: 0.8rem; color: var(--muted); }
+    .entry { background: var(--surface); border: 1px solid var(--border);
+             border-radius: 8px; padding: 0.7rem 0.9rem; }
+    .entry dl { margin: 0; display: grid; grid-template-columns: max-content 1fr;
+                gap: 0.15rem 0.8rem; }
+    .entry dt { font-size: 0.72rem; font-weight: 700; color: var(--muted);
+                text-transform: uppercase; letter-spacing: 0.02em; align-self: start; }
+    .entry dd { margin: 0; font-size: 0.85rem; white-space: pre-wrap; word-break: break-word; }
+    .entries { display: grid; gap: 0.6rem; }
+    pre.raw { margin: 0; padding: 0.9rem; background: var(--bg); border-radius: 8px;
+              font-size: 0.78rem; line-height: 1.5; max-height: 420px; overflow: auto;
+              white-space: pre-wrap; word-break: break-word; }
+    .gap-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .gap-cols h4 { margin: 0 0 0.4rem; font-size: 0.85rem; }
+    .gap-cols ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.3rem;
+                   font-size: 0.85rem; }
+    .gap-have h4 { color: var(--primary); }
+    .mark { font-weight: 800; margin-right: 0.3rem; }
+    @media (max-width: 620px) { .row2, .gap-cols { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="brand-mark sm" aria-hidden="true"></span>
+      <span class="brand-name">Hedge appetite &amp; checklist</span>
+    </div>
+    <div class="topbar-right">
+      <a class="btn btn-ghost btn-sm" href="/">&larr; Forms</a>
+      <a class="btn btn-ghost btn-sm" href="/hedge">Submissions</a>
+      <span id="user-email" class="muted small"></span>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="notice" class="validation-summary hidden" role="alert" aria-live="assertive"></div>
+
+    <!-- Appetite -->
+    <section class="section">
+      <div class="section-head">
+        <h3>Published appetite</h3>
+        <span class="prefill-controls">
+          <span class="directional">Directional — confirmed only after Hedge review</span>
+        </span>
+      </div>
+      <div class="section-body" style="grid-template-columns:1fr;">
+        <p class="muted small">
+          This is Hedge&rsquo;s <em>published</em> appetite feed — a starting point, never an
+          approval. A verdict like &ldquo;review case by case&rdquo; means exactly that.
+        </p>
+        <div class="row2">
+          <div class="field">
+            <label for="ap-class">Class of business</label>
+            <input id="ap-class" type="text" list="ap-class-list"
+                   placeholder="e.g. residential remodeling" autocomplete="off" />
+            <datalist id="ap-class-list"></datalist>
+          </div>
+          <div class="field">
+            <label for="ap-state">State</label>
+            <input id="ap-state" type="text" maxlength="2" placeholder="e.g. TX" />
+          </div>
+        </div>
+        <div class="inline">
+          <button id="ap-search" class="btn btn-primary btn-sm" type="button">Check appetite</button>
+          <span id="ap-source" class="feed-note"></span>
+        </div>
+        <div id="ap-warning" class="validation-summary hidden" role="status"></div>
+        <div id="ap-entries" class="entries hidden"></div>
+        <p id="ap-empty" class="muted small hidden">
+          The published feed has no entry matching that class/state. That is not a
+          &ldquo;no&rdquo; — it just isn&rsquo;t published. Ask Hedge directly.
+        </p>
+        <div id="ap-rawwrap" class="hidden">
+          <p class="feed-note">
+            Field names in this feed haven&rsquo;t been confirmed yet, so it&rsquo;s shown
+            exactly as published. Use the filter to find your class.
+          </p>
+          <div class="field">
+            <label for="ap-filter">Filter the raw feed</label>
+            <input id="ap-filter" type="text" placeholder="type to highlight matching lines" />
+          </div>
+          <pre id="ap-raw" class="raw"></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Checklist / gap list -->
+    <section class="section">
+      <div class="section-head"><h3>Submission-prep checklist</h3></div>
+      <div class="section-body" style="grid-template-columns:1fr;">
+        <p class="muted small">
+          Hedge&rsquo;s published checklist, cross-referenced against what WIT Forms has
+          already generated for a client — so you can see the gap before you start.
+        </p>
+        <div class="inline">
+          <div class="field" style="flex:1; min-width: 220px;">
+            <label for="cl-client">Client (as it appears on their forms)</label>
+            <input id="cl-client" type="text" placeholder="Acme Contracting LLC" />
+          </div>
+          <button id="cl-check" class="btn btn-primary btn-sm" type="button"
+                  style="align-self:flex-end;">Check readiness</button>
+        </div>
+        <div class="inline">
+          <span id="cl-source" class="feed-note"></span>
+          <span id="cl-artifacts" class="feed-note"></span>
+        </div>
+        <div id="cl-warning" class="validation-summary hidden" role="status"></div>
+        <div id="cl-gap" class="gap-cols hidden">
+          <div class="gap-have"><h4>Have</h4><ul id="cl-have"></ul></div>
+          <div><h4>Missing</h4><ul id="cl-missing"></ul></div>
+        </div>
+        <div id="cl-rawwrap" class="hidden">
+          <p class="feed-note">Checklist field names aren&rsquo;t confirmed yet — shown verbatim.</p>
+          <pre id="cl-raw" class="raw"></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script>
+  (() => {
+    "use strict";
+    const $ = (s) => document.querySelector(s);
+    const notice = (m) => { const n = $("#notice");
+      if (!m) { n.classList.add("hidden"); return; }
+      n.textContent = m; n.classList.remove("hidden"); };
+
+    async function api(path) {
+      const res = await fetch(path);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `${res.status}`);
+      return data;
+    }
+
+    const sourceNote = (d) => {
+      const map = { live: "Live from Hedge",
+                    cache: "Cached copy",
+                    "stale-cache": "Cached copy (stale — Hedge unreachable)",
+                    fixture: "Bundled snapshot (feed not captured yet)",
+                    missing: "Feed unavailable" };
+      let s = map[d.source] || d.source || "";
+      if (d.fetched_at) s += " · fetched " + d.fetched_at;
+      return s;
+    };
+    const warn = (el, d) => {
+      if (d.warning) { el.textContent = d.warning; el.classList.remove("hidden"); }
+      else el.classList.add("hidden");
+    };
+
+    (async function boot() {
+      try {
+        const me = await fetch("/auth/me");
+        if (me.status === 401) { notice("Sign in with your @weinsurethings.com account."); return; }
+        $("#user-email").textContent = (await me.json()).email || "";
+        // Warm the feed + autocomplete quietly; failures surface on first search.
+        const d = await api("/api/hedge/public/appetite");
+        if (Array.isArray(d.classes)) fillClasses(d.classes);
+      } catch {}
+    })();
+
+    function fillClasses(classes) {
+      const dl = $("#ap-class-list"); dl.innerHTML = "";
+      classes.slice(0, 500).forEach((c) => {
+        const o = document.createElement("option"); o.value = c; dl.appendChild(o);
+      });
+    }
+
+    // Render one verbatim entry: every key/value exactly as published.
+    function renderEntry(row) {
+      const div = document.createElement("div"); div.className = "entry";
+      const dl = document.createElement("dl");
+      for (const [k, v] of Object.entries(row)) {
+        const dt = document.createElement("dt"); dt.textContent = k;
+        const dd = document.createElement("dd");
+        dd.textContent = typeof v === "string" ? v : JSON.stringify(v, null, 1);
+        dl.append(dt, dd);
+      }
+      div.appendChild(dl);
+      return div;
+    }
+
+    $("#ap-search").addEventListener("click", async () => {
+      notice("");
+      const btn = $("#ap-search"); btn.disabled = true;
+      try {
+        const q = new URLSearchParams();
+        if ($("#ap-class").value.trim()) q.set("class", $("#ap-class").value.trim());
+        if ($("#ap-state").value.trim()) q.set("state", $("#ap-state").value.trim());
+        const d = await api("/api/hedge/public/appetite?" + q);
+        $("#ap-source").textContent = sourceNote(d);
+        warn($("#ap-warning"), d);
+        if (Array.isArray(d.classes)) fillClasses(d.classes);
+        const wrap = $("#ap-entries"), rawWrap = $("#ap-rawwrap"), empty = $("#ap-empty");
+        wrap.classList.add("hidden"); rawWrap.classList.add("hidden"); empty.classList.add("hidden");
+        if (d.entries === null) {
+          if (d.raw === null || d.raw === undefined) {
+            notice("The appetite feed isn't available yet. " + (d.warning || ""));
+          } else {
+            $("#ap-raw").textContent = JSON.stringify(d.raw, null, 2);
+            rawWrap.classList.remove("hidden");
+            $("#ap-filter").value = $("#ap-class").value;
+            applyRawFilter();
+          }
+        } else if (!d.entries.length) {
+          empty.classList.remove("hidden");
+        } else {
+          wrap.innerHTML = "";
+          d.entries.forEach((row) => wrap.appendChild(renderEntry(row)));
+          wrap.classList.remove("hidden");
+        }
+      } catch (e) { notice(e.message); }
+      finally { btn.disabled = false; }
+    });
+
+    // Client-side text filter for the raw fallback: keep lines containing the
+    // term (plus their context is preserved by showing the pretty JSON whole
+    // when the filter is empty).
+    let rawFull = "";
+    function applyRawFilter() {
+      const pre = $("#ap-raw");
+      if (!rawFull) rawFull = pre.textContent;
+      const term = $("#ap-filter").value.trim().toLowerCase();
+      pre.textContent = !term ? rawFull
+        : rawFull.split("\n").filter((l) => l.toLowerCase().includes(term)).join("\n")
+          || "(no lines match — clear the filter to see the whole feed)";
+    }
+    $("#ap-filter").addEventListener("input", () => { applyRawFilter(); });
+    $("#ap-search").addEventListener("click", () => { rawFull = ""; });
+
+    // --- checklist ---
+    $("#cl-check").addEventListener("click", async () => {
+      notice("");
+      const btn = $("#cl-check"); btn.disabled = true;
+      try {
+        const q = new URLSearchParams();
+        if ($("#cl-client").value.trim()) q.set("client", $("#cl-client").value.trim());
+        const d = await api("/api/hedge/public/checklist?" + q);
+        $("#cl-source").textContent = sourceNote(d);
+        warn($("#cl-warning"), d);
+        const a = d.artifacts || { acords: [], loss_runs: false };
+        const parts = [];
+        if (a.acords.length) parts.push("ACORD " + a.acords.join(", "));
+        if (a.loss_runs) parts.push("loss run request");
+        $("#cl-artifacts").textContent = $("#cl-client").value.trim()
+          ? "Generated so far: " + (parts.length ? parts.join(" · ") : "nothing yet")
+          : "";
+        const gap = $("#cl-gap"), rawWrap = $("#cl-rawwrap");
+        gap.classList.add("hidden"); rawWrap.classList.add("hidden");
+        if (d.gap) {
+          const fill = (sel, items, mark) => {
+            const ul = $(sel); ul.innerHTML = "";
+            (items.length ? items : ["(nothing)"]).forEach((t) => {
+              const li = document.createElement("li");
+              li.innerHTML = `<span class="mark">${mark}</span>`;
+              li.append(document.createTextNode(t));
+              ul.appendChild(li);
+            });
+          };
+          fill("#cl-have", d.gap.have, "✓");
+          fill("#cl-missing", d.gap.missing, "•");
+          gap.classList.remove("hidden");
+        } else if (d.raw !== null && d.raw !== undefined) {
+          $("#cl-raw").textContent = JSON.stringify(d.raw, null, 2);
+          rawWrap.classList.remove("hidden");
+        } else {
+          notice("The checklist feed isn't available yet. " + (d.warning || ""));
+        }
+      } catch (e) { notice(e.message); }
+      finally { btn.disabled = false; }
+    });
+  })();
+  </script>
+</body>
+</html>

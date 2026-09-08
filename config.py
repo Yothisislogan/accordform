@@ -99,6 +99,18 @@ class Config:
     # user's email unless the payload supplies one.
     HEDGE_API_KEY = os.environ.get("HEDGE_API_KEY", "")
     HEDGE_API_KEY_HEADER = os.environ.get("HEDGE_API_KEY_HEADER", "X-Api-Key")
+    # Fernet key for OAuth material at rest in hedge_credentials (generate with
+    # `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`).
+    # Unset => dev fallback to the 0600 token file in DATA_DIR.
+    HEDGE_CRED_KEY = os.environ.get("HEDGE_CRED_KEY", "")
+    # Phase gate: ALL live write paths (create/upload/finalize/answer) no-op
+    # with a clear message unless this is set. Reads are allowed once auth
+    # exists. No sandbox is documented in anything we can verify, so this is
+    # the safety switch for credential day.
+    HEDGE_LIVE = _bool("HEDGE_LIVE", False)
+    # Public feed cache TTL (Phase 1) and status poll interval (Phase 2).
+    HEDGE_FEED_TTL = int(os.environ.get("HEDGE_FEED_TTL", str(24 * 3600)))
+    HEDGE_POLL_INTERVAL = int(os.environ.get("HEDGE_POLL_INTERVAL", "300"))
 
     # --- Tooling ---
     PDFTK_BIN = os.environ.get("PDFTK_BIN", "pdftk")

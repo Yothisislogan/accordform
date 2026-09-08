@@ -106,18 +106,19 @@ def _read_json(path: Path) -> dict | None:
 
 
 def load_token(config: type[Config] = Config) -> dict | None:
-    return _read_json(_state_path(config, "token"))
+    from hedge import credstore
+    return credstore.load("token", config)
 
 
 def save_token(tok: dict, config: type[Config] = Config) -> None:
-    _write_private(_state_path(config, "token"), tok)
+    from hedge import credstore
+    credstore.save("token", tok, config)
 
 
 def clear_token(config: type[Config] = Config) -> None:
+    from hedge import credstore
     for kind in ("token", "pending"):
-        p = _state_path(config, kind)
-        if p.exists():
-            p.unlink()
+        credstore.clear(kind, config)
 
 
 # --------------------------------------------------------------------------
@@ -151,7 +152,8 @@ def discover(config: type[Config] = Config) -> dict:
 
 def register_client(meta: dict, config: type[Config] = Config) -> str:
     """RFC 7591 dynamic registration → public client_id (cached on disk)."""
-    cached = _read_json(_state_path(config, "client")) or {}
+    from hedge import credstore
+    cached = credstore.load("client", config) or {}
     if cached.get("client_id"):
         return cached["client_id"]
     endpoint = meta.get("registration_endpoint")
@@ -168,7 +170,7 @@ def register_client(meta: dict, config: type[Config] = Config) -> str:
     client_id = (r.json() or {}).get("client_id")
     if not client_id:
         raise HedgeError("Registration returned no client_id")
-    _write_private(_state_path(config, "client"), {"client_id": client_id})
+    credstore.save("client", {"client_id": client_id}, config)
     return client_id
 
 
@@ -192,13 +194,14 @@ def start_device_login(config: type[Config] = Config) -> dict:
     if status >= 400 or not body.get("device_code"):
         raise HedgeError(f"Device authorization failed ({status})", status)
 
-    _write_private(_state_path(config, "pending"), {
+    from hedge import credstore
+    credstore.save("pending", {
         "device_code": body["device_code"],
         "client_id": client_id,
         "token_endpoint": meta["token_endpoint"],
         "interval": body.get("interval", 5),
         "expires_at": int(time.time()) + int(body.get("expires_in", 900)),
-    })
+    }, config)
     return {
         "user_code": body.get("user_code"),
         "verification_uri": body.get("verification_uri"),
@@ -214,7 +217,8 @@ def poll_device_login(config: type[Config] = Config) -> dict:
     The caller (the browser) drives the polling loop so no request blocks a
     worker for the full 15-minute window.
     """
-    pending = _read_json(_state_path(config, "pending"))
+    from hedge import credstore
+    pending = credstore.load("pending", config)
     if not pending:
         raise HedgeError("No sign-in is in progress. Start again.")
     if time.time() > pending.get("expires_at", 0):
@@ -229,7 +233,7 @@ def poll_device_login(config: type[Config] = Config) -> dict:
 
     if status < 400 and body.get("access_token"):
         _persist(body, pending["client_id"], pending["token_endpoint"], config)
-        _state_path(config, "pending").unlink(missing_ok=True)
+        credstore.clear("pending", config)
         return {"status": "complete"}
 
     err = body.get("error")
@@ -237,9 +241,9 @@ def poll_device_login(config: type[Config] = Config) -> dict:
         return {"status": "pending"}
     if err == "slow_down":
         pending["interval"] = pending.get("interval", 5) + 5
-        _write_private(_state_path(config, "pending"), pending)
+        credstore.save("pending", pending, config)
         return {"status": "slow_down", "interval": pending["interval"]}
-    _state_path(config, "pending").unlink(missing_ok=True)
+    credstore.clear("pending", config)
     raise HedgeError("Access was denied." if err == "access_denied"
                      else f"Sign-in failed: {err or status}", status)
 
@@ -347,13 +351,32 @@ def _raise_for_status(resp, fallback: str) -> None:
     raise HedgeError(msg, resp.status_code)
 
 
+# Hedge's agent policy: insured/producer/agency data never travels in a query
+# string. Only these safe, documented parameter families may appear in a URL —
+# everything else belongs in a JSON body.
+_UNSAFE_QUERY = ("insured", "applicant", "name", "email", "address", "fein",
+                 "ssn", "phone", "producer", "contact")
+
+
+def _guard_query(params: dict | None) -> None:
+    for key in (params or {}):
+        k = str(key).lower()
+        if any(bad in k for bad in _UNSAFE_QUERY):
+            raise HedgeError(
+                f"Refusing to put '{key}' in a query string — insured/producer "
+                f"data must never appear in a URL. Send it in the body instead.")
+
+
 def request(method: str, path: str, *, params: dict | None = None,
-            json_body: dict | None = None, config: type[Config] = Config):
+            json_body: dict | None = None, extra_headers: dict | None = None,
+            config: type[Config] = Config):
     """Authenticated JSON call against the Hedge broker API."""
+    _guard_query(params)
     url = env(config)["api_base"] + path
     # Resolve credentials OUTSIDE the try: an expired session is an auth
     # problem, and must surface as HedgeAuthRequired, not "could not reach".
-    headers = {**_auth_headers(config), "Accept": "application/json"}
+    headers = {**_auth_headers(config), "Accept": "application/json",
+               **(extra_headers or {})}
     try:
         resp = requests.request(
             method, url, params=params, json=json_body,

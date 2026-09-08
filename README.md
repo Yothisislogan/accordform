@@ -180,6 +180,93 @@ HEDGE_ENV=staging   # start here; switch to prod when you're ready
 > from the build environment, so every test uses mocked HTTP. Sign in on
 > **staging** first and walk one submission end to end before using prod.
 
+### Phase 1 — public appetite & checklist (`/appetite`, no Hedge account)
+
+Hedge publishes machine-readable feeds (`appetite.json`,
+`submission-requirements.json`, `coverages.json`, `class-coverage.json`,
+`commercial-insurance-submission-checklist.json`) plus a `changes.json`
+staleness marker. `/appetite` serves two panels from them:
+
+* **Published appetite** — class (autocomplete) + state → the published entry
+  **verbatim**. The panel is labeled *"Directional — confirmed only after
+  Hedge review"* and nothing ever rewrites a verdict: "review case by case"
+  renders as exactly that, and no matching entry renders as "not published",
+  never as "no".
+* **Submission-prep checklist** — the published checklist cross-referenced
+  against what WIT Forms already generated for a client (from the audit log),
+  shown as a concrete have/missing gap list.
+
+**Caching:** feeds are cached in SQLite for `HEDGE_FEED_TTL` (default 24h).
+On expiry, `changes.json` is probed first and a feed is only refetched when its
+marker moved. If Hedge is unreachable the cached copy is served **stale with a
+visible warning**, then the committed fixture, then a "not captured yet"
+message — a Hedge outage never breaks WIT Forms.
+
+**Feed schemas are not guessed.** The build environment cannot reach
+`hedgespecialty.com`, so field names live in `hedge/feed_map.json` and ship
+**unconfirmed** — the UI falls back to rendering the raw feed verbatim with a
+text filter until the ops pass below confirms them.
+
+### Phase 2 — the submission pipeline (built, dark behind config)
+
+`/hedge` runs a local-first pipeline (`hedge/api_client.py`):
+
+```
+draft (local only) → send → uploading → needs_requirements
+      → awaiting_approval → finalized      (local states, hedge/states.py)
+```
+
+* **Nothing is sent until "Send to Hedge"** — and every live write (create,
+  upload, finalize) is refused with a clear message unless `HEDGE_LIVE=1`.
+* **Idempotent by construction:** a UUID `Idempotency-Key` is stored on the
+  local row *before* the first send and reused verbatim on any retry; the
+  column is UNIQUE, so a duplicate submission row is impossible.
+* **Finalize is never automatic.** The review screen shows the exact payload,
+  the attached documents (with hashes) and outstanding requirements; the
+  finalize button only arms after an explicit approval checkbox, the API
+  requires `{"approved": true}` from the `awaiting_approval` state, and who
+  approved + when is recorded.
+* **Status discipline:** Hedge's `state`/`status_label` are stored and shown
+  **verbatim** in separate columns — "submitted" is never displayed as quoted
+  or bound. A background poller (only when `HEDGE_LIVE=1`) records every
+  observed remote change in `hedge_events`, the append-only audit log that
+  also carries a sha256 payload hash + Hedge's confirmation id for every
+  external write.
+* **Credentials at rest:** with `HEDGE_CRED_KEY` set (a Fernet key), OAuth
+  tokens live encrypted in the `hedge_credentials` table — a raw read of the
+  DB file shows only ciphertext. Unset (dev), tokens fall back to a `0600`
+  JSON file in `DATA_DIR`. Generate a key:
+
+  ```bash
+  python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+  ```
+
+* **URL hygiene:** insured/producer/agency data never goes into query strings —
+  the transport rejects PII-looking query params outright; only documented
+  filter params (`q`, `state`, `lob`) are used.
+
+**Env vars:** `HEDGE_LIVE` (phase gate, default off), `HEDGE_CRED_KEY`,
+`HEDGE_FEED_TTL`, `HEDGE_POLL_INTERVAL`, plus the auth block above — see
+`.env.example`.
+
+### Ops checklist — the day credentials arrive
+
+1. On a machine with internet access, capture the public feeds + API spec:
+   `python tools/fetch_hedge_feeds.py` (writes `hedge/fixtures/`; commit them).
+2. Cross-check `hedge_service.py`'s endpoint docstring against the captured
+   `openapi.json`; fix any drift **before** going live.
+3. Open the captured feeds, fill in the real field names in
+   `hedge/feed_map.json`, and set its `_meta.confirmed` to `true` — the
+   appetite autocomplete + gap list light up; until then the UI shows raw
+   feeds, which is correct.
+4. Set `HEDGE_CRED_KEY` (command above) in the env file, restart, then either
+   set `HEDGE_API_KEY` or device-sign-in at `/hedge` (admin).
+5. Stay on `HEDGE_ENV=staging`, set `HEDGE_LIVE=1`, walk one submission end to
+   end: draft → send → upload an ACORD → requirements → review → finalize →
+   watch the status. Check `hedge_events` afterwards — every step should be
+   there with hashes.
+6. Only then switch `HEDGE_ENV=prod`.
+
 ---
 
 ## Proposal generator (Gemini) — `/proposal`
