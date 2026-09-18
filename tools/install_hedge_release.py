@@ -3,7 +3,8 @@
 
 Defaults to a read-only check. --apply prepares an isolated virtual environment,
 backs up changed files + SQLite, switches code, and rolls back code on failure.
-Credentials, runtime data, licensed PDFs, and systemd configuration are preserved.
+Only application code and dependencies are deployed. Configuration examples,
+documentation, tests, credentials, runtime data, and licensed PDFs are preserved.
 """
 from __future__ import annotations
 
@@ -30,6 +31,7 @@ def blob_sha(path):
 
 def plan(source, target, manifest):
     changes = []
+    conflicts = []
     if source.resolve() == target.resolve():
         raise ValueError("Extract the release outside the installed application.")
     if not (target / "app.py").is_file():
@@ -47,8 +49,13 @@ def plan(source, target, manifest):
         if current == item["after"]:
             continue
         if current is not None and current != item.get("before"):
-            raise ValueError(f"Local changes need review before deployment: {relative}")
+            conflicts.append(relative)
+            continue
         changes.append(relative)
+    if conflicts:
+        # Report every conflicting path without displaying configuration contents.
+        raise ValueError("Local changes need review before deployment:\n" +
+                         "\n".join(f"  {name}" for name in conflicts))
     return changes
 
 
@@ -199,6 +206,8 @@ def main():
     target = Path(args.app_dir).resolve()
     manifest = json.loads((source / "tools/hedge-release-manifest.json").read_text())
     try:
+        print("Deployment scope: application code and dependencies only. "
+              "Existing configuration examples, docs, and tests are preserved.", flush=True)
         changes = plan(source, target, manifest)
         if not changes:
             print("All release files are already installed.")

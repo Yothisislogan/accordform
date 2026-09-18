@@ -27,7 +27,9 @@ python3 tools/install_hedge_release.py --app-dir /opt/wit-forms
 ```
 
 This only checks the release and prints the changed files. It rejects conflicting
-local edits. If it reports a conflict or your service uses another layout, retain
+local application edits and reports every conflicting path together. Existing
+`.env.example`, README, documentation, and test files are left untouched because
+they are not required to run the integration. If it reports a conflict or your service uses another layout, retain
 the output and adapt the deployment before applying. Do not overwrite a conflict.
 The installer requires Python 3.9+ and the existing virtual environment; installing
 dependencies also requires package-index network access and sufficient disk space.
@@ -56,7 +58,7 @@ it retains database additions and the snapshot. Backups are under
 `/var/backups/wit-forms/hedge-*`. It preserves the existing environment file,
 licensed ACORD templates, uploaded documents, and other runtime files.
 
-Only the manifest-listed integration files are applied. The installer and this
+Only the eight manifest-listed application/dependency files are applied. The installer and this
 guide are deployment tools; they need not be copied into the running application.
 The manifest pins the integration payload to the reviewed forms commit. Keep the
 bundle and backup until the site and live connection have been verified.

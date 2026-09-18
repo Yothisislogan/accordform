@@ -3,6 +3,7 @@ import argparse
 import importlib.util
 import json
 from pathlib import Path
+import shutil
 import sqlite3
 
 import pytest
@@ -55,6 +56,42 @@ def test_plan_is_read_only_and_rejects_local_drift(installation):
     (target / "app.py").write_text("locally customized")
     with pytest.raises(ValueError,match="Local changes"):
         installer.plan(source,target,manifest)
+
+
+def test_plan_reports_all_conflicts_without_printing_contents(installation):
+    source, target, manifest, args, calls = installation
+    private_value = "private-local-configuration-value"
+    (target / "app.py").write_text(private_value)
+    (target / "new.py").write_text("existing customized module")
+    with pytest.raises(ValueError) as failure:
+        installer.plan(source, target, manifest)
+    assert "app.py" in str(failure.value) and "new.py" in str(failure.value)
+    assert private_value not in str(failure.value)
+    assert not calls and (target / "app.py").read_text() == private_value
+
+
+def test_release_preserves_customized_examples_docs_and_tests(tmp_path, monkeypatch):
+    source = Path(__file__).parents[1]
+    manifest = json.loads((source / "tools/hedge-release-manifest.json").read_text())
+    target = tmp_path / "installed"
+    # Build an already-updated app using the real release manifest.
+    for item in manifest["files"]:
+        destination = target / item["path"]
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source / item["path"], destination)
+    preserved = [".env", ".env.example", "README.md", "docs/HEDGE-SETUP.md", "tests/test_hedge.py"]
+    for name in preserved:
+        destination = target / name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_text("private local customization")
+    original_hash = installer.blob_sha
+    def guarded_hash(path):
+        if path.is_relative_to(target):
+            assert str(path.relative_to(target)) not in preserved
+        return original_hash(path)
+    monkeypatch.setattr(installer, "blob_sha", guarded_hash)
+    assert installer.plan(source, target, manifest) == []
+    assert all((target / name).read_text() == "private local customization" for name in preserved)
 
 
 def test_plan_rejects_corruption_and_linked_targets(installation):

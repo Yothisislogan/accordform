@@ -3,16 +3,6 @@
   "base_commit": "5cbb24bedeec7c8f29f516364ba357effbbe947e",
   "files": [
     {
-      "path": ".env.example",
-      "before": "c87c218a3b2d3c662efc511e8413b512b9c7f92e",
-      "after": "62a4b7e9194ef7b6b6c7983f264a703df82b686d"
-    },
-    {
-      "path": "README.md",
-      "before": "bba3e2c2e36b6c96577de8a8c7662096c9ed16eb",
-      "after": "d77739892fd2bb96a26612fe39f27eb9dc397647"
-    },
-    {
       "path": "app.py",
       "before": "f519fb87d253f3a461ffc321e8bf1252c959f6a4",
       "after": "c1ef4aa3a88c23f1e805c4c79016311032e884f6"
@@ -26,11 +16,6 @@
       "path": "db.py",
       "before": "557c6374c144d98b27950928a2d77dfe0a082f40",
       "after": "476eba0369c5bec3a4aed3dc7e4994494d180a93"
-    },
-    {
-      "path": "docs/HEDGE-SETUP.md",
-      "before": null,
-      "after": "12995aeb18a5f7d293b763fbc62793a1307fce01"
     },
     {
       "path": "hedge/api_client.py",
@@ -56,16 +41,6 @@
       "path": "static/hedge.html",
       "before": "a54cc9bfb60d8a2223f40ad7889fa22af10b323f",
       "after": "a937126feded0819dd5d2cff70c5131eeb0823c9"
-    },
-    {
-      "path": "tests/test_hedge.py",
-      "before": "6e5f87660230448871cf0156587816b1a92ca6a4",
-      "after": "112cfcac6b988afab86d764cce0175b0befa5e3e"
-    },
-    {
-      "path": "tests/test_hedge_integrations.py",
-      "before": null,
-      "after": "010435bdab5d16d7fba47fae4687677e8303416c"
     }
   ]
 }
