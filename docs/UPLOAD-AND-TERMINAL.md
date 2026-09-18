@@ -188,6 +188,31 @@ file. It does not reproduce production data, the service account, or the systemd
 sandbox, so a passing result narrows the investigation rather than proving the
 production service can start.
 
+If the basic test passes, compare the installed supporting files and run a real
+Gunicorn worker against a **copy of an existing backup snapshot**:
+
+```sh
+python3 tools/check_hedge_deployment.py \
+  --python /path/to/prepared-virtualenv/bin/python \
+  --app-dir /path/to/installed-app \
+  --database-copy /path/to/backup/database.sqlite3
+```
+
+This verifies supporting Python, mapping, and schema files that are not replaced
+by the manifest. It reports differing filenames without their contents. It reads
+the supplied snapshot into a private temporary database, starts an isolated
+Gunicorn process on an OS-selected loopback port, and checks real health/intake
+HTTP responses. A WSGI guard blocks every other endpoint; the temporary worker
+cannot make outbound connections or open another SQLite database. OAuth setup
+uses synthetic values. No live credentials are passed into the test process.
+
+Only diagnostic phase names, stack locations, response statuses, and selected
+service-override **names** are displayed. Customer records, override values, and
+raw response/error bodies are omitted. The worker and private temporary files
+are cleaned up when the check ends. The existing service is never stopped. This
+test still does not reproduce all systemd settings, server Python hooks, Gunicorn
+configuration overrides, or contention against the active database.
+
 Installer health requests now connect directly to localhost with proxies and
 redirects disabled. A failed check reports its stage and HTTP status or exception
 type, without dumping response bodies; the diagnostic is also retained as
