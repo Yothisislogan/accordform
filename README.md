@@ -142,14 +142,13 @@ app. `hedge_service.py` documents every endpoint it uses.
 
 **Auth — two modes:**
 
-* **API key** (brokerage API-client credential): set `HEDGE_API_KEY` and it is
-  sent as `X-Api-Key` (header name overridable via `HEDGE_API_KEY_HEADER`) on
-  every call; OAuth sign-in is skipped entirely. With API-client credentials
-  Hedge requires attributing the producing broker, so each submission carries
-  `producer_email` = the signed-in WIT user (overridable per submission). The
-  header-name contract comes from the hedge-cli shared client; if the first
-  live call returns 401, confirm the header name with Hedge or fall back to
-  device sign-in below.
+* **Machine credentials**: set `HEDGE_CLIENT_ID` and `HEDGE_CLIENT_SECRET`.
+  The server discovers Hedge’s token endpoint, exchanges the pair using
+  `client_credentials`, caches short-lived bearer tokens in memory and renews
+  them before expiry. Static `X-Api-Key` headers are not supported by the
+  current contract. Machine submissions require an active Hedge portal user’s
+  `producer_email`; website drafts acquire the signed-in agent’s attribution
+  on their first send. The agency needs Hedge-enabled `broker_submit` access.
 * **OAuth 2.1 device sign-in** (when no key is set): RFC 8414 discovery,
   RFC 7591 dynamic client registration, RFC 8628 device grant (the browser only
   ever sees the user code and URL; the `device_code` stays server-side in a
@@ -176,9 +175,29 @@ ZIP actually completes the address.
 HEDGE_ENV=staging   # start here; switch to prod when you're ready
 ```
 
-> Not yet exercised against the live API — `*.hedgespecialty.com` is unreachable
-> from the build environment, so every test uses mocked HTTP. Sign in on
+> Not yet exercised with live brokerage credentials. Automated tests use mocked Hedge HTTP. Sign in on
 > **staging** first and walk one submission end to end before using prod.
+
+
+### Website intake and signed webhooks
+
+The WordPress theme in `Yothisislogan/catdog` adds `/submit-a-risk/` for commercial
+and specialty shoppers. Its server sends an HMAC-signed request to
+`POST /integrations/wit/intake`. Valid, consented requests are atomically saved
+as local drafts and appear in `/hedge`, labeled **Website**. Repeated requests
+with the same reference return the original receipt; changed content conflicts.
+No consumer endpoint calls Hedge or exposes the staff queue.
+
+Hedge sends Svix-signed events to `POST /integrations/hedge/events`. Signatures
+cover raw bytes and expire after five minutes. Delivery IDs and the combination
+of submission ID, event ID and event type are durably deduplicated in SQLite.
+Market events appear in the activity panel; they do not overwrite the overall
+submission status. The existing poller / Refresh status supplies that status.
+Unknown submissions' events are retained and linked if a create response arrives
+later. No network calls happen during webhook acknowledgement.
+
+See [HEDGE-SETUP.md](docs/HEDGE-SETUP.md) for credentials, WordPress configuration,
+webhook registration, rollout, recovery, and the exact bridge contract.
 
 ### Phase 1 — public appetite & checklist (`/appetite`, no Hedge account)
 
@@ -220,7 +239,7 @@ draft (local only) → send → uploading → needs_requirements
   upload, finalize) is refused with a clear message unless `HEDGE_LIVE=1`.
 * **Idempotent by construction:** a UUID `Idempotency-Key` is stored on the
   local row *before* the first send and reused verbatim on any retry; the
-  column is UNIQUE, so a duplicate submission row is impossible.
+  column is UNIQUE, and attempts older than 23 hours are blocked for manual reconciliation before Hedge’s 24-hour replay window expires.
 * **Finalize is never automatic.** The review screen shows the exact payload,
   the attached documents (with hashes) and outstanding requirements; the
   finalize button only arms after an explicit approval checkbox, the API
@@ -260,7 +279,7 @@ draft (local only) → send → uploading → needs_requirements
    appetite autocomplete + gap list light up; until then the UI shows raw
    feeds, which is correct.
 4. Set `HEDGE_CRED_KEY` (command above) in the env file, restart, then either
-   set `HEDGE_API_KEY` or device-sign-in at `/hedge` (admin).
+   set `HEDGE_CLIENT_ID` / `HEDGE_CLIENT_SECRET` or device-sign-in at `/hedge` (admin).
 5. Stay on `HEDGE_ENV=staging`, set `HEDGE_LIVE=1`, walk one submission end to
    end: draft → send → upload an ACORD → requirements → review → finalize →
    watch the status. Check `hedge_events` afterwards — every step should be

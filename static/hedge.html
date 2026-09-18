@@ -82,7 +82,7 @@
           <p class="muted small">
             The draft is saved locally first — nothing reaches Hedge until you press
             <strong>Send to Hedge</strong>. A retried send reuses the same idempotency
-            key, so it can never create a duplicate.
+            key, within Hedge’s 24-hour retry window. Older uncertain attempts require reconciliation.
           </p>
           <div class="row2">
             <div class="field">
@@ -114,6 +114,7 @@
             <button id="send-btn" class="btn btn-primary btn-sm" type="button" disabled>Send to Hedge</button>
             <span id="addr-note" class="muted small"></span>
           </div>
+          <p id="intake-source" class="muted small"></p>
           <pre id="payload" class="payload hidden"></pre>
         </div>
       </section>
@@ -177,6 +178,13 @@
         </div>
       </section>
 
+      <section class="section">
+        <div class="section-head"><h3>Submission activity</h3></div>
+        <div class="section-body" style="grid-template-columns:1fr;">
+          <p class="muted small">Market events arrive from Hedge webhooks. Use Refresh status for the overall submission status.</p>
+          <ol id="event-list" class="doc-list"></ol>
+        </div>
+      </section>
       <!-- Recent -->
       <section class="section">
         <div class="section-head"><h3>Recent submissions</h3>
@@ -236,11 +244,11 @@
         if (s.signed_in) {
           const who = s.broker && (s.broker.email || s.broker.name || s.broker.broker_name);
           $("#signed-state").textContent =
-            (s.auth_mode === "api_key" ? "API key configured" : "Signed in") +
+            (s.auth_mode === "client_credentials" ? "Machine connection verified" : "Signed in") +
             (who ? " — " + who : "");
           $("#signin-block").classList.add("hidden");
         } else {
-          $("#signed-state").textContent = "Not signed in";
+          $("#signed-state").textContent = s.error || (s.auth_mode === "legacy_key" ? "Replace the legacy key with a client ID and secret." : "Not signed in");
           $("#signin-block").classList.remove("hidden");
         }
       } catch (e) { $("#signed-state").textContent = "Not signed in"; }
@@ -306,6 +314,14 @@
 
     // --- active submission plumbing ---
     async function setActive(id) {
+      if (activeId !== id) {
+        lastReqs = null;
+        $("#review-box").classList.add("hidden");
+        $("#approve-check").checked = false;
+        $("#finalize-btn").disabled = true;
+        $("#req-out").classList.add("hidden");
+        $("#quotes-out").classList.add("hidden");
+      }
       activeId = id;
       if (id == null) { activeRow = null; $("#active-sub").textContent = ""; return; }
       try {
@@ -314,6 +330,21 @@
           `#${id} — ${activeRow.client_ref || "(no insured)"} · ${activeRow.local_state}` +
           (activeRow.remote_status_label ? ` · Hedge: ${activeRow.remote_status_label}` : "");
         $("#send-btn").disabled = activeRow.local_state !== "draft";
+        show($("#payload"), (activeRow.confirmation || {}).draft_payload || {});
+        const source = activeRow.confirmation || {};
+        $("#intake-source").textContent = source.source
+          ? `Website request · ${source.intake_reference} · consent ${source.consent_version}` : "Staff-created draft";
+        const timeline = $("#event-list"); timeline.replaceChildren();
+        (activeRow.events || []).slice(-100).reverse().forEach(event => {
+          const item = document.createElement("li");
+          let detail = {}; try { detail = JSON.parse(event.detail_json || "{}"); } catch {}
+          const market = detail.market || {};
+          item.textContent = `${detail.occurred_at || event.created_at} · ${event.kind}` +
+            (market.name ? ` · ${market.name}` : "") +
+            (detail.status_label ? ` · ${detail.status_label}` : "") +
+            (detail.detail ? ` · ${detail.detail}` : "");
+          timeline.appendChild(item);
+        });
       } catch (e) { notice(e.message); }
     }
     function needActive() {
@@ -438,13 +469,14 @@
           ul.appendChild(li);
         });
         try {
-          if (!lastReqs) lastReqs = await api(`/api/hedge/pipeline/${activeId}/requirements`);
+          lastReqs = await api(`/api/hedge/pipeline/${activeId}/requirements`);
           $("#rv-reqs").textContent = JSON.stringify(lastReqs, null, 2);
         } catch (e) { $("#rv-reqs").textContent = "(couldn’t load: " + e.message + ")"; }
         $("#approve-check").checked = false;
         $("#finalize-btn").disabled = true;
         $("#review-box").classList.remove("hidden");
-        if (row.local_state === "needs_requirements") {
+        const refreshed = await api(`/api/hedge/pipeline/${activeId}`);
+        if (refreshed.local_state === "needs_requirements") {
           await api(`/api/hedge/pipeline/${activeId}/review`, { method: "POST" });
           setActive(activeId);
         }
@@ -500,10 +532,10 @@
         const { submissions } = await api("/api/hedge/pipeline");
         const ul = $("#subs"); ul.innerHTML = "";
         $("#subs-empty").classList.toggle("hidden", submissions.length > 0);
-        submissions.slice(0, 15).forEach((s) => {
+        submissions.forEach((s) => {
           const li = document.createElement("li");
           const strong = document.createElement("strong");
-          strong.textContent = s.client_ref || "(no insured)";
+          strong.textContent = (s.created_by === "website" ? "Website · " : "") + (s.client_ref || "(no insured)");
           const idSpan = document.createElement("span");
           idSpan.className = "muted small";
           idSpan.textContent = `#${s.id}` + (s.hedge_id ? ` · ${s.hedge_id}` : "");
