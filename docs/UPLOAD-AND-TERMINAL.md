@@ -26,23 +26,23 @@ application. From its `WIT-Hedge-Deployment/forms-source` directory, run:
 python3 tools/install_hedge_release.py --app-dir /opt/wit-forms
 ```
 
-The server confirmed in this deployment uses `/opt/wit-forms-new` and is at
-commit `af54e41`. That release and `5cbb24b` are both supported by exact file
+Releases `af54e41` and `5cbb24b` are both supported by exact file
 hashes. The older release also receives the Hedge modules, mapping files,
 ACORD 125 schema, and browser assets that were added after it. Existing
 licensed PDFs and customer records are preserved.
 
-For that server, check the code and report the database path in one read-only step:
+Check the code and report the database path in one read-only step, substituting
+the application's actual directory if it differs from the repository default:
 
 ```sh
-python3 tools/install_hedge_release.py --app-dir /opt/wit-forms-new --inspect-service
+python3 tools/install_hedge_release.py --app-dir /opt/wit-forms --inspect-service
 ```
 
-Service inspection requires permission to read the running process environment
-(the root terminal already has it). It displays only the database path and
+Service inspection requires permission to read the running process environment.
+It displays only the database path and
 whether the file exists, using the path rules from the verified configuration.
-Use this reported path for `--db-path` when applying; also change `--app-dir`
-to `/opt/wit-forms-new` in the installation command below.
+Use this reported path for `--db-path` when applying, and keep `--app-dir`
+consistent with the verified service directory.
 
 This only checks the release and prints the changed files. It rejects conflicting
 local application edits and reports every conflicting path together. Existing
@@ -171,12 +171,11 @@ HTTP check failed.
 
 The prepared Python environment is retained after a rollback; its path appears
 as `new_virtualenv` in the backup's `deployment.json`. Use its `bin/python` with
-the release checkout's `tools/check_hedge_startup.py`. For the recorded
-`hedge-bunglu0a` attempt on `/opt/wit-forms-new`, run:
+the release checkout's `tools/check_hedge_startup.py`. Substitute that absolute
+Python path in the following command, run from the release checkout:
 
 ```sh
-python3 /root/wit-hedge-release/tools/check_hedge_startup.py \
-  --python /opt/wit-forms-new/.venv-hedge-bunglu0a/bin/python
+python3 tools/check_hedge_startup.py --python /path/to/prepared-virtualenv/bin/python
 ```
 
 This creates and removes a temporary database, uses a clean environment without
