@@ -26,6 +26,24 @@ application. From its `WIT-Hedge-Deployment/forms-source` directory, run:
 python3 tools/install_hedge_release.py --app-dir /opt/wit-forms
 ```
 
+The server confirmed in this deployment uses `/opt/wit-forms-new` and is at
+commit `af54e41`. That release and `5cbb24b` are both supported by exact file
+hashes. The older release also receives the Hedge modules, mapping files,
+ACORD 125 schema, and browser assets that were added after it. Existing
+licensed PDFs and customer records are preserved.
+
+For that server, check the code and report the database path in one read-only step:
+
+```sh
+python3 tools/install_hedge_release.py --app-dir /opt/wit-forms-new --inspect-service
+```
+
+Service inspection requires permission to read the running process environment
+(the root terminal already has it). It displays only the database path and
+whether the file exists, using the path rules from the verified configuration.
+Use this reported path for `--db-path` when applying; also change `--app-dir`
+to `/opt/wit-forms-new` in the installation command below.
+
 This only checks the release and prints the changed files. It rejects conflicting
 local application edits and reports every conflicting path together. Existing
 `.env.example`, README, documentation, and test files are left untouched because
@@ -58,7 +76,8 @@ it retains database additions and the snapshot. Backups are under
 `/var/backups/wit-forms/hedge-*`. It preserves the existing environment file,
 licensed ACORD templates, uploaded documents, and other runtime files.
 
-Only the eight manifest-listed application/dependency files are applied. The installer and this
+Only the manifest-listed application/dependency files are applied; files already
+at the release version are skipped. The installer and this
 guide are deployment tools; they need not be copied into the running application.
 The manifest pins the integration payload to the reviewed forms commit. Keep the
 bundle and backup until the site and live connection have been verified.

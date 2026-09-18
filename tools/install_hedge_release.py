@@ -16,6 +16,7 @@ from pathlib import Path
 import re
 import shutil
 import sqlite3
+import stat
 import subprocess
 import sys
 import tempfile
@@ -48,7 +49,8 @@ def plan(source, target, manifest):
         current = blob_sha(dst) if dst.is_file() else None
         if current == item["after"]:
             continue
-        if current is not None and current != item.get("before"):
+        approved_versions = [item.get("before")] + item.get("before_alternates", [])
+        if current not in approved_versions:
             conflicts.append(relative)
             continue
         changes.append(relative)
@@ -64,12 +66,47 @@ def run(*args, capture=False):
                           stdout=subprocess.PIPE if capture else None).stdout
 
 
+def service_database(target, service, proc_root=Path("/proc")):
+    """Read only path settings; never display or import the service's secrets."""
+    service_dir = run("systemctl", "show", service, "--property=WorkingDirectory", "--value", capture=True).strip()
+    if Path(service_dir).resolve() != target.resolve():
+        raise ValueError("The service WorkingDirectory does not match --app-dir.")
+    pid = run("systemctl", "show", service, "--property=MainPID", "--value", capture=True).strip()
+    if not pid.isdigit() or int(pid) <= 0:
+        raise ValueError("The forms service is not running; cannot inspect its database path.")
+    process = proc_root / pid
+    if (process / "cwd").resolve(strict=True) != target.resolve():
+        raise ValueError("The running process directory does not match --app-dir.")
+    environment = dict(item.split(b"=", 1) for item in
+                       (process / "environ").read_bytes().split(b"\0") if b"=" in item)
+    # Config.py in both verified base releases uses only these path settings.
+    data_dir = Path(os.fsdecode(environment.get(b"DATA_DIR", os.fsencode(target / "data"))))
+    database = Path(os.fsdecode(environment.get(b"DB_PATH", os.fsencode(data_dir / "witforms.db"))))
+    if not database.is_absolute():
+        database = target / database
+    return database.resolve()
+
+
 def replace_file(source, destination):
-    destination.parent.mkdir(parents=True, exist_ok=True)
+    # New code must be readable by the service account even with root's umask 077.
+    # Preserve existing application file ownership/mode when replacing a file.
+    existing = destination.stat() if destination.exists() else None
+    original_umask = os.umask(0o022)
+    try:
+        destination.parent.mkdir(parents=True, exist_ok=True)
+    finally:
+        os.umask(original_umask)
     descriptor, temporary = tempfile.mkstemp(dir=destination.parent, prefix=".hedge-deploy-")
     os.close(descriptor)
     try:
         shutil.copy2(source, temporary)
+        if existing:
+            current = os.stat(temporary)
+            if (current.st_uid, current.st_gid) != (existing.st_uid, existing.st_gid):
+                os.chown(temporary, existing.st_uid, existing.st_gid)
+            os.chmod(temporary, stat.S_IMODE(existing.st_mode))
+        else:
+            os.chmod(temporary, 0o644)
         os.replace(temporary, destination)
     finally:
         Path(temporary).unlink(missing_ok=True)
@@ -196,6 +233,8 @@ def main():
     parser.add_argument("--backup-root", default="/var/backups/wit-forms")
     parser.add_argument("--health-url", default="http://127.0.0.1:8097/healthz")
     parser.add_argument("--apply", action="store_true", help="Install after checks; default is read-only")
+    parser.add_argument("--inspect-service", action="store_true",
+                        help="After file checks, report the running service's database path; requires /proc access")
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_.@-]+", args.service) or args.service.startswith("-"):
         parser.error("Invalid service name.")
@@ -209,6 +248,10 @@ def main():
         print("Deployment scope: application code and dependencies only. "
               "Existing configuration examples, docs, and tests are preserved.", flush=True)
         changes = plan(source, target, manifest)
+        if args.inspect_service:
+            database = service_database(target, args.service)
+            print(f"Database path from service environment and verified config defaults: {database}")
+            print(f"Database file exists: {'yes' if database.is_file() else 'no'}")
         if not changes:
             print("All release files are already installed.")
             return 0

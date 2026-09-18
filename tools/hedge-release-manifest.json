@@ -1,26 +1,82 @@
 {
   "application_commit": "3c2f79d5a5a4f3401db15900d85dce6653c4cc64",
   "base_commit": "5cbb24bedeec7c8f29f516364ba357effbbe947e",
+  "supported_base_commits": [
+    "5cbb24bedeec7c8f29f516364ba357effbbe947e",
+    "af54e41b7de6b57bbf1ab38d11de7ed92f10768c"
+  ],
   "files": [
     {
       "path": "app.py",
       "before": "f519fb87d253f3a461ffc321e8bf1252c959f6a4",
-      "after": "c1ef4aa3a88c23f1e805c4c79016311032e884f6"
+      "after": "c1ef4aa3a88c23f1e805c4c79016311032e884f6",
+      "before_alternates": [
+        "a2192765e7897345c44f60355893b8d58a32d8a0"
+      ]
     },
     {
       "path": "config.py",
       "before": "fb3edf88ba34cceb2ef5ed5a366b8828aaee5650",
-      "after": "c69692962e12049ae46f35c408ca769291fab99d"
+      "after": "c69692962e12049ae46f35c408ca769291fab99d",
+      "before_alternates": [
+        "4763c9e5aae0f87f09dfe5ddeedcc67b02642b76"
+      ]
     },
     {
       "path": "db.py",
       "before": "557c6374c144d98b27950928a2d77dfe0a082f40",
-      "after": "476eba0369c5bec3a4aed3dc7e4994494d180a93"
+      "after": "476eba0369c5bec3a4aed3dc7e4994494d180a93",
+      "before_alternates": [
+        "bbe89b9c228da853e0aa6508ebde8b61aebca177"
+      ]
+    },
+    {
+      "path": "hedge/__init__.py",
+      "before": "f0e879912ebee6f04e4a1c968a5596b1945ba793",
+      "after": "f0e879912ebee6f04e4a1c968a5596b1945ba793",
+      "before_alternates": [
+        null
+      ]
     },
     {
       "path": "hedge/api_client.py",
       "before": "a091e150cb36c318d0fe7ec8fead4ae1e7211367",
-      "after": "130b1e0d28ee6cda51c31b1976d9f5c575be50aa"
+      "after": "130b1e0d28ee6cda51c31b1976d9f5c575be50aa",
+      "before_alternates": [
+        null
+      ]
+    },
+    {
+      "path": "hedge/artifacts.py",
+      "before": "f2de3b2054a13618df76b01eb50e3bdb1c78135a",
+      "after": "f2de3b2054a13618df76b01eb50e3bdb1c78135a",
+      "before_alternates": [
+        null
+      ]
+    },
+    {
+      "path": "hedge/credstore.py",
+      "before": "a5637a13595f04b7f08424e077f59cae1b080acc",
+      "after": "a5637a13595f04b7f08424e077f59cae1b080acc",
+      "before_alternates": [
+        null
+      ]
+    },
+    {
+      "path": "hedge/feed_adapter.py",
+      "before": "8fa2bb28fbbfecf8d2012046bc7d75f8cac52840",
+      "after": "8fa2bb28fbbfecf8d2012046bc7d75f8cac52840",
+      "before_alternates": [
+        null
+      ]
+    },
+    {
+      "path": "hedge/feed_map.json",
+      "before": "d4d06c3e9834d483d96ff01323563b720e08ef5e",
+      "after": "d4d06c3e9834d483d96ff01323563b720e08ef5e",
+      "before_alternates": [
+        null
+      ]
     },
     {
       "path": "hedge/integrations.py",
@@ -28,9 +84,44 @@
       "after": "b274ba8967c7796126766e1ad10dab1b802ee135"
     },
     {
+      "path": "hedge/public_client.py",
+      "before": "f445f44254b2de41c42eb594d89324b903704cb6",
+      "after": "f445f44254b2de41c42eb594d89324b903704cb6",
+      "before_alternates": [
+        null
+      ]
+    },
+    {
+      "path": "hedge/states.py",
+      "before": "cffcb1062b928978e2907de35a86a662e66abc32",
+      "after": "cffcb1062b928978e2907de35a86a662e66abc32",
+      "before_alternates": [
+        null
+      ]
+    },
+    {
+      "path": "hedge_mapping.py",
+      "before": "7dfbf1bae54af7a5103bbca35578bdaefef293e8",
+      "after": "7dfbf1bae54af7a5103bbca35578bdaefef293e8",
+      "before_alternates": [
+        null
+      ]
+    },
+    {
       "path": "hedge_service.py",
       "before": "706c3d3f2225a84b111fc1b499e00f6b4b2b318b",
-      "after": "8f9fba56364898cd7c4e8bc6d9ad774bc38f80df"
+      "after": "8f9fba56364898cd7c4e8bc6d9ad774bc38f80df",
+      "before_alternates": [
+        null
+      ]
+    },
+    {
+      "path": "mappings/hedge_submission.json",
+      "before": "1d38adc9164e8058883fbfc3d49c054d035ad4ae",
+      "after": "1d38adc9164e8058883fbfc3d49c054d035ad4ae",
+      "before_alternates": [
+        null
+      ]
     },
     {
       "path": "requirements.txt",
@@ -38,9 +129,44 @@
       "after": "a3c846167fa9085baca44a1e8dd4e406a8af9a1a"
     },
     {
+      "path": "schemas/acord_125.json",
+      "before": "a330ede0dc0bb303e2e622190cc100c0b86aa736",
+      "after": "a330ede0dc0bb303e2e622190cc100c0b86aa736",
+      "before_alternates": [
+        "d5e8650aa954b7ce7aaaf955452fd640a0cb5070"
+      ]
+    },
+    {
+      "path": "static/app.js",
+      "before": "44fcc61a17815e787ccd4466af8e7bf762dcdb95",
+      "after": "44fcc61a17815e787ccd4466af8e7bf762dcdb95",
+      "before_alternates": [
+        "3f6fc8176efeb967b26893ad57e46b7362c290e3"
+      ]
+    },
+    {
+      "path": "static/appetite.html",
+      "before": "9cfd6360e08cb81f6517c14c91ab57e8098950d4",
+      "after": "9cfd6360e08cb81f6517c14c91ab57e8098950d4",
+      "before_alternates": [
+        null
+      ]
+    },
+    {
       "path": "static/hedge.html",
       "before": "a54cc9bfb60d8a2223f40ad7889fa22af10b323f",
-      "after": "a937126feded0819dd5d2cff70c5131eeb0823c9"
+      "after": "a937126feded0819dd5d2cff70c5131eeb0823c9",
+      "before_alternates": [
+        null
+      ]
+    },
+    {
+      "path": "static/index.html",
+      "before": "02c240d89541c938cc512e86d3e00ef3f1166da9",
+      "after": "02c240d89541c938cc512e86d3e00ef3f1166da9",
+      "before_alternates": [
+        "a466d22d2085cdb51bd1b6db04574386e1cf12af"
+      ]
     }
   ]
 }
