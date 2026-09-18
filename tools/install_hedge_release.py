@@ -22,7 +22,8 @@ import sys
 import tempfile
 import time
 from urllib.parse import urlsplit
-from urllib.request import Request, urlopen
+from urllib.error import HTTPError, URLError
+from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
 
 
 def blob_sha(path):
@@ -112,20 +113,41 @@ def replace_file(source, destination):
         Path(temporary).unlink(missing_ok=True)
 
 
-def healthy(service, url):
+class _NoHealthRedirects(HTTPRedirectHandler):
+    def redirect_request(self, request, response, code, message, headers, newurl):
+        return None
+
+
+def healthy(service, url, report=None):
+    """Check localhost directly; report only status codes/stages, never response bodies."""
+    report = report or (lambda message: None)
+    stage = "service state"
     try:
         if run("systemctl", "is-active", service, capture=True).strip() != "active":
+            report("Service is not active yet.")
             return False
-        with urlopen(url, timeout=2) as response:
-            body = json.load(response)
-        if body.get("service") != "wit-forms" or body.get("status") != "ok":
+        opener = build_opener(ProxyHandler({}), _NoHealthRedirects())
+        stage = "GET /healthz"
+        with opener.open(url, timeout=2) as response:
+            body = json.loads(response.read(65536))
+        if not isinstance(body, dict) or body.get("service") != "wit-forms" or body.get("status") != "ok":
+            report("GET /healthz: unexpected application identity or status.")
             return False
         parsed = urlsplit(url)
         endpoint = f"{parsed.scheme}://{parsed.netloc}/integrations/wit/intake"
-        with urlopen(Request(endpoint, method="OPTIONS"), timeout=2) as response:
-            return "POST" in response.headers.get("Allow", "")
-    except Exception:
-        return False
+        stage = "OPTIONS /integrations/wit/intake"
+        with opener.open(Request(endpoint, method="OPTIONS"), timeout=2) as response:
+            allowed = "POST" in {method.strip() for method in response.headers.get("Allow", "").split(",")}
+        if not allowed:
+            report("OPTIONS /integrations/wit/intake: POST is missing from Allow.")
+        return allowed
+    except HTTPError as error:
+        report(f"{stage}: HTTP {error.code}.")
+    except (TimeoutError, URLError) as error:
+        report(f"{stage}: {type(error).__name__} (local connection unavailable or timed out).")
+    except Exception as error:
+        report(f"{stage}: {type(error).__name__}.")
+    return False
 
 
 def apply_release(source, target, changes, args):
@@ -198,13 +220,20 @@ def apply_release(source, target, changes, args):
         switched_env = True
         current_env.symlink_to(new_env, target_is_directory=True)
         run("systemctl", "start", args.service)
+        last_check = []
+        def report_check(message):
+            if not last_check or message != last_check[-1]:
+                print(f"Startup check: {message}", flush=True)
+                last_check.append(message)
         for attempt in range(15):
-            if healthy(args.service, args.health_url):
+            if healthy(args.service, args.health_url, report_check):
                 print(f"Installed. Application and intake-route checks passed. Backup: {backup}")
                 print("Next: configure credentials privately, test Hedge in staging, then publish the website page.")
                 return
             time.sleep(1)
-        raise RuntimeError("Application health or intake-route checks failed.")
+        reason = last_check[-1] if last_check else "No successful response received."
+        (backup / "startup-check.txt").write_text("\n".join(last_check) + "\n")
+        raise RuntimeError(f"Application health or intake-route checks failed. {reason}")
     except BaseException:
         if stopped:
             run("systemctl", "stop", args.service)

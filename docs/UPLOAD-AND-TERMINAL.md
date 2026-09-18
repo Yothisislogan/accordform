@@ -162,6 +162,38 @@ and event records remain in the database.
 
 ## Validation included
 
+### Diagnose a startup rollback without interrupting the restored app
+
+First confirm `systemctl is-active witforms` and a local `GET /healthz` succeed.
+Keep the restored service running while investigating. A worker-start message
+without a traceback does not establish whether the app finished loading or which
+HTTP check failed.
+
+The prepared Python environment is retained after a rollback; its path appears
+as `new_virtualenv` in the backup's `deployment.json`. Use its `bin/python` with
+the release checkout's `tools/check_hedge_startup.py`. For the recorded
+`hedge-bunglu0a` attempt on `/opt/wit-forms-new`, run:
+
+```sh
+python3 /root/wit-hedge-release/tools/check_hedge_startup.py \
+  --python /opt/wit-forms-new/.venv-hedge-bunglu0a/bin/python
+```
+
+This creates and removes a temporary database, uses a clean environment without
+live credentials, and blocks network calls in the test process. It reports import
+phases, route results, and elapsed time. A stall prints Python stack traces after
+20 seconds; the test ends after 90 seconds. Only safe service properties and shell
+proxy variable names are shown; their values are not printed. The test does not
+restart or modify the installed app, and does not read its database or environment
+file. It does not reproduce production data, the service account, or the systemd
+sandbox, so a passing result narrows the investigation rather than proving the
+production service can start.
+
+Installer health requests now connect directly to localhost with proxies and
+redirects disabled. A failed check reports its stage and HTTP status or exception
+type, without dumping response bodies; the diagnostic is also retained as
+`startup-check.txt` in that attempt's backup. Rollback behavior remains enabled.
+
 Automated checks use fake HTTP and synthetic data. They exercise receipt handling,
 signatures, replay handling, scope/write gates, admin-only connection settings,
 and installer backup/rollback. Browser checks cover desktop/mobile input, consent,
