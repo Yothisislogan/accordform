@@ -5,7 +5,7 @@ OAuth mechanics below were derived from the MIT-licensed `taventech/hedge-cli`
 source (https://github.com/taventech/hedge-cli), not guessed:
 
     api base   https://api.hedgespecialty.com/api/v1        (staging-api… for staging)
-    discovery  https://api.hedgespecialty.com/.well-known/oauth-authorization-server
+    discovery  https://api.hedgespecialty.com/api/v1/oauth/.well-known/oauth-authorization-server
     auth       OAuth 2.1 — RFC 7591 dynamic client registration + RFC 8628
                device authorization grant, refresh_token for renewal
     scopes     broker_mcp broker_submit
@@ -31,9 +31,12 @@ and never leaves the server.
 from __future__ import annotations
 
 import json
+import hashlib
 import os
+import threading
 import time
 from pathlib import Path
+from urllib.parse import urlparse
 
 import requests
 
@@ -129,7 +132,7 @@ _FORM = {"Content-Type": "application/x-www-form-urlencoded"}
 
 def _post_form(url: str, fields: dict, timeout: int) -> tuple[int, dict]:
     try:
-        r = requests.post(url, data=fields, headers=_FORM, timeout=timeout)
+        r = requests.post(url, data=fields, headers=_FORM, timeout=timeout, allow_redirects=False)
     except requests.RequestException as e:
         raise HedgeError(f"Could not reach Hedge: {e}") from e
     try:
@@ -140,14 +143,21 @@ def _post_form(url: str, fields: dict, timeout: int) -> tuple[int, dict]:
 
 def discover(config: type[Config] = Config) -> dict:
     """RFC 8414 authorization-server metadata."""
-    url = env(config)["issuer"] + "/.well-known/oauth-authorization-server"
+    url = env(config)["api_base"] + "/oauth/.well-known/oauth-authorization-server"
     try:
-        r = requests.get(url, timeout=config.HEDGE_TIMEOUT)
+        r = requests.get(url, timeout=config.HEDGE_TIMEOUT, allow_redirects=False)
     except requests.RequestException as e:
         raise HedgeError(f"Could not reach Hedge auth server: {e}") from e
     if r.status_code != 200:
         raise HedgeError(f"Could not load Hedge auth metadata ({r.status_code})", r.status_code)
-    return r.json()
+    meta = r.json()
+    # Never send credentials to a different origin or a redirect from discovery.
+    for key in ("token_endpoint", "registration_endpoint", "device_authorization_endpoint"):
+        endpoint = meta.get(key)
+        if endpoint and (urlparse(endpoint).scheme != "https" or
+                         urlparse(endpoint).netloc != urlparse(url).netloc):
+            raise HedgeError("Hedge discovery returned an untrusted endpoint")
+    return meta
 
 
 def register_client(meta: dict, config: type[Config] = Config) -> str:
@@ -162,7 +172,7 @@ def register_client(meta: dict, config: type[Config] = Config) -> str:
     try:
         r = requests.post(endpoint, json={"client_name": CLIENT_NAME,
                                           "redirect_uris": REDIRECT_URIS},
-                          timeout=config.HEDGE_TIMEOUT)
+                          timeout=config.HEDGE_TIMEOUT, allow_redirects=False)
     except requests.RequestException as e:
         raise HedgeError(f"Client registration failed: {e}") from e
     if r.status_code >= 400:
@@ -180,8 +190,8 @@ def start_device_login(config: type[Config] = Config) -> dict:
     The device_code is kept server-side (a file, so it survives across gunicorn
     workers); the browser only ever sees the user-facing code and URL.
     """
-    if auth_mode(config) == "api_key":
-        raise HedgeError("An API key is configured — no sign-in is needed.")
+    if auth_mode(config) == "client_credentials":
+        raise HedgeError("Machine credentials are configured — no sign-in is needed.")
     meta = discover(config)
     client_id = register_client(meta, config)
     endpoint = meta.get("device_authorization_endpoint")
@@ -286,24 +296,61 @@ def bearer(config: type[Config] = Config) -> str:
 
 
 def auth_mode(config: type[Config] = Config) -> str:
-    """'api_key' when a static brokerage credential is configured, else 'oauth'.
-
-    The key wins when both exist: it is the deliberate, server-configured
-    credential, while a stray token file may be stale.
-    """
-    return "api_key" if (getattr(config, "HEDGE_API_KEY", "") or "").strip() else "oauth"
+    if getattr(config, "HEDGE_CLIENT_ID", "") or getattr(config, "HEDGE_CLIENT_SECRET", ""):
+        return "client_credentials"
+    return "legacy_key" if getattr(config, "HEDGE_API_KEY", "") else "oauth"
 
 
-def _auth_headers(config: type[Config] = Config) -> dict:
-    """The credential header for a call — X-Api-Key or a (refreshed) Bearer."""
-    if auth_mode(config) == "api_key":
-        return {config.HEDGE_API_KEY_HEADER: config.HEDGE_API_KEY.strip()}
+_machine_cache = {}
+_machine_lock = threading.Lock()
+
+
+def _machine_token(config: type[Config]) -> dict:
+    client_id = getattr(config, "HEDGE_CLIENT_ID", "").strip()
+    secret = getattr(config, "HEDGE_CLIENT_SECRET", "").strip()
+    if not client_id or not secret:
+        raise HedgeAuthRequired("Set both HEDGE_CLIENT_ID and HEDGE_CLIENT_SECRET.")
+    key = (config.HEDGE_ENV, client_id, hashlib.sha256(secret.encode()).hexdigest(),
+           config.HEDGE_SCOPES)
+    with _machine_lock:
+        token = _machine_cache.get(key)
+        if token and token["expires_at"] > time.time() + 60:
+            return token
+        endpoint = discover(config).get("token_endpoint")
+        if not endpoint:
+            raise HedgeError("Hedge discovery returned no token endpoint")
+        status, body = _post_form(endpoint, {
+            "grant_type": "client_credentials", "client_id": client_id,
+            "client_secret": secret, "scope": config.HEDGE_SCOPES,
+        }, config.HEDGE_TIMEOUT)
+        if status != 200 or not body.get("access_token"):
+            raise HedgeAuthRequired("Hedge rejected the machine credentials. Check the portal API key and scopes.")
+        token = {"access_token": body["access_token"],
+                 "expires_at": time.time() + int(body.get("expires_in", 3600)),
+                 "scope": body.get("scope", "")}
+        _machine_cache.clear()  # discard rotated credentials; tokens stay in memory only
+        _machine_cache[key] = token
+        return token
+
+
+def _auth_headers(config: type[Config] = Config, *, write=False) -> dict:
+    mode = auth_mode(config)
+    if mode == "legacy_key":
+        raise HedgeAuthRequired("Static HEDGE_API_KEY is unsupported. Set HEDGE_CLIENT_ID and HEDGE_CLIENT_SECRET from Hedge Settings → API keys.")
+    if mode == "client_credentials":
+        token = _machine_token(config)
+        if write and "broker_submit" not in token["scope"].split():
+            raise HedgeError("Hedge has not granted broker_submit. Ask your Hedge account manager to enable submissions.", 403)
+        return {"Authorization": "Bearer " + token["access_token"]}
     return {"Authorization": f"Bearer {bearer(config)}"}
 
 
 def is_signed_in(config: type[Config] = Config) -> bool:
-    if auth_mode(config) == "api_key":
-        return True
+    if auth_mode(config) == "client_credentials":
+        return bool(getattr(config, "HEDGE_CLIENT_ID", "") and
+                    getattr(config, "HEDGE_CLIENT_SECRET", ""))
+    if auth_mode(config) == "legacy_key":
+        return False
     tok = load_token(config)
     return bool(tok and (tok.get("refresh_token") or
                          tok.get("expires_at", 0) > int(time.time())))
@@ -333,7 +380,7 @@ def _render_detail(detail, fallback: str) -> str:
 
 
 def _raise_for_status(resp, fallback: str) -> None:
-    if resp.status_code < 400:
+    if resp.status_code < 300:
         return
     parsed = None
     try:
@@ -372,15 +419,18 @@ def request(method: str, path: str, *, params: dict | None = None,
             config: type[Config] = Config):
     """Authenticated JSON call against the Hedge broker API."""
     _guard_query(params)
+    write = method.upper() not in ("GET", "HEAD", "OPTIONS")
+    if write and not getattr(config, "HEDGE_LIVE", False):
+        raise HedgeError("Hedge live mode is off. Nothing was sent.", 503)
     url = env(config)["api_base"] + path
     # Resolve credentials OUTSIDE the try: an expired session is an auth
     # problem, and must surface as HedgeAuthRequired, not "could not reach".
-    headers = {**_auth_headers(config), "Accept": "application/json",
+    headers = {**_auth_headers(config, write=write), "Accept": "application/json",
                **(extra_headers or {})}
     try:
         resp = requests.request(
             method, url, params=params, json=json_body,
-            headers=headers, timeout=config.HEDGE_TIMEOUT)
+            headers=headers, timeout=config.HEDGE_TIMEOUT, allow_redirects=False)
     except requests.RequestException as e:
         raise HedgeError(f"Could not reach Hedge: {e}") from e
     _raise_for_status(resp, f"Hedge error {resp.status_code}")
@@ -398,13 +448,17 @@ def upload_document(submission_id: str, pdf_bytes: bytes, filename: str,
 
     Multipart field name is "file" — matching the CLI's implementation.
     """
+    if not getattr(config, "HEDGE_LIVE", False):
+        raise HedgeError("Hedge live mode is off. Nothing was sent.", 503)
+    if not pdf_bytes.startswith(b"%PDF-") or len(pdf_bytes) > 15 * 1024 * 1024:
+        raise HedgeError("Upload a valid PDF no larger than 15 MB.", 422)
     url = f"{env(config)['api_base']}/broker/submissions/{submission_id}/documents"
     files = {"file": (filename, pdf_bytes, "application/pdf")}
     data = {"name": label} if label else None
-    headers = _auth_headers(config)  # auth errors before network errors
+    headers = _auth_headers(config, write=True)
     try:
         resp = requests.post(url, files=files, data=data, headers=headers,
-                             timeout=config.HEDGE_TIMEOUT)
+                             timeout=config.HEDGE_TIMEOUT, allow_redirects=False)
     except requests.RequestException as e:
         raise HedgeError(f"Could not upload to Hedge: {e}") from e
     _raise_for_status(resp, f"Upload failed ({resp.status_code})")
@@ -420,7 +474,7 @@ def download(path: str, config: type[Config] = Config) -> tuple[bytes, str]:
     headers = _auth_headers(config)  # auth errors before network errors
     try:
         resp = requests.get(url, headers=headers,
-                            timeout=config.HEDGE_TIMEOUT)
+                            timeout=config.HEDGE_TIMEOUT, allow_redirects=False)
     except requests.RequestException as e:
         raise HedgeError(f"Could not reach Hedge: {e}") from e
     _raise_for_status(resp, f"Download failed ({resp.status_code})")

@@ -63,6 +63,8 @@ def create_app(config=None) -> Flask:
 
     _register_security(app)
     _register_routes(app)
+    from hedge.integrations import register_routes
+    register_routes(app)
 
     # Background remote-state poller (Phase 2). Only worth a thread when live
     # writes are enabled; the loop itself also no-ops while signed out.
@@ -267,7 +269,7 @@ def _register_routes(app: Flask) -> None:
         if missing:
             return jsonify({"error": "Hedge needs these before submitting: "
                                      + ", ".join(missing), "missing": missing}), 422
-        if (hedge_service.auth_mode(cfg) == "api_key"
+        if (hedge_service.auth_mode(cfg) == "client_credentials"
                 and not payload.get("producer_email")):
             payload["producer_email"] = session.get("email")
         return _pipe(hedge_pipeline.create_draft, db.get_db(),
@@ -467,7 +469,7 @@ def _register_routes(app: Flask) -> None:
         # Brokerage API-client credentials require attributing the producing
         # broker. Default to the WIT user who is creating the submission; an
         # explicit producer_email in the payload/overrides wins.
-        if (hedge_service.auth_mode(cfg) == "api_key"
+        if (hedge_service.auth_mode(cfg) == "client_credentials"
                 and not payload.get("producer_email")):
             payload["producer_email"] = session.get("email")
         resp = _hedge(hedge_service.create_submission, payload, cfg)
@@ -535,7 +537,7 @@ def _register_routes(app: Flask) -> None:
     @app.route("/api/hedge/submissions/<sid>/finalize", methods=["POST"])
     @auth.api_login_required
     def hedge_finalize(sid):
-        return _hedge(hedge_service.finalize, sid, cfg)
+        return jsonify({"error": "Use the local pipeline review and approval to release to market."}), 409
 
     @app.route("/api/hedge/submissions/<sid>/quotes")
     @auth.api_login_required

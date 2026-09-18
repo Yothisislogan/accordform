@@ -17,7 +17,7 @@ requests==2.34.2          # token/userinfo HTTP calls
 
 # --- Email (choose transport via config) ---
 # SMTP uses the stdlib (smtplib); SendGrid is optional.
-sendgrid==6.12.6          # only used when EMAIL_TRANSPORT=sendgrid
+sendgrid==6.12.5          # only used when EMAIL_TRANSPORT=sendgrid
 
 # --- Production WSGI server (behind nginx) ---
 gunicorn==23.0.0
