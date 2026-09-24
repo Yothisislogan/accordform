@@ -201,7 +201,12 @@ def apply_release(source, target, changes, args):
     stopped = False
     switched_env = False
     code_started = False
+    trace = None
     try:
+        if getattr(args, 'trace_startup', False):
+            from trace_hedge_startup import StartupTrace
+            trace = StartupTrace(new_env, database, backup)
+            print('Temporary startup stack capture enabled for candidate workers.', flush=True)
         run("systemctl", "stop", args.service)
         stopped = True
         # Back up a consistent SQLite snapshot, including any WAL contents.
@@ -252,6 +257,13 @@ def apply_release(source, target, changes, args):
             print(f"Previous code and virtualenv restored. Backup: {backup}", file=sys.stderr)
             print("Database was not rolled back; new tables/data are retained.", file=sys.stderr)
         raise
+    finally:
+        if trace is not None:
+            try:
+                trace.finish()
+            except (OSError, ValueError) as error:
+                # Keep the deployment/rollback outcome and its original error.
+                print('Startup trace collection/cleanup failed: ' + type(error).__name__, file=sys.stderr)
 
 
 def main():
@@ -262,6 +274,8 @@ def main():
     parser.add_argument("--backup-root", default="/var/backups/wit-forms")
     parser.add_argument("--health-url", default="http://127.0.0.1:8097/healthz")
     parser.add_argument("--apply", action="store_true", help="Install after checks; default is read-only")
+    parser.add_argument("--trace-startup", action="store_true",
+                        help="With --apply, capture private worker stack locations and remove the tracer afterwards")
     parser.add_argument("--inspect-service", action="store_true",
                         help="After file checks, report the running service's database path; requires /proc access")
     args = parser.parse_args()

@@ -138,6 +138,47 @@ def test_unhealthy_deployment_restores_previous_code_and_virtualenv(installation
     assert calls[-1]==("systemctl","start","witforms")
 
 
+@pytest.mark.parametrize('successful', [False, True])
+def test_traced_install_restores_launcher_and_keeps_rollback(installation, monkeypatch, successful, capsys):
+    source, target, manifest, args, calls = installation
+    monkeypatch.syspath_prepend(str(Path(__file__).parents[1] / 'tools'))
+    original_run = installer.run
+    console_script = b'#!/usr/bin/python3\n# original candidate launcher\n'
+    def run(*parts, capture=False):
+        result = original_run(*parts, capture=capture)
+        if 'venv' in parts:
+            candidate = Path(parts[-1])
+            (candidate / 'bin').mkdir()
+            (candidate / 'bin/gunicorn').write_bytes(console_script)
+            (candidate / 'bin/gunicorn').chmod(0o755)
+        return result
+    monkeypatch.setattr(installer, 'run', run)
+    def healthy(*_):
+        candidate = next(target.glob('.venv-hedge-*'))
+        (candidate / '.wit-startup-trace/worker-123.log').write_text(
+            'WIT_STARTUP_TRACE: worker forked\n'
+            '  File "/application/app.py", line 57 in create_app\n'
+            'RuntimeError: private-error-value\n')
+        return successful
+    monkeypatch.setattr(installer, 'healthy', healthy)
+    args.trace_startup = True
+    if successful:
+        installer.apply_release(source, target, installer.plan(source, target, manifest), args)
+    else:
+        with pytest.raises(RuntimeError, match='checks failed'):
+            installer.apply_release(source, target, installer.plan(source, target, manifest), args)
+        assert (target / 'app.py').read_text() == 'old app'
+        assert not (target / '.venv').is_symlink()
+    candidate = next(target.glob('.venv-hedge-*'))
+    assert (candidate / 'bin/gunicorn').read_bytes() == console_script
+    assert not (candidate / '.wit-startup-trace.py').exists()
+    assert not (candidate / '.wit-startup-trace').exists()
+    backup = next(Path(args.backup_root).iterdir())
+    report = (backup / 'startup-stack.txt').read_text()
+    assert 'create_app' in report and 'private-error-value' not in report
+    assert 'private-error-value' not in capsys.readouterr().out
+
+
 @pytest.mark.parametrize("base", [
     "af54e41b7de6b57bbf1ab38d11de7ed92f10768c",
     "5cbb24bedeec7c8f29f516364ba357effbbe947e",

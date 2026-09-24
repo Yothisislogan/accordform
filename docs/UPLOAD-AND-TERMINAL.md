@@ -232,6 +232,31 @@ redirects disabled. A failed check reports its stage and HTTP status or exceptio
 type, without dumping response bodies; the diagnostic is also retained as
 `startup-check.txt` in that attempt's backup. Rollback behavior remains enabled.
 
+If the isolated test passes but a deployment times out without a useful worker
+error, the installer supports an instrumented deployment attempt:
+
+```sh
+python3 tools/install_hedge_release.py \
+  --app-dir /path/to/installed-app \
+  --db-path /path/to/active/database.sqlite3 \
+  --apply --trace-startup
+```
+
+This **restarts the live service** using the same backup, verification, and
+rollback steps as a normal deployment. It temporarily instruments only the
+new candidate virtualenv's Gunicorn launcher. Forked workers write private
+Python stack snapshots every ten seconds while the attempt is active. The
+controller cancels sampling when the attempt finishes, with a two-minute
+expiry as a fallback. The original launcher is restored and temporary tracer
+files are removed after either success or rollback. No systemd unit changes
+are made, and the health checks remain mandatory.
+
+The terminal output and the backup's mode-0600 `startup-stack.txt` contain only
+diagnostic markers and stack file/function/line locations. Source lines,
+local variables, credential values, request bodies, and exception messages
+are not collected by the stack sampler. This option diagnoses an actual
+service stall; it does not claim that a timeout has been fixed.
+
 Automated checks use fake HTTP and synthetic data. They exercise receipt handling,
 signatures, replay handling, scope/write gates, admin-only connection settings,
 and installer backup/rollback. Browser checks cover desktop/mobile input, consent,
