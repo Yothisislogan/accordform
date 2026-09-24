@@ -1,10 +1,11 @@
 {
-  "application_commit": "5395c3edaa343f5765711d194363488be2824679",
+  "application_commit": "b672d99b87ec77e26ffdce62226f10780ae94844",
   "base_commit": "5cbb24bedeec7c8f29f516364ba357effbbe947e",
   "supported_base_commits": [
     "5cbb24bedeec7c8f29f516364ba357effbbe947e",
     "af54e41b7de6b57bbf1ab38d11de7ed92f10768c",
-    "3c2f79d5a5a4f3401db15900d85dce6653c4cc64"
+    "3c2f79d5a5a4f3401db15900d85dce6653c4cc64",
+    "5395c3edaa343f5765711d194363488be2824679"
   ],
   "files": [
     {
@@ -148,7 +149,7 @@
     {
       "path": "static/appetite.html",
       "before": "9cfd6360e08cb81f6517c14c91ab57e8098950d4",
-      "after": "9cfd6360e08cb81f6517c14c91ab57e8098950d4",
+      "after": "1d2586d86dc37199758e5699bf81f273082e77bb",
       "before_alternates": [
         null
       ]
@@ -156,19 +157,45 @@
     {
       "path": "static/hedge.html",
       "before": "a54cc9bfb60d8a2223f40ad7889fa22af10b323f",
-      "after": "305f339f6c749b0d5e75ca36a5545c358219b332",
+      "after": "8800d16b67faf23d362548c6fb8c0d0b73393ae2",
       "before_alternates": [
         null,
-        "a937126feded0819dd5d2cff70c5131eeb0823c9"
+        "a937126feded0819dd5d2cff70c5131eeb0823c9",
+        "305f339f6c749b0d5e75ca36a5545c358219b332"
       ]
     },
     {
       "path": "static/index.html",
       "before": "02c240d89541c938cc512e86d3e00ef3f1166da9",
-      "after": "02c240d89541c938cc512e86d3e00ef3f1166da9",
+      "after": "dea113caded3655e1eb8234d73b525b7fca8ecc7",
       "before_alternates": [
         "a466d22d2085cdb51bd1b6db04574386e1cf12af"
       ]
+    },
+    {
+      "path": "static/loss-run.html",
+      "before": "0a562a71cd237deb230e24be0e6fe6367ddfb5df",
+      "after": "f6a63b2665b462b352b5b5338d4221614d138418"
+    },
+    {
+      "path": "static/proposal.html",
+      "before": "fdb264e6d40367f51a64b2ecfde6bd9a4d3e92bc",
+      "after": "d2eb35f673a271a1579ef005a9c22504e982537e"
+    },
+    {
+      "path": "static/styles.css",
+      "before": "95fbb9a8e79f7fd36a0368b52518d3d22b217f0c",
+      "after": "5fc987e425e08bf67748e35029b8993ad26a6a20"
+    },
+    {
+      "path": "static/assets/wit-forms-icon-1b.png",
+      "before": null,
+      "after": "b323fc2ea9a5f8130b0f0a1a154bdf3684b9f103"
+    },
+    {
+      "path": "static/assets/wit-forms-logo-1b-light.png",
+      "before": null,
+      "after": "7b700a0b94bad1ca701078982c19f4c7b5b834e7"
     }
   ]
 }
