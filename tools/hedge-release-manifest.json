@@ -1,9 +1,10 @@
 {
-  "application_commit": "3c2f79d5a5a4f3401db15900d85dce6653c4cc64",
+  "application_commit": "5395c3edaa343f5765711d194363488be2824679",
   "base_commit": "5cbb24bedeec7c8f29f516364ba357effbbe947e",
   "supported_base_commits": [
     "5cbb24bedeec7c8f29f516364ba357effbbe947e",
-    "af54e41b7de6b57bbf1ab38d11de7ed92f10768c"
+    "af54e41b7de6b57bbf1ab38d11de7ed92f10768c",
+    "3c2f79d5a5a4f3401db15900d85dce6653c4cc64"
   ],
   "files": [
     {
@@ -155,9 +156,10 @@
     {
       "path": "static/hedge.html",
       "before": "a54cc9bfb60d8a2223f40ad7889fa22af10b323f",
-      "after": "a937126feded0819dd5d2cff70c5131eeb0823c9",
+      "after": "305f339f6c749b0d5e75ca36a5545c358219b332",
       "before_alternates": [
-        null
+        null,
+        "a937126feded0819dd5d2cff70c5131eeb0823c9"
       ]
     },
     {
