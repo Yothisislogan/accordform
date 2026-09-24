@@ -4,15 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WIT Forms — We Insure Things</title>
-  <link rel="stylesheet" href="/static/styles.css" />
-  <link rel="icon" href="/static/assets/favicon.svg" />
+  <link rel="stylesheet" href="/static/styles.css?v=wit-forms-1b" />
+  <link rel="icon" type="image/png" href="/static/assets/wit-forms-icon-1b.png" />
+  <link rel="apple-touch-icon" href="/static/assets/wit-forms-icon-1b.png" />
 </head>
 <body>
   <!-- Login gate -->
   <section id="login-view" class="login-view hidden">
     <div class="login-card">
-      <div class="brand-mark" aria-hidden="true"></div>
-      <h1>WIT Forms</h1>
+      <h1><img class="brand-logo" src="/static/assets/wit-forms-logo-1b-light.png" alt="WiT Forms" width="1832" height="680" /></h1>
       <p class="muted">Internal ACORD form filler for We Insure Things.</p>
       <a id="login-btn" class="btn btn-primary btn-lg" href="/auth/login">
         Sign in with Google
@@ -26,8 +26,10 @@
   <div id="app-view" class="hidden">
     <header class="topbar">
       <div class="topbar-left">
-        <span class="brand-mark sm" aria-hidden="true"></span>
-        <span class="brand-name">WIT Forms</span>
+        <a class="brand-home" href="/" aria-label="WiT Forms home">
+          <img class="brand-icon" src="/static/assets/wit-forms-icon-1b.png" alt="" width="600" height="600" />
+        </a>
+        <span class="brand-name">WiT Forms</span>
       </div>
       <div class="topbar-right">
         <a class="btn btn-ghost btn-sm" href="/appetite">Appetite</a>
@@ -42,7 +44,7 @@
     <!-- Search / catalog -->
     <main id="search-view" class="container">
       <div class="hero">
-        <div class="brand-mark lg" aria-hidden="true"></div>
+        <img class="brand-logo" src="/static/assets/wit-forms-logo-1b-light.png" alt="WiT Forms" width="1832" height="680" />
         <h2>Find a form</h2>
         <input id="search-box" class="search-box" type="search" autocomplete="off"
                placeholder="Search by number, title, or keyword (e.g. 25, certificate, COI)" />

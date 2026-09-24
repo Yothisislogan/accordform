@@ -4,8 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Hedge — WIT Forms</title>
-  <link rel="stylesheet" href="/static/styles.css" />
-  <link rel="icon" href="/static/assets/favicon.svg" />
+  <link rel="stylesheet" href="/static/styles.css?v=wit-forms-1b" />
+  <link rel="icon" type="image/png" href="/static/assets/wit-forms-icon-1b.png" />
+  <link rel="apple-touch-icon" href="/static/assets/wit-forms-icon-1b.png" />
   <style>
     .steps { display: grid; gap: 1rem; }
     .step-num { display: inline-grid; place-items: center; width: 22px; height: 22px;
@@ -42,7 +43,9 @@
 <body>
   <header class="topbar">
     <div class="topbar-left">
-      <span class="brand-mark sm" aria-hidden="true"></span>
+      <a class="brand-home" href="/" aria-label="WiT Forms home">
+        <img class="brand-icon" src="/static/assets/wit-forms-icon-1b.png" alt="" width="600" height="600" />
+      </a>
       <span class="brand-name">Hedge submissions</span>
     </div>
     <div class="topbar-right">
