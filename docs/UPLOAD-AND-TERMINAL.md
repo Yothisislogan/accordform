@@ -204,7 +204,21 @@ the supplied snapshot into a private temporary database, starts an isolated
 Gunicorn process on an OS-selected loopback port, and checks real health/intake
 HTTP responses. A WSGI guard blocks every other endpoint; the temporary worker
 cannot make outbound connections or open another SQLite database. OAuth setup
-uses synthetic values. No live credentials are passed into the test process.
+uses synthetic values. Service environment credentials are not loaded.
+
+If the only supporting-file difference is a customized `gemini_service.py`, add
+`--check-local-gemini` to that diagnostic command. This verifies the local file
+has the same Python structure as the release when literal values are excluded.
+Imports, calls, names, and control flow must match. Missing files, symlinks,
+syntax errors, and files over 1 MiB are rejected. Other supporting-file differences
+still stop the test.
+
+The verified bytes are copied to a private temporary file and loaded as the
+Gemini module in the isolated worker. All literal values are preserved locally
+without displaying their contents. This tests the customization with the new
+application and dependencies; matching structure alone does not prove its
+values are correct. The installed file and release checkout are unchanged,
+and this option does not change installer checks or approve deployment.
 
 Only diagnostic phase names, stack locations, response statuses, and selected
 service-override **names** are displayed. Customer records, override values, and

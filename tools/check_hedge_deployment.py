@@ -2,11 +2,12 @@
 """Check supporting files, a database snapshot, and an isolated Gunicorn worker.
 
 Only reads the installed app and the supplied SQLite snapshot. Temporary copies
-remain local and are removed. No service restart, live credentials, or carrier IO.
+remain local and are removed. No service restart, inherited credentials, or carrier IO.
 """
 from __future__ import annotations
 
 import argparse
+import ast
 import http.client
 import json
 import os
@@ -26,6 +27,7 @@ from install_hedge_release import blob_sha, plan
 
 WORKER = r'''
 import faulthandler
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -47,6 +49,13 @@ try:
     assert Path(Config.DATA_DIR).resolve() == Path(os.environ['DATA_DIR']).resolve()
     assert Path(Config.DB_PATH).resolve() == Path(os.environ['DB_PATH']).resolve()
     assert not Config.HEDGE_LIVE
+    local_gemini = Path(os.environ['DATA_DIR']) / 'local_gemini.py'
+    if local_gemini.is_file():
+        spec = importlib.util.spec_from_file_location('gemini_service', local_gemini)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules['gemini_service'] = module
+        spec.loader.exec_module(module)
+        print('WIT_PROBE_PHASE: verified local Gemini copy imported', flush=True)
     from app import app
     real_app = app
     def app(environ, start_response):
@@ -62,7 +71,9 @@ except BaseException as error:
     # Public source stack locations are useful; omit exception messages/locals.
     for frame in traceback.extract_tb(error.__traceback__):
         print('  File ' + json.dumps(frame.filename) + ', line ' + str(frame.lineno) + ', in ' + frame.name, flush=True)
-    raise
+    # Gunicorn's boot-error exit code stops retries without printing the
+    # original exception message or source line.
+    raise SystemExit(3) from None
 finally:
     faulthandler.cancel_dump_traceback_later()
 '''
@@ -83,6 +94,32 @@ def supporting_files(source, installed, manifest):
         if target.is_symlink() or not target.is_file() or blob_sha(target) != blob_sha(file):
             conflicts.append(str(relative))
     return sorted(conflicts)
+
+
+def literal_only_gemini(source, installed):
+    """Return verified bytes for the private probe, or None; never import here.
+
+    This check permits only literal changes in this specific supporting module.
+    It does not approve their values or change the installer's deployment rules.
+    """
+    target = installed / 'gemini_service.py'
+    if target.is_symlink() or not target.is_file() or target.stat().st_size > 1024 * 1024:
+        return None
+    data = target.read_bytes()
+    if len(data) > 1024 * 1024:
+        return None
+
+    class HideLiterals(ast.NodeTransformer):
+        def visit_Constant(self, node):
+            return ast.Constant(value=None)
+
+    try:
+        local_tree = HideLiterals().visit(ast.parse(data))
+        release_tree = HideLiterals().visit(ast.parse((source / 'gemini_service.py').read_bytes()))
+        matches = ast.dump(local_tree) == ast.dump(release_tree)
+    except (SyntaxError, ValueError, RecursionError):
+        return None
+    return data if matches else None
 
 
 def copy_snapshot(source, destination):
@@ -149,7 +186,11 @@ def check_routes(address):
         connection.close()
 
 
-def check_gunicorn(source, interpreter, temporary):
+def check_gunicorn(source, interpreter, temporary, local_gemini=None):
+    if local_gemini is not None:
+        with (temporary / 'local_gemini.py').open('xb') as target:
+            os.fchmod(target.fileno(), 0o600)
+            target.write(local_gemini)
     wrapper = temporary / 'probe_application.py'
     wrapper.write_text(WORKER)
     configuration = temporary / 'gunicorn_probe.conf.py'
@@ -214,6 +255,8 @@ def main():
     parser.add_argument('--python', required=True)
     parser.add_argument('--app-dir', required=True)
     parser.add_argument('--database-copy', required=True, help='Existing backup snapshot; never uploaded')
+    parser.add_argument('--check-local-gemini', action='store_true',
+                        help='Test a private copy of local gemini_service.py if only literals differ')
     args = parser.parse_args()
     source = Path(__file__).resolve().parent.parent
     installed = Path(args.app_dir).resolve()
@@ -226,17 +269,26 @@ def main():
         manifest = json.loads((source / 'tools/hedge-release-manifest.json').read_text())
         plan(source, installed, manifest)
         conflicts = supporting_files(source, installed, manifest)
+        local_gemini = None
+        if args.check_local_gemini and 'gemini_service.py' in conflicts:
+            local_gemini = literal_only_gemini(source, installed)
+            if local_gemini is None:
+                print('Local Gemini check refused: file must be regular, parseable, and differ only in literals.', flush=True)
+                return 1
+            conflicts.remove('gemini_service.py')
+            print('Local Gemini structure verified; literal values retained privately for this test.', flush=True)
         if conflicts:
             print('Supporting files need review (contents omitted):\n  ' + '\n  '.join(conflicts))
             return 1
-        print('Supporting application files match the release.', flush=True)
+        print('Other supporting application files match the release.' if local_gemini is not None
+              else 'Supporting application files match the release.', flush=True)
         print('Local gunicorn.conf.py present: ' + str((installed / 'gunicorn.conf.py').exists()), flush=True)
         report_service_override_names()
         with tempfile.TemporaryDirectory(prefix='wit-db-probe-') as directory:
             temporary = Path(directory)
             copy_snapshot(snapshot, temporary / 'probe.sqlite3')
             print('Database snapshot copied privately; starting isolated Gunicorn.', flush=True)
-            ok = check_gunicorn(source, interpreter, temporary)
+            ok = check_gunicorn(source, interpreter, temporary, local_gemini=local_gemini)
             if ok:
                 print('PASS: database-copy startup and real Gunicorn health/intake requests.', flush=True)
             return 0 if ok else 1
