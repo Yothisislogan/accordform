@@ -55,14 +55,23 @@
 
   <main class="container">
     <div id="notice" class="validation-summary hidden" role="alert" aria-live="assertive"></div>
+    <section id="wit-session-block" class="section hidden" aria-label="WiT Forms session">
+      <div class="section-body">
+        <p id="wit-session-message"></p>
+        <div class="inline">
+          <a class="btn btn-primary btn-sm" href="/auth/login">Sign in to WiT Forms</a>
+          <button id="reload-session-btn" class="btn btn-secondary btn-sm" type="button">Reload page</button>
+        </div>
+      </div>
+    </section>
 
     <!-- Step 0: session -->
     <section class="section">
       <div class="section-head"><h3>Hedge session</h3>
-        <span id="signed-state" class="prefill-controls muted small"></span>
+        <span id="signed-state" class="prefill-controls muted small">Checking WiT Forms session…</span>
       </div>
       <div class="section-body" style="grid-template-columns:1fr;">
-        <div id="signin-block" class="inline">
+        <div id="signin-block" class="inline hidden">
           <button id="signin-btn" class="btn btn-primary btn-sm" type="button">Sign in to Hedge</button>
           <span class="muted small">Device sign-in — approve in your browser. Admin only; the whole agency shares this session.</span>
         </div>
@@ -205,6 +214,7 @@
     "use strict";
     const $ = (s) => document.querySelector(s);
     let csrf = "", pollTimer = null, formAnswers = {};
+    let sessionReady = false, staffRole = "";
     let activeId = null;       // local pipeline id
     let activeRow = null;      // last-loaded pipeline row
 
@@ -215,26 +225,84 @@
       n.textContent = m; n.classList.remove("hidden"); n.scrollIntoView({behavior:"smooth",block:"center"}); };
     const show = (el, data) => { el.textContent = JSON.stringify(data, null, 2); el.classList.remove("hidden"); };
 
+    function recoverSession(message) {
+      csrf = "";
+      sessionReady = false;
+      clearInterval(pollTimer);
+      $("#signin-block").classList.add("hidden");
+      $("#device-block").classList.add("hidden");
+      $("#wit-session-message").textContent = message;
+      $("#wit-session-block").classList.remove("hidden");
+      $("#signed-state").textContent = "WiT Forms session needs attention";
+    }
+
+    $("#reload-session-btn").addEventListener("click", () => window.location.reload());
+
+    async function loadSession() {
+      const options = { credentials: "same-origin", cache: "no-store" };
+      const me = await fetch("/auth/me", options);
+      if (me.status === 401) {
+        recoverSession("Sign in to WiT Forms with your work account, then reopen this page.");
+        return false;
+      }
+      if (!me.ok) throw new Error("Could not check your WiT Forms session. Reload the page.");
+      const user = await me.json();
+      if (!user.authenticated) {
+        recoverSession("Sign in to WiT Forms with your work account, then reopen this page.");
+        return false;
+      }
+      $("#user-email").textContent = user.email || "";
+      staffRole = user.role || "";
+      const response = await fetch("/api/config", options);
+      if (response.status === 401) {
+        recoverSession("Your WiT Forms session expired. Sign in again, then reopen this page.");
+        return false;
+      }
+      if (!response.ok) throw new Error("Could not load your session security token. Reload the page.");
+      const config = await response.json();
+      if (typeof config.csrf_token !== "string" || !config.csrf_token) {
+        throw new Error("Could not load your session security token. Reload the page.");
+      }
+      csrf = config.csrf_token;
+      sessionReady = true;
+      $("#wit-session-block").classList.add("hidden");
+      return true;
+    }
+
     async function api(path, opts = {}) {
       const headers = { ...(opts.headers || {}) };
       if (opts.body && !(opts.body instanceof FormData)) headers["Content-Type"] = "application/json";
-      if ((opts.method || "GET") !== "GET") headers["X-CSRF-Token"] = csrf;
-      const res = await fetch(path, { ...opts, headers });
+      const writes = !["GET", "HEAD", "OPTIONS"].includes((opts.method || "GET").toUpperCase());
+      if (writes) {
+        if (!sessionReady || !csrf) throw new Error("Your WiT Forms session is not ready. Sign in or reload the page before continuing.");
+        headers["X-CSRF-Token"] = csrf;
+      }
+      const res = await fetch(path, { ...opts, headers, credentials: "same-origin", cache: "no-store" });
       const data = await res.json().catch(() => ({}));
+      if (res.status === 401 && data.error === "authentication required") {
+        const message = "Your WiT Forms session expired. Sign in again, then reopen this page.";
+        recoverSession(message);
+        throw new Error(message);
+      }
+      if (res.status === 403 && data.error === "invalid or missing CSRF token") {
+        // The server rejected this request before its handler ran. Never
+        // automatically replay a submission or other state-changing action.
+        const message = "Your WiT Forms session changed. Reload the page before retrying. This action was not submitted.";
+        recoverSession(message);
+        throw new Error(message);
+      }
       if (!res.ok) throw new Error(data.error || `${res.status}`);
       return data;
     }
 
     (async function boot() {
       try {
-        const me = await fetch("/auth/me");
-        if (me.status === 401) { notice("Sign in with your @weinsurethings.com account."); return; }
-        $("#user-email").textContent = (await me.json()).email || "";
-        csrf = (await (await fetch("/api/config")).json()).csrf_token || "";
+        if (!await loadSession()) return;
         await refreshStatus();
+        if (!sessionReady) return;
         await loadForms();
         await loadSubs();
-      } catch (e) { notice("Couldn’t start: " + e.message); }
+      } catch (e) { recoverSession(e.message); notice("Couldn’t start: " + e.message); }
     })();
 
     async function refreshStatus() {
@@ -249,9 +317,16 @@
           $("#signin-block").classList.add("hidden");
         } else {
           $("#signed-state").textContent = s.error || (s.auth_mode === "legacy_key" ? "Replace the legacy key with a client ID and secret." : "Not signed in");
-          $("#signin-block").classList.remove("hidden");
+          const deviceLogin = s.auth_mode === "oauth" && staffRole === "admin";
+          $("#signin-block").classList.toggle("hidden", !deviceLogin);
+          if (s.auth_mode === "oauth" && staffRole !== "admin") {
+            $("#signed-state").textContent = "A WiT Forms administrator must connect the agency to Hedge.";
+          }
         }
-      } catch (e) { $("#signed-state").textContent = "Not signed in"; }
+      } catch (e) {
+        $("#signin-block").classList.add("hidden");
+        if (sessionReady) $("#signed-state").textContent = "Could not check the Hedge connection: " + e.message;
+      }
     }
 
     // --- device sign-in ---

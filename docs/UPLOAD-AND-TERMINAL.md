@@ -100,6 +100,19 @@ Set it as `WIT_INTAKE_SECRET` on the forms server and use the same value in the
 WordPress settings in step 4. Hedge credentials and this secret are different.
 Restart the service after environment changes: `sudo systemctl restart witforms`.
 
+Sign in to WiT Forms at `/auth/login`, then open `/hedge` on the same host.
+The page loads a fresh session security token before allowing an action. If the
+session expires or a request is rejected for a stale token, use the page's sign-in
+or reload controls, then repeat the intended action yourself. Rejected actions
+are never automatically replayed. This browser-session error does not establish
+whether Hedge credentials are valid.
+
+With machine credentials configured, the page reports **Machine connection
+verified** after a successful connection check, or the connection error. The
+**Sign in to Hedge** device-flow button appears only for WiT administrators when
+the server is using device OAuth; it is not a form for entering machine keys.
+Keep client secrets in the service's active environment file, never in page HTML.
+
 In the matching Hedge portal, register the public HTTPS endpoint:
 
 `https://forms.weinsurethings.com/integrations/hedge/events`

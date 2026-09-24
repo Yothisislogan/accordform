@@ -182,6 +182,7 @@ def test_traced_install_restores_launcher_and_keeps_rollback(installation, monke
 @pytest.mark.parametrize("base", [
     "af54e41b7de6b57bbf1ab38d11de7ed92f10768c",
     "5cbb24bedeec7c8f29f516364ba357effbbe947e",
+    "3c2f79d5a5a4f3401db15900d85dce6653c4cc64",
 ])
 def test_supported_release_upgrades_boot_and_preserve_existing_database(tmp_path, base):
     """Exercise real historical code, dependency completeness, and additive schema startup."""

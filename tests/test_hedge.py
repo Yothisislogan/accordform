@@ -376,6 +376,20 @@ def test_login_is_admin_only(app):
     assert c.post("/api/hedge/login/start", headers=h).status_code == 403
 
 
+def test_invalid_csrf_cannot_start_hedge_signin(app, monkeypatch):
+    import hedge_service
+    calls = []
+    monkeypatch.setattr(hedge_service, 'start_device_login', lambda *args: calls.append(args) or {})
+    client, valid = _client(app)
+    for headers in ({}, {'X-CSRF-Token': 'stale-token'}):
+        response = client.post('/api/hedge/login/start', headers=headers)
+        assert response.status_code == 403
+        assert response.json == {'error': 'invalid or missing CSRF token'}
+    assert calls == []
+    assert client.post('/api/hedge/login/start', headers=valid).status_code == 200
+    assert len(calls) == 1
+
+
 def test_status_reports_signed_out_without_token(app):
     c, h = _client(app)
     body = c.get("/api/hedge/status").get_json()
