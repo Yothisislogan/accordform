@@ -4,8 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Hedge — WIT Forms</title>
-  <link rel="stylesheet" href="/static/styles.css" />
-  <link rel="icon" href="/static/assets/favicon.svg" />
+  <link rel="stylesheet" href="/static/styles.css?v=wit-forms-1b" />
+  <link rel="icon" type="image/png" href="/static/assets/wit-forms-icon-1b.png" />
+  <link rel="apple-touch-icon" href="/static/assets/wit-forms-icon-1b.png" />
   <style>
     .steps { display: grid; gap: 1rem; }
     .step-num { display: inline-grid; place-items: center; width: 22px; height: 22px;
@@ -42,7 +43,9 @@
 <body>
   <header class="topbar">
     <div class="topbar-left">
-      <span class="brand-mark sm" aria-hidden="true"></span>
+      <a class="brand-home" href="/" aria-label="WiT Forms home">
+        <img class="brand-icon" src="/static/assets/wit-forms-icon-1b.png" alt="" width="600" height="600" />
+      </a>
       <span class="brand-name">Hedge submissions</span>
     </div>
     <div class="topbar-right">
@@ -55,14 +58,23 @@
 
   <main class="container">
     <div id="notice" class="validation-summary hidden" role="alert" aria-live="assertive"></div>
+    <section id="wit-session-block" class="section hidden" aria-label="WiT Forms session">
+      <div class="section-body">
+        <p id="wit-session-message"></p>
+        <div class="inline">
+          <a class="btn btn-primary btn-sm" href="/auth/login">Sign in to WiT Forms</a>
+          <button id="reload-session-btn" class="btn btn-secondary btn-sm" type="button">Reload page</button>
+        </div>
+      </div>
+    </section>
 
     <!-- Step 0: session -->
     <section class="section">
       <div class="section-head"><h3>Hedge session</h3>
-        <span id="signed-state" class="prefill-controls muted small"></span>
+        <span id="signed-state" class="prefill-controls muted small">Checking WiT Forms session…</span>
       </div>
       <div class="section-body" style="grid-template-columns:1fr;">
-        <div id="signin-block" class="inline">
+        <div id="signin-block" class="inline hidden">
           <button id="signin-btn" class="btn btn-primary btn-sm" type="button">Sign in to Hedge</button>
           <span class="muted small">Device sign-in — approve in your browser. Admin only; the whole agency shares this session.</span>
         </div>
@@ -82,7 +94,7 @@
           <p class="muted small">
             The draft is saved locally first — nothing reaches Hedge until you press
             <strong>Send to Hedge</strong>. A retried send reuses the same idempotency
-            key, so it can never create a duplicate.
+            key, within Hedge’s 24-hour retry window. Older uncertain attempts require reconciliation.
           </p>
           <div class="row2">
             <div class="field">
@@ -114,6 +126,7 @@
             <button id="send-btn" class="btn btn-primary btn-sm" type="button" disabled>Send to Hedge</button>
             <span id="addr-note" class="muted small"></span>
           </div>
+          <p id="intake-source" class="muted small"></p>
           <pre id="payload" class="payload hidden"></pre>
         </div>
       </section>
@@ -177,6 +190,13 @@
         </div>
       </section>
 
+      <section class="section">
+        <div class="section-head"><h3>Submission activity</h3></div>
+        <div class="section-body" style="grid-template-columns:1fr;">
+          <p class="muted small">Market events arrive from Hedge webhooks. Use Refresh status for the overall submission status.</p>
+          <ol id="event-list" class="doc-list"></ol>
+        </div>
+      </section>
       <!-- Recent -->
       <section class="section">
         <div class="section-head"><h3>Recent submissions</h3>
@@ -197,6 +217,7 @@
     "use strict";
     const $ = (s) => document.querySelector(s);
     let csrf = "", pollTimer = null, formAnswers = {};
+    let sessionReady = false, staffRole = "";
     let activeId = null;       // local pipeline id
     let activeRow = null;      // last-loaded pipeline row
 
@@ -207,26 +228,84 @@
       n.textContent = m; n.classList.remove("hidden"); n.scrollIntoView({behavior:"smooth",block:"center"}); };
     const show = (el, data) => { el.textContent = JSON.stringify(data, null, 2); el.classList.remove("hidden"); };
 
+    function recoverSession(message) {
+      csrf = "";
+      sessionReady = false;
+      clearInterval(pollTimer);
+      $("#signin-block").classList.add("hidden");
+      $("#device-block").classList.add("hidden");
+      $("#wit-session-message").textContent = message;
+      $("#wit-session-block").classList.remove("hidden");
+      $("#signed-state").textContent = "WiT Forms session needs attention";
+    }
+
+    $("#reload-session-btn").addEventListener("click", () => window.location.reload());
+
+    async function loadSession() {
+      const options = { credentials: "same-origin", cache: "no-store" };
+      const me = await fetch("/auth/me", options);
+      if (me.status === 401) {
+        recoverSession("Sign in to WiT Forms with your work account, then reopen this page.");
+        return false;
+      }
+      if (!me.ok) throw new Error("Could not check your WiT Forms session. Reload the page.");
+      const user = await me.json();
+      if (!user.authenticated) {
+        recoverSession("Sign in to WiT Forms with your work account, then reopen this page.");
+        return false;
+      }
+      $("#user-email").textContent = user.email || "";
+      staffRole = user.role || "";
+      const response = await fetch("/api/config", options);
+      if (response.status === 401) {
+        recoverSession("Your WiT Forms session expired. Sign in again, then reopen this page.");
+        return false;
+      }
+      if (!response.ok) throw new Error("Could not load your session security token. Reload the page.");
+      const config = await response.json();
+      if (typeof config.csrf_token !== "string" || !config.csrf_token) {
+        throw new Error("Could not load your session security token. Reload the page.");
+      }
+      csrf = config.csrf_token;
+      sessionReady = true;
+      $("#wit-session-block").classList.add("hidden");
+      return true;
+    }
+
     async function api(path, opts = {}) {
       const headers = { ...(opts.headers || {}) };
       if (opts.body && !(opts.body instanceof FormData)) headers["Content-Type"] = "application/json";
-      if ((opts.method || "GET") !== "GET") headers["X-CSRF-Token"] = csrf;
-      const res = await fetch(path, { ...opts, headers });
+      const writes = !["GET", "HEAD", "OPTIONS"].includes((opts.method || "GET").toUpperCase());
+      if (writes) {
+        if (!sessionReady || !csrf) throw new Error("Your WiT Forms session is not ready. Sign in or reload the page before continuing.");
+        headers["X-CSRF-Token"] = csrf;
+      }
+      const res = await fetch(path, { ...opts, headers, credentials: "same-origin", cache: "no-store" });
       const data = await res.json().catch(() => ({}));
+      if (res.status === 401 && data.error === "authentication required") {
+        const message = "Your WiT Forms session expired. Sign in again, then reopen this page.";
+        recoverSession(message);
+        throw new Error(message);
+      }
+      if (res.status === 403 && data.error === "invalid or missing CSRF token") {
+        // The server rejected this request before its handler ran. Never
+        // automatically replay a submission or other state-changing action.
+        const message = "Your WiT Forms session changed. Reload the page before retrying. This action was not submitted.";
+        recoverSession(message);
+        throw new Error(message);
+      }
       if (!res.ok) throw new Error(data.error || `${res.status}`);
       return data;
     }
 
     (async function boot() {
       try {
-        const me = await fetch("/auth/me");
-        if (me.status === 401) { notice("Sign in with your @weinsurethings.com account."); return; }
-        $("#user-email").textContent = (await me.json()).email || "";
-        csrf = (await (await fetch("/api/config")).json()).csrf_token || "";
+        if (!await loadSession()) return;
         await refreshStatus();
+        if (!sessionReady) return;
         await loadForms();
         await loadSubs();
-      } catch (e) { notice("Couldn’t start: " + e.message); }
+      } catch (e) { recoverSession(e.message); notice("Couldn’t start: " + e.message); }
     })();
 
     async function refreshStatus() {
@@ -236,14 +315,21 @@
         if (s.signed_in) {
           const who = s.broker && (s.broker.email || s.broker.name || s.broker.broker_name);
           $("#signed-state").textContent =
-            (s.auth_mode === "api_key" ? "API key configured" : "Signed in") +
+            (s.auth_mode === "client_credentials" ? "Machine connection verified" : "Signed in") +
             (who ? " — " + who : "");
           $("#signin-block").classList.add("hidden");
         } else {
-          $("#signed-state").textContent = "Not signed in";
-          $("#signin-block").classList.remove("hidden");
+          $("#signed-state").textContent = s.error || (s.auth_mode === "legacy_key" ? "Replace the legacy key with a client ID and secret." : "Not signed in");
+          const deviceLogin = s.auth_mode === "oauth" && staffRole === "admin";
+          $("#signin-block").classList.toggle("hidden", !deviceLogin);
+          if (s.auth_mode === "oauth" && staffRole !== "admin") {
+            $("#signed-state").textContent = "A WiT Forms administrator must connect the agency to Hedge.";
+          }
         }
-      } catch (e) { $("#signed-state").textContent = "Not signed in"; }
+      } catch (e) {
+        $("#signin-block").classList.add("hidden");
+        if (sessionReady) $("#signed-state").textContent = "Could not check the Hedge connection: " + e.message;
+      }
     }
 
     // --- device sign-in ---
@@ -306,6 +392,14 @@
 
     // --- active submission plumbing ---
     async function setActive(id) {
+      if (activeId !== id) {
+        lastReqs = null;
+        $("#review-box").classList.add("hidden");
+        $("#approve-check").checked = false;
+        $("#finalize-btn").disabled = true;
+        $("#req-out").classList.add("hidden");
+        $("#quotes-out").classList.add("hidden");
+      }
       activeId = id;
       if (id == null) { activeRow = null; $("#active-sub").textContent = ""; return; }
       try {
@@ -314,6 +408,21 @@
           `#${id} — ${activeRow.client_ref || "(no insured)"} · ${activeRow.local_state}` +
           (activeRow.remote_status_label ? ` · Hedge: ${activeRow.remote_status_label}` : "");
         $("#send-btn").disabled = activeRow.local_state !== "draft";
+        show($("#payload"), (activeRow.confirmation || {}).draft_payload || {});
+        const source = activeRow.confirmation || {};
+        $("#intake-source").textContent = source.source
+          ? `Website request · ${source.intake_reference} · consent ${source.consent_version}` : "Staff-created draft";
+        const timeline = $("#event-list"); timeline.replaceChildren();
+        (activeRow.events || []).slice(-100).reverse().forEach(event => {
+          const item = document.createElement("li");
+          let detail = {}; try { detail = JSON.parse(event.detail_json || "{}"); } catch {}
+          const market = detail.market || {};
+          item.textContent = `${detail.occurred_at || event.created_at} · ${event.kind}` +
+            (market.name ? ` · ${market.name}` : "") +
+            (detail.status_label ? ` · ${detail.status_label}` : "") +
+            (detail.detail ? ` · ${detail.detail}` : "");
+          timeline.appendChild(item);
+        });
       } catch (e) { notice(e.message); }
     }
     function needActive() {
@@ -438,13 +547,14 @@
           ul.appendChild(li);
         });
         try {
-          if (!lastReqs) lastReqs = await api(`/api/hedge/pipeline/${activeId}/requirements`);
+          lastReqs = await api(`/api/hedge/pipeline/${activeId}/requirements`);
           $("#rv-reqs").textContent = JSON.stringify(lastReqs, null, 2);
         } catch (e) { $("#rv-reqs").textContent = "(couldn’t load: " + e.message + ")"; }
         $("#approve-check").checked = false;
         $("#finalize-btn").disabled = true;
         $("#review-box").classList.remove("hidden");
-        if (row.local_state === "needs_requirements") {
+        const refreshed = await api(`/api/hedge/pipeline/${activeId}`);
+        if (refreshed.local_state === "needs_requirements") {
           await api(`/api/hedge/pipeline/${activeId}/review`, { method: "POST" });
           setActive(activeId);
         }
@@ -500,10 +610,10 @@
         const { submissions } = await api("/api/hedge/pipeline");
         const ul = $("#subs"); ul.innerHTML = "";
         $("#subs-empty").classList.toggle("hidden", submissions.length > 0);
-        submissions.slice(0, 15).forEach((s) => {
+        submissions.forEach((s) => {
           const li = document.createElement("li");
           const strong = document.createElement("strong");
-          strong.textContent = s.client_ref || "(no insured)";
+          strong.textContent = (s.created_by === "website" ? "Website · " : "") + (s.client_ref || "(no insured)");
           const idSpan = document.createElement("span");
           idSpan.className = "muted small";
           idSpan.textContent = `#${s.id}` + (s.hedge_id ? ` · ${s.hedge_id}` : "");

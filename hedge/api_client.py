@@ -115,31 +115,60 @@ def stored_payload(row) -> dict:
 def send_create(db, local_id: int, *, actor: str = "",
                 config: type[Config] = Config) -> dict:
     _require_live(config)
-    row = _row(db, local_id)
-    if row["local_state"] != "draft":
-        raise PipelineError(
-            f"submission is {row['local_state']!r}; create only runs from draft "
-            f"(a retry reuses the same idempotency key automatically)", 409)
-    payload = stored_payload(row)
-    if not payload:
-        raise PipelineError("draft has no payload", 422)
+    # Serialize local preparation so concurrent agents cannot change attribution
+    # under one idempotency key. Release SQLite before doing any network I/O.
+    with db:
+        db.execute("BEGIN IMMEDIATE")
+        row = _row(db, local_id)
+        if row["local_state"] != "draft":
+            raise PipelineError("Create only runs from a local draft.", 409)
+        payload = stored_payload(row)
+        if not payload:
+            raise PipelineError("draft has no payload", 422)
+        if hedge_service.auth_mode(config) == "client_credentials" and not payload.get("producer_email"):
+            if not actor or "@" not in actor:
+                raise PipelineError("An authenticated producer must send this draft.", 422)
+            payload["producer_email"] = actor
+            db.execute("UPDATE hedge_submissions SET confirmation_json=?, payload_hash=? WHERE id=?",
+                       (json.dumps({**json.loads(row["confirmation_json"]), "draft_payload": payload}),
+                        _hash(payload), local_id))
+        db.execute("INSERT OR IGNORE INTO hedge_create_attempts VALUES (?, ?)",
+                   (local_id, int(time.time())))
+        started = db.execute("SELECT first_attempt_epoch FROM hedge_create_attempts WHERE submission_id=?",
+                             (local_id,)).fetchone()[0]
+        if time.time() - started >= 23 * 3600:
+            raise PipelineError("This create attempt is older than the safe retry window. Reconcile it in Hedge before creating another submission.", 409)
 
     res = hedge_service.request(
         "POST", "/broker/submissions", json_body=payload,
         extra_headers={"Idempotency-Key": row["idempotency_key"]}, config=config)
 
     hedge_id = res.get("submission_id") or res.get("id")
-    db.execute(
-        """UPDATE hedge_submissions SET hedge_id=?, remote_state=?,
-           remote_status_label=?, confirmation_json=?, updated_at=CURRENT_TIMESTAMP
-           WHERE id=?""",
-        (hedge_id, res.get("state"), res.get("status_label"),
-         json.dumps({"draft_payload": payload, "create_response": res}), local_id))
-    db.commit()
-    states.advance(db, local_id, "uploading")
-    _event(db, local_id, "created", detail={"hedge_id": hedge_id,
-                                            "state": res.get("state")},
-           payload_hash=_hash(payload), hedge_ref=str(hedge_id), actor=actor)
+    if not hedge_id:
+        raise PipelineError("Hedge returned no submission ID. Retry using the same draft.", 502)
+    with db:
+        db.execute("BEGIN IMMEDIATE")
+        current = _row(db, local_id)
+        if current["hedge_id"]:
+            if current["hedge_id"] != hedge_id:
+                raise PipelineError("Conflicting Hedge confirmation; reconcile this submission.", 409)
+            return public_row(current)
+        db.execute(
+            """UPDATE hedge_submissions SET hedge_id=?, remote_state=?,
+               remote_status_label=?, confirmation_json=?, local_state='uploading',
+               updated_at=CURRENT_TIMESTAMP WHERE id=?""",
+            (hedge_id, res.get("state"), res.get("status_label"),
+             json.dumps({**json.loads(current["confirmation_json"]),
+                         "draft_payload": payload, "create_response": res}), local_id))
+        # Events may beat the create response back to this app. Link them now.
+        db.execute("UPDATE hedge_events SET submission_id=? WHERE actor='hedge-webhook' AND hedge_ref=? AND submission_id IS NULL",
+                   (local_id, str(hedge_id)))
+        db.execute("""INSERT INTO hedge_events
+            (submission_id, kind, detail_json, payload_hash, hedge_ref, actor)
+            VALUES (?, 'created', ?, ?, ?, ?)""",
+            (local_id, json.dumps({"hedge_id": hedge_id, "state": res.get("state")}),
+             _hash(payload), str(hedge_id), actor))
+
     return public_row(_row(db, local_id))
 
 

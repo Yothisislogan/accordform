@@ -43,6 +43,7 @@ def hedge(tmp_path, monkeypatch):
     import hedge_service as hs
     monkeypatch.setattr(config.Config, "DATA_DIR", tmp_path)
     monkeypatch.setattr(config.Config, "HEDGE_ENV", "staging")
+    monkeypatch.setattr(config.Config, "HEDGE_LIVE", True)
     calls = []
 
     class FakeRequests:
@@ -375,6 +376,20 @@ def test_login_is_admin_only(app):
     assert c.post("/api/hedge/login/start", headers=h).status_code == 403
 
 
+def test_invalid_csrf_cannot_start_hedge_signin(app, monkeypatch):
+    import hedge_service
+    calls = []
+    monkeypatch.setattr(hedge_service, 'start_device_login', lambda *args: calls.append(args) or {})
+    client, valid = _client(app)
+    for headers in ({}, {'X-CSRF-Token': 'stale-token'}):
+        response = client.post('/api/hedge/login/start', headers=headers)
+        assert response.status_code == 403
+        assert response.json == {'error': 'invalid or missing CSRF token'}
+    assert calls == []
+    assert client.post('/api/hedge/login/start', headers=valid).status_code == 200
+    assert len(calls) == 1
+
+
 def test_status_reports_signed_out_without_token(app):
     c, h = _client(app)
     body = c.get("/api/hedge/status").get_json()
@@ -473,65 +488,91 @@ def test_acord_125_schema_carries_the_appetite_flag():
 
 
 # --------------------------------------------------------------------------
-# Static API-key mode (brokerage API-client credential)
+# Machine credentials use OAuth, never X-Api-Key.
 # --------------------------------------------------------------------------
-def _key_mode(hedge, monkeypatch, key="hk-test-123", header=None):
+def _machine_mode(hedge, monkeypatch, scope="broker_mcp broker_submit"):
     import config
-    monkeypatch.setattr(config.Config, "HEDGE_API_KEY", key)
-    if header:
-        monkeypatch.setattr(config.Config, "HEDGE_API_KEY_HEADER", header)
+    monkeypatch.setattr(config.Config, "HEDGE_CLIENT_ID", "bac-test")
+    monkeypatch.setattr(config.Config, "HEDGE_CLIENT_SECRET", "bas-test-secret")
+    hedge._fake.handlers = {
+        ".well-known/oauth-authorization-server": FakeResp(200, META),
+        "/oauth/token": FakeResp(200, {"access_token": "machine-token", "expires_in": 3600, "scope": scope}),
+        "/broker": FakeResp(200, {}, content=b"{}"),
+    }
 
 
-def test_api_key_mode_detected(hedge, monkeypatch):
-    assert hedge.auth_mode() == "oauth"
-    _key_mode(hedge, monkeypatch)
-    assert hedge.auth_mode() == "api_key"
-    assert hedge.is_signed_in()          # no token file needed
-
-
-def test_api_key_sent_on_all_three_transports(hedge, monkeypatch):
-    _key_mode(hedge, monkeypatch)
-    hedge._fake.handlers = {"/broker": FakeResp(200, {}, content=b"{}")}
-
-    hedge.whoami()                                        # JSON request
-    hedge.upload_document("s1", b"%PDF-1.4", "a.pdf")     # multipart
-    hedge.download("/broker/finalized-documents/d1/pdf")  # binary
-
-    for method, url, kw in hedge._calls:
-        headers = kw.get("headers") or {}
-        assert headers.get("X-Api-Key") == "hk-test-123", (method, url, headers)
-        assert "Authorization" not in headers             # key REPLACES bearer
-    # And no OAuth endpoints were ever touched.
-    assert not any("/oauth" in u or "well-known" in u for _, u, _kw in hedge._calls)
-
-
-def test_api_key_custom_header_name(hedge, monkeypatch):
-    _key_mode(hedge, monkeypatch, header="X-Org-Key")
-    hedge._fake.handlers = {"/broker/me": FakeResp(200, {}, content=b"{}")}
+def test_machine_bearer_is_cached_across_all_transports(hedge, monkeypatch):
+    _machine_mode(hedge, monkeypatch)
+    assert hedge.auth_mode() == "client_credentials"
     hedge.whoami()
-    assert hedge._calls[-1][2]["headers"]["X-Org-Key"] == "hk-test-123"
+    hedge.upload_document("s1", b"%PDF-1.4", "a.pdf")
+    hedge.download("/broker/finalized-documents/d1/pdf")
+    token_calls = [kw for _, url, kw in hedge._calls if url.endswith("/oauth/token")]
+    assert len(token_calls) == 1
+    assert token_calls[0]["data"]["grant_type"] == "client_credentials"
+    assert token_calls[0]["data"]["client_secret"] == "bas-test-secret"
+    for _, url, kw in hedge._calls:
+        if "/broker" in url:
+            assert kw["headers"]["Authorization"] == "Bearer machine-token"
+            assert "bas-test-secret" not in repr(kw)
+            assert "X-Api-Key" not in kw["headers"]
+    assert hedge._calls[0][1].endswith("/api/v1/oauth/.well-known/oauth-authorization-server")
 
 
-def test_device_login_short_circuits_in_key_mode(hedge, monkeypatch):
-    _key_mode(hedge, monkeypatch)
+def test_machine_token_renews_before_expiry(hedge, monkeypatch):
+    _machine_mode(hedge, monkeypatch)
+    hedge.whoami()
+    for value in hedge._machine_cache.values():
+        value["expires_at"] = 0
+    hedge.whoami()
+    assert sum(url.endswith("/oauth/token") for _, url, _ in hedge._calls) == 2
+
+
+def test_machine_token_scope_cap_blocks_writes(hedge, monkeypatch):
+    _machine_mode(hedge, monkeypatch, scope="broker_mcp")
+    with pytest.raises(hedge.HedgeError, match="broker_submit"):
+        hedge.create_submission({})
+    assert not any("/broker/submissions" in url for _, url, _ in hedge._calls)
+
+
+def test_obsolete_key_is_never_sent(hedge, monkeypatch):
+    import config
+    monkeypatch.setattr(config.Config, "HEDGE_API_KEY", "legacy-secret")
+    with pytest.raises(hedge.HedgeAuthRequired, match="Static HEDGE_API_KEY"):
+        hedge.whoami()
+    assert not hedge._calls
+
+
+def test_device_login_short_circuits_in_machine_mode(hedge, monkeypatch):
+    _machine_mode(hedge, monkeypatch)
     with pytest.raises(hedge.HedgeError, match="no sign-in is needed"):
         hedge.start_device_login()
-    assert hedge._calls == []            # nothing hit the network
+    assert hedge._calls == []
 
 
-def test_key_wins_over_stale_token_file(hedge, monkeypatch):
-    hedge.save_token({"access_token": "stale", "refresh_token": "stale",
-                      "expires_at": 0, "token_endpoint": "t", "client_id": "c"})
-    _key_mode(hedge, monkeypatch)
-    hedge._fake.handlers = {"/broker/me": FakeResp(200, {}, content=b"{}")}
-    hedge.whoami()                       # would raise/refresh in oauth mode
-    assert hedge._calls[-1][2]["headers"]["X-Api-Key"] == "hk-test-123"
+def test_transport_live_gate_blocks_legacy_writes(hedge, monkeypatch):
+    import config
+    monkeypatch.setattr(config.Config, "HEDGE_LIVE", False)
+    with pytest.raises(hedge.HedgeError, match="live mode is off"):
+        hedge.create_submission({})
+    with pytest.raises(hedge.HedgeError, match="live mode is off"):
+        hedge.upload_document("s1", b"%PDF-1.4", "a.pdf")
+    assert not hedge._calls
+
+
+def test_discovery_does_not_send_secret_to_other_origin(hedge, monkeypatch):
+    _machine_mode(hedge, monkeypatch)
+    hedge._fake.handlers[".well-known/oauth-authorization-server"] = FakeResp(200, {"token_endpoint": "https://attacker.example/token"})
+    with pytest.raises(hedge.HedgeError, match="untrusted endpoint"):
+        hedge.whoami()
+    assert len(hedge._calls) == 1
 
 
 def test_create_submission_route_attributes_producer_in_key_mode(app, monkeypatch):
     import config
     import hedge_service
-    monkeypatch.setattr(config.Config, "HEDGE_API_KEY", "hk-test-123")
+    monkeypatch.setattr(config.Config, "HEDGE_CLIENT_ID", "bac-test")
+    monkeypatch.setattr(config.Config, "HEDGE_CLIENT_SECRET", "bas-test-secret")
     sent = {}
 
     def fake_create(body, cfg):
@@ -571,11 +612,12 @@ def test_no_producer_injection_in_oauth_mode(app, monkeypatch):
 def test_status_reports_auth_mode(app, monkeypatch):
     import config
     import hedge_service
-    monkeypatch.setattr(config.Config, "HEDGE_API_KEY", "hk-test-123")
+    monkeypatch.setattr(config.Config, "HEDGE_CLIENT_ID", "bac-test")
+    monkeypatch.setattr(config.Config, "HEDGE_CLIENT_SECRET", "bas-test-secret")
     monkeypatch.setattr(hedge_service, "whoami", lambda cfg: {"name": "WIT"})
     c, h = _client(app)
     body = c.get("/api/hedge/status").get_json()
-    assert body["auth_mode"] == "api_key"
+    assert body["auth_mode"] == "client_credentials"
     assert body["signed_in"] is True
     # The key itself never appears in any response.
-    assert "hk-test-123" not in json.dumps(body)
+    assert "bas-test-secret" not in json.dumps(body)

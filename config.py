@@ -92,13 +92,14 @@ class Config:
     HEDGE_ENV = os.environ.get("HEDGE_ENV", "staging").lower()  # 'staging' | 'prod'
     HEDGE_SCOPES = os.environ.get("HEDGE_SCOPES", "broker_mcp broker_submit")
     HEDGE_TIMEOUT = int(os.environ.get("HEDGE_TIMEOUT", "60"))
-    # Static brokerage API-client credential. When set, it is sent as a header
-    # on every call (default X-Api-Key, per the hedge-cli shared client) and
-    # OAuth sign-in is skipped entirely. Submissions then REQUIRE a
-    # producer_email attribution — the app fills it with the signed-in WIT
-    # user's email unless the payload supplies one.
+    # Machine credentials are exchanged for short-lived OAuth bearer tokens.
+    HEDGE_CLIENT_ID = os.environ.get("HEDGE_CLIENT_ID", "")
+    HEDGE_CLIENT_SECRET = os.environ.get("HEDGE_CLIENT_SECRET", "")
+    HEDGE_WEBHOOK_SECRET = os.environ.get("HEDGE_WEBHOOK_SECRET", "")
+    # Shared only with the WordPress server; not a Hedge credential.
+    WIT_INTAKE_SECRET = os.environ.get("WIT_INTAKE_SECRET", "")
+    # Detect obsolete configuration and fail clearly; never transmit it.
     HEDGE_API_KEY = os.environ.get("HEDGE_API_KEY", "")
-    HEDGE_API_KEY_HEADER = os.environ.get("HEDGE_API_KEY_HEADER", "X-Api-Key")
     # Fernet key for OAuth material at rest in hedge_credentials (generate with
     # `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`).
     # Unset => dev fallback to the 0600 token file in DATA_DIR.

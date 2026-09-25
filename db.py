@@ -149,6 +149,31 @@ CREATE TABLE IF NOT EXISTS hedge_credentials (
   updated_at    TEXT DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Website requests are permanently idempotent, including a lost HTTP response.
+CREATE TABLE IF NOT EXISTS wit_risk_intakes (
+  request_id TEXT PRIMARY KEY,
+  submission_id INTEGER NOT NULL REFERENCES hedge_submissions(id),
+  payload_hash TEXT NOT NULL,
+  received_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS hedge_webhook_deliveries (
+  delivery_id TEXT PRIMARY KEY,
+  payload_hash TEXT NOT NULL,
+  received_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS hedge_webhook_events (
+  hedge_id TEXT NOT NULL,
+  event_id TEXT NOT NULL,
+  event_type TEXT NOT NULL,
+  event_json TEXT NOT NULL,
+  received_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (hedge_id, event_id, event_type)
+);
+CREATE TABLE IF NOT EXISTS hedge_create_attempts (
+  submission_id INTEGER PRIMARY KEY REFERENCES hedge_submissions(id),
+  first_attempt_epoch INTEGER NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS idx_hedge_events_sub ON hedge_events(submission_id);
 CREATE INDEX IF NOT EXISTS idx_forms_active ON forms(active);
 CREATE INDEX IF NOT EXISTS idx_submissions_user ON submissions(user_id);
