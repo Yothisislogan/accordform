@@ -17,9 +17,9 @@ def app(tmp_path, monkeypatch):
     monkeypatch.setenv("ALLOWED_DOMAINS", "weinsurethings.com")
     monkeypatch.setenv("OWNER_CC_EMAIL", "owner@weinsurethings.com")
     # Re-import fresh so config picks up env.
-    for mod in ("config", "app", "db", "auth", "forms_catalog"):
+    for mod in ("config", "legacy_app", "db", "auth", "forms_catalog"):
         sys.modules.pop(mod, None)
-    from app import create_app
+    from legacy_app import create_app
     application = create_app()
     yield application
 

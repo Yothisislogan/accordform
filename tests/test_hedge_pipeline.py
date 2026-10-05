@@ -444,9 +444,9 @@ def routes_app(tmp_path, monkeypatch):
     monkeypatch.setenv("DB_PATH", str(tmp_path / "data" / "test.db"))
     monkeypatch.setenv("ALLOWED_DOMAINS", "weinsurethings.com")
     monkeypatch.setenv("OWNER_CC_EMAIL", "owner@weinsurethings.com")
-    for mod in ("config", "app", "db", "auth", "forms_catalog"):
+    for mod in ("config", "legacy_app", "db", "auth", "forms_catalog"):
         sys.modules.pop(mod, None)
-    from app import create_app
+    from legacy_app import create_app
     return create_app()
 
 

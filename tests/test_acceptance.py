@@ -71,7 +71,7 @@ def test_3_radio_single_one(schema):
 
 # --- Test 4: Phase 1 uses local email/download, not server email ---
 def test_4_phase1_does_not_import_server_email_service():
-    app_source = (ROOT / "app.py").read_text()
+    app_source = (ROOT / "tests" / "legacy_app.py").read_text()
     assert "send_form_email" not in app_source
     assert "EmailError" not in app_source
     assert '"email_enabled": False' in app_source

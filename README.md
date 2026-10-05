@@ -1,3 +1,7 @@
+# WiTNext-only forms cutover
+
+This branch replaces the forms host with a no-storage handoff. See [the cutover guide](docs/witnext-cutover.md) before deployment. Historical instructions below describe the retired local application and must not be used for this branch.
+
 # WIT Forms
 
 Internal web app that fills **licensed ACORD insurance PDFs** for We Insure
