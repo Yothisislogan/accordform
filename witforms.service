@@ -1,5 +1,5 @@
 [Unit]
-Description=WiT Forms handoff to WiTNext (no customer storage)
+Description=WiT Forms portal (customer storage in WiTNext only)
 After=network.target
 
 [Service]

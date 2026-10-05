@@ -1,27 +1,29 @@
-"""Forms-host handoff: no customer processing, sessions, database or outputs."""
+"""WiT Forms portal: customer traffic goes directly to authenticated WiTNext."""
 from __future__ import annotations
 
-import html
 import os
+import re
 from urllib.parse import urlsplit
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, render_template, request, send_from_directory, abort
 
 
 def create_app(config=None):
-    app = Flask(__name__, static_folder=None)
+    app = Flask(__name__, static_folder=None, template_folder="portal_templates")
     origin = os.environ.get("WITNEXT_ORIGIN", "").rstrip("/")
     if config is not None:
         origin = getattr(config, "WITNEXT_ORIGIN", origin).rstrip("/")
     parsed = urlsplit(origin)
     if origin and (parsed.scheme != "https" or not parsed.netloc or parsed.username
-                   or parsed.password or parsed.path or parsed.query or parsed.fragment):
+                   or parsed.password or parsed.path or parsed.query or parsed.fragment
+                   or not re.fullmatch(r"https://[A-Za-z0-9.-]+(?::[0-9]{1,5})?", origin)
+                   or (parsed.port is not None and not 1 <= parsed.port <= 65535)):
         raise ValueError("WITNEXT_ORIGIN must be an HTTPS origin without credentials or a path")
 
     @app.before_request
     def reject_writes():
         if request.method not in ("GET", "HEAD"):
             # Never read, parse, log, forward, or retain the incoming body.
-            return jsonify(error="Customer forms have moved to WiTNext. Reopen the form there."), 410
+            return jsonify(error="Open WiT Forms to edit. Saving connects directly to WiTNext."), 410
         return None
 
     @app.after_request
@@ -29,29 +31,39 @@ def create_app(config=None):
         response.headers.update({
             "Cache-Control": "no-store", "Referrer-Policy": "no-referrer",
             "X-Content-Type-Options": "nosniff",
-            "Content-Security-Policy": "default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+            "Content-Security-Policy": (
+                "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; "
+                "connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; "
+                "frame-src " + (origin or "'none'")
+            ),
         })
         return response
 
     @app.get("/health")
+    @app.get("/healthz")
     def health():
-        return jsonify(status="ok", mode="witnext-handoff", customer_storage=False)
+        return jsonify(status="ok", mode="forms-portal", configured=bool(origin), customer_storage=False)
+
+    @app.get("/portal/<path:asset>")
+    def portal_asset(asset):
+        if asset not in {"portal.css", "portal.js", "assets/wit-forms-logo-1b-light.png", "assets/favicon.svg"}:
+            abort(404)
+        return send_from_directory(os.path.join(app.root_path, "static"), asset)
+
+    @app.get("/static/<path:unused>")
+    def legacy_asset(unused):
+        # Never revive the old application, PDF outputs or customer-bearing paths.
+        abort(404)
 
     @app.get("/api/<path:unused>")
     def retired_api(unused):
-        return jsonify(error="This API is retired. Use the WiTNext forms workspace."), 410
+        return jsonify(error="Local data endpoints are disabled. Open WiT Forms to continue."), 410
 
     @app.get("/", defaults={"unused": ""})
     @app.get("/<path:unused>")
-    def handoff(unused):
-        link = (f'<p><a href="{html.escape(origin, quote=True)}/forms">Open forms in WiTNext</a></p>'
-                if origin else '<p>Open your WiTNext customer workspace and choose Forms.</p>')
-        return ('<!doctype html><html lang="en"><meta charset="utf-8">'
-                '<meta name="viewport" content="width=device-width,initial-scale=1">'
-                '<title>Forms have moved to WiTNext</title><main>'
-                '<h1>Forms have moved to WiTNext</h1>'
-                '<p>Start, save, reopen, and sign forms from the customer workspace.</p>'
-                + link + '</main></html>')
+    def portal(unused):
+        # No incoming path, query, cookie or header is reflected into the frame.
+        return render_template("forms_portal.html", witnext_origin=origin)
 
     return app
 
