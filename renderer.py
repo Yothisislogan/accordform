@@ -13,6 +13,7 @@ import json
 import os
 import re
 import sys
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
@@ -100,6 +101,7 @@ def audit(form_id, directory=None):
         "mappingSha256": digest(json.dumps(resolved, sort_keys=True).encode()),
         "mapped": resolved, "unresolved": unresolved, "ambiguous": ambiguous,
         "unmapped": sorted(set(available) - set(resolved.values())),
+        "duplicateTargets": sorted(n for n, count in Counter(targets(schema)).items() if count > 1),
         "nonblankFields": nonblank, "pdfFieldCount": len(available),
     }
     return result, raw
@@ -115,7 +117,7 @@ def approved_template(form_id):
     if any(review.get(k) != report[k] for k in hashes):
         raise RenderError("Template or mapping changed; a new field review is required")
     if (not report["pdfFieldCount"] or report["nonblankFields"] or report["unresolved"]
-            or report["ambiguous"] or review.get("blankTemplateReviewed") is not True):
+            or report["ambiguous"] or report["duplicateTargets"] or review.get("blankTemplateReviewed") is not True):
         raise RenderError("Template is not blank or field mapping is incomplete or ambiguous")
     # Every omission must have an explicit review reason. No percentage-based
     # approval can conceal a missing signature, vehicle, driver or location.
