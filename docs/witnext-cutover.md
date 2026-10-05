@@ -12,6 +12,12 @@ only parent/frame messages are versioned readiness flags. Customer answers,
 documents and tokens never enter the Forms parent page. All customer-bearing
 requests connect directly from the WiTNext frame to WiTNext APIs and storage.
 
+The trusted WiTNext application is embedded without an HTML iframe sandbox,
+which blocks Chromium's native PDF viewer. The parent cannot read its content
+across origins. Exact `frame-src` / `frame-ancestors` policies, Access, account
+permissions and the status-only protocol define this connection; never point
+it at an untrusted application or weaken those origin/authentication checks.
+
 ## Paired deployment and connection
 
 1. Reconcile the paired WiTNext branch with the active release, deploy migration

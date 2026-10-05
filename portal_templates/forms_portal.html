@@ -31,9 +31,10 @@
       </div>
     </main>
     {% if witnext_origin %}
+    <!-- Embed only the configured, trusted WiTNext application. An HTML sandbox
+         blocks Chromium's native PDF viewer even when scripts are allowed. -->
     <iframe id="forms-app" title="WiT Forms workspace" src="{{ witnext_origin }}/forms-app/"
-      referrerpolicy="no-referrer" hidden
-      sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-modals allow-popups allow-popups-to-escape-sandbox"></iframe>
+      referrerpolicy="no-referrer" hidden></iframe>
     {% endif %}
   </body>
 </html>
