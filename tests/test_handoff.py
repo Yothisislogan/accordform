@@ -54,3 +54,11 @@ def test_missing_connection_is_honest_and_never_redirects(monkeypatch):
     assert b'<iframe' not in response.data
     assert b'Forms have moved' not in response.data
     assert not client.get('/health').json['configured']
+
+
+def test_connection_matches_browser_origin_serialization(monkeypatch):
+    import app
+    monkeypatch.setenv('WITNEXT_ORIGIN', 'https://CRM.Example.Invalid:443/')
+    response = app.create_app().test_client().get('/')
+    assert b'data-witnext-origin="https://crm.example.invalid"' in response.data
+    assert "frame-src https://crm.example.invalid" in response.headers['Content-Security-Policy']

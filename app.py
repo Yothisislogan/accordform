@@ -18,6 +18,11 @@ def create_app(config=None):
                    or not re.fullmatch(r"https://[A-Za-z0-9.-]+(?::[0-9]{1,5})?", origin)
                    or (parsed.port is not None and not 1 <= parsed.port <= 65535)):
         raise ValueError("WITNEXT_ORIGIN must be an HTTPS origin without credentials or a path")
+    if origin:
+        # MessageEvent.origin uses a lowercase hostname and omits the HTTPS
+        # default port. Match that browser serialization for exact comparison.
+        port = f":{parsed.port}" if parsed.port not in (None, 443) else ""
+        origin = f"https://{parsed.hostname}{port}"
 
     @app.before_request
     def reject_writes():
