@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>WiT Forms</title>
+    <link rel="stylesheet" href="/portal/portal.css">
+    <script src="/portal/portal.js" defer></script>
+  </head>
+  <body data-witnext-origin="{{ witnext_origin }}">
+    <main id="connection" class="connection">
+      <img class="logo" src="/portal/assets/wit-forms-logo-1b-light.png" alt="WiT Forms">
+      <div class="card">
+        <p class="eyebrow">YOUR FORMS WORKSPACE</p>
+        <h1>Start here. Pick up where you left off.</h1>
+        <p>Create, edit, review and sign your forms here. Your saved answers and documents stay in WiTNext.</p>
+        {% if witnext_origin %}
+        <p id="connection-status" role="status">Connecting to your saved forms…</p>
+        <div id="connection-help" hidden>
+          <p>If your forms haven’t opened, sign in to WiTNext in a new tab, then return here and select Reload forms.</p>
+          <div class="actions">
+            <a href="{{ witnext_origin }}/forms-app/" target="_blank" rel="noopener noreferrer">Connect to WiTNext</a>
+            <button id="reload" type="button">Reload forms</button>
+          </div>
+          <p class="hint">Still not connecting? Your administrator can check the Forms connection and sign-in settings.</p>
+        </div>
+        <noscript><p>Enable JavaScript to open your forms workspace.</p></noscript>
+        {% else %}
+        <p role="status">The Forms connection needs to be configured. Ask your administrator to set the WiTNext connection for this site.</p>
+        {% endif %}
+      </div>
+    </main>
+    {% if witnext_origin %}
+    <!-- Embed only the configured, trusted WiTNext application. An HTML sandbox
+         blocks Chromium's native PDF viewer even when scripts are allowed. -->
+    <iframe id="forms-app" title="WiT Forms workspace" src="{{ witnext_origin }}/forms-app/"
+      referrerpolicy="no-referrer" hidden></iframe>
+    {% endif %}
+  </body>
+</html>
