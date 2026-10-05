@@ -9,7 +9,10 @@ Group=witforms
 WorkingDirectory=/opt/wit-forms-new
 EnvironmentFile=/etc/wit-forms/witforms.env
 Environment=PYTHONDONTWRITEBYTECODE=1
-ExecStart=/opt/wit-forms-new/.venv/bin/gunicorn --workers 2 --bind 127.0.0.1:8097 --worker-tmp-dir /dev/shm --access-logfile /dev/null --error-logfile - "app:create_app()"
+ExecStart=/opt/wit-forms-new/.venv/bin/gunicorn --workers 2 --bind 127.0.0.1:8097 --worker-tmp-dir /dev/shm --access-logfile /dev/null --error-logfile /dev/null "app:create_app()"
+StandardOutput=null
+StandardError=null
+LimitCORE=0
 Restart=on-failure
 NoNewPrivileges=true
 ProtectSystem=strict

@@ -13,7 +13,10 @@ runtime-specific tests; the historical versions remain in Git at
 under `tests/legacy_app.py` is a regression fixture, never a deployment entrypoint.
 
 The new nginx configuration rejects writes before request-body buffering,
-disables access logging and prevents proxy body forwarding. The systemd unit
+disables access/error logging and prevents proxy body forwarding. The service
+discards stdout/stderr, disables core dumps, and exposes only the non-sensitive
+health endpoint for monitoring. This prevents malformed request diagnostics from
+retaining customer-supplied paths or headers. The systemd unit
 uses `/opt/wit-forms-new`, a read-only filesystem and no customer write directory.
 Review actual live paths and edge configuration before installing examples.
 
